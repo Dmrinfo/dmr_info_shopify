@@ -91,8 +91,13 @@
     </form>
 
     <div class="header__actions">
-      {%- if section.settings.show_support -%}
-        {%- assign support_url = section.settings.support_link | default: '/pages/contato' -%}
+      {%- liquid
+        assign support_url = section.settings.support_link
+        if support_url == blank and pages['contato'].id != blank
+          assign support_url = pages['contato'].url
+        endif
+      -%}
+      {%- if section.settings.show_support and support_url != blank -%}
         <a
           href="{{ support_url }}"
           class="header__round-button header__support"
@@ -226,7 +231,7 @@
               {%- if block.type == 'panel_item' and block.settings.label != blank -%}
                 {%- assign has_panel_items = true -%}
                 <li {{ block.shopify_attributes }}>
-                  <a class="category-bar__panel-link" href="{{ block.settings.link | default: routes.all_products_collection_url }}">
+                  <a class="category-bar__panel-link" href="{% render 'category-link', url: block.settings.link, label: block.settings.label %}">
                     {% render 'category-icon', name: block.settings.icon, class: 'category-bar__panel-icon' %}
                     <span>{{ block.settings.label | escape }}</span>
                   </a>
@@ -236,7 +241,7 @@
             {%- unless has_panel_items -%}
               {%- for block in section.blocks -%}
                 {%- if block.type == 'link' and block.settings.label != blank -%}
-                  <li><a class="category-bar__panel-link" href="{{ block.settings.link | default: routes.all_products_collection_url }}"><span>{{ block.settings.label | escape }}</span></a></li>
+                  <li><a class="category-bar__panel-link" href="{% render 'category-link', url: block.settings.link, label: block.settings.label %}"><span>{{ block.settings.label | escape }}</span></a></li>
                 {%- endif -%}
               {%- endfor -%}
             {%- endunless -%}
@@ -251,7 +256,7 @@
               <li {{ block.shopify_attributes }}>
                 <a
                   class="category-bar__link{% if block.settings.bold %} category-bar__link--bold{% endif %}"
-                  href="{{ block.settings.link | default: routes.all_products_collection_url }}"
+                  href="{% render 'category-link', url: block.settings.link, label: block.settings.label %}"
                   {% if block.settings.link != blank and block.settings.link == request.path %}aria-current="page"{% endif %}
                 >
                   {{- block.settings.label | escape -}}
@@ -314,7 +319,7 @@
       "type": "url",
       "id": "support_link",
       "label": "Link do atendimento",
-      "info": "Página de contato ou link do WhatsApp. Vazio: /pages/contato."
+      "info": "Página de contato ou link do WhatsApp. Vazio: usa a página com handle contato; se ela não existir, o botão não aparece."
     },
     {
       "type": "checkbox",

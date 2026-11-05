@@ -1,0 +1,32 @@
+{%- comment -%}
+  ============================================================
+  category-link — URL de um link de categoria, sem 404
+  ============================================================
+
+  O QUE FAZ:
+  Devolve a URL do link. Se apontar para /collections/<handle> e a
+  coleção ainda não existir na loja, devolve a busca de produtos pelo
+  nome da categoria. Quando a coleção for criada no admin, o link
+  volta a abrir a coleção sozinho.
+
+  COMO USAR:
+  href="{% render 'category-link', url: block.settings.link, label: block.settings.label %}"
+
+  PARÂMETROS:
+  - url: link configurado (pode ser vazio: vira "todos os produtos").
+  - label: texto da categoria, usado como termo de busca.
+
+  OBSERVACOES:
+  Saída sem espaços, para uso direto dentro de atributos.
+{%- endcomment -%}
+{%- liquid
+  assign resolved = url | default: routes.all_products_collection_url
+  if resolved contains '/collections/'
+    assign handle = resolved | split: '/collections/' | last | split: '?' | first | split: '#' | first | split: '/' | first
+    if handle != 'all' and collections[handle].id == blank
+      assign query = label | url_encode
+      assign resolved = routes.search_url | append: '?type=product&q=' | append: query
+    endif
+  endif
+  echo resolved
+-%}

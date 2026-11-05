@@ -18,12 +18,20 @@
   - link_class: classe do <a> (opcional).
 
   OBSERVACOES:
-  Os endereços /pages/... dependem de existir uma página com esse
-  handle no admin (como-comprar, sobre, faq, contato).
+  Os links /pages/... só aparecem se a página existir no admin com
+  esse handle (como-comprar, sobre, faq, contato).
 {%- endcomment -%}
 <li{% if item_class != blank %} class="{{ item_class }}"{% endif %}><a href="{{ routes.root_url }}"{% if link_class != blank %} class="{{ link_class }}"{% endif %}>Início</a></li>
 <li{% if item_class != blank %} class="{{ item_class }}"{% endif %}><a href="{{ routes.all_products_collection_url }}"{% if link_class != blank %} class="{{ link_class }}"{% endif %}>Produtos</a></li>
+{%- if pages['como-comprar'].id != blank -%}
 <li{% if item_class != blank %} class="{{ item_class }}"{% endif %}><a href="{{ routes.root_url }}pages/como-comprar"{% if link_class != blank %} class="{{ link_class }}"{% endif %}>Como comprar</a></li>
+{%- endif -%}
+{%- if pages['sobre'].id != blank -%}
 <li{% if item_class != blank %} class="{{ item_class }}"{% endif %}><a href="{{ routes.root_url }}pages/sobre"{% if link_class != blank %} class="{{ link_class }}"{% endif %}>Sobre</a></li>
+{%- endif -%}
+{%- if pages['faq'].id != blank -%}
 <li{% if item_class != blank %} class="{{ item_class }}"{% endif %}><a href="{{ routes.root_url }}pages/faq"{% if link_class != blank %} class="{{ link_class }}"{% endif %}>Perguntas frequentes</a></li>
+{%- endif -%}
+{%- if pages['contato'].id != blank -%}
 <li{% if item_class != blank %} class="{{ item_class }}"{% endif %}><a href="{{ routes.root_url }}pages/contato"{% if link_class != blank %} class="{{ link_class }}"{% endif %}>Contato</a></li>
+{%- endif -%}
