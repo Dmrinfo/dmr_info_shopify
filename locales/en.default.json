@@ -191,7 +191,8 @@
       "welcome": "Hello, welcome!",
       "greeting": "Hello, {{ name }}!",
       "login": "Sign in",
-      "my_account": "My account"
+      "my_account": "My account",
+      "category_view_all": "See all {{ category }}"
     },
     "cart": {
       "title": "Your cart",

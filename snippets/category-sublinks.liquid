@@ -1,0 +1,34 @@
+{%- comment -%}
+  ============================================================
+  category-sublinks — itens de submenu de uma categoria
+  ============================================================
+
+  O QUE FAZ:
+  Renderiza como <li> os blocos 'sublink' que vêm logo depois de um
+  bloco 'link' na lista de blocos do header. Para no primeiro bloco
+  que não for 'sublink'.
+
+  COMO USAR:
+  {% render 'category-sublinks', blocks: section.blocks, start: forloop.index, item_class: 'x', link_class: 'y' %}
+
+  PARÂMETROS:
+  - blocks: section.blocks.
+  - start: posição do primeiro bloco depois do link pai (forloop.index
+    do link pai).
+  - item_class / link_class: classes do <li> e do <a>.
+
+  OBSERVACOES:
+  Links passam pelo snippet 'category-link' (sem 404 se a coleção
+  ainda não existir). Usado em sections/nav.liquid.
+{%- endcomment -%}
+{%- assign collecting = true -%}
+{%- for sub in blocks offset: start -%}
+  {%- if sub.type != 'sublink' -%}{%- assign collecting = false -%}{%- endif -%}
+  {%- if collecting and sub.settings.label != blank -%}
+    <li class="{{ item_class }}" {{ sub.shopify_attributes }}>
+      <a class="{{ link_class }}" href="{% render 'category-link', url: sub.settings.link, label: sub.settings.label %}">
+        {{- sub.settings.label | escape -}}
+      </a>
+    </li>
+  {%- endif -%}
+{%- endfor -%}

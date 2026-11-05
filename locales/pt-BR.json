@@ -191,7 +191,8 @@
       "welcome": "Olá, Bem-Vindo!",
       "greeting": "Olá, {{ name }}!",
       "login": "Entrar",
-      "my_account": "Minha conta"
+      "my_account": "Minha conta",
+      "category_view_all": "Ver tudo em {{ category }}"
     },
     "cart": {
       "title": "Seu carrinho",

@@ -132,6 +132,41 @@
             "link": "/collections/informatica",
             "bold": false
           }
+        },
+        "cameras_sub_1": {
+          "type": "sublink",
+          "settings": {
+            "label": "Câmeras Bullet",
+            "link": "/collections/cameras-bullet"
+          }
+        },
+        "cameras_sub_2": {
+          "type": "sublink",
+          "settings": {
+            "label": "Câmeras Dome",
+            "link": "/collections/cameras-dome"
+          }
+        },
+        "cameras_sub_3": {
+          "type": "sublink",
+          "settings": {
+            "label": "Câmeras Wi-Fi",
+            "link": "/collections/cameras-wi-fi"
+          }
+        },
+        "cameras_sub_4": {
+          "type": "sublink",
+          "settings": {
+            "label": "Câmeras IP",
+            "link": "/collections/cameras-ip"
+          }
+        },
+        "cameras_sub_5": {
+          "type": "sublink",
+          "settings": {
+            "label": "Câmeras Varifocais",
+            "link": "/collections/cameras-varifocais"
+          }
         }
       },
       "block_order": [
@@ -144,6 +179,11 @@
         "panel_7",
         "panel_8",
         "cat_1",
+        "cameras_sub_1",
+        "cameras_sub_2",
+        "cameras_sub_3",
+        "cameras_sub_4",
+        "cameras_sub_5",
         "cat_2",
         "cat_3",
         "cat_4",

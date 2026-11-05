@@ -27,7 +27,8 @@
   - Carrinho: contador [data-cart-count] (atualizado por carrinho.js).
   - header__mobile-nav: menu (setting menu) para telas <= 1000px.
   - category-bar: blocos 'panel_item' (painel com ícones), 'link'
-    (com negrito opcional) e 'divider'.
+    (com negrito opcional), 'sublink' (submenu do link acima, via
+    snippet 'category-sublinks') e 'divider'.
 
   OBSERVAÇÕES:
   - CSS: assets/header.css e assets/category-bar.css.
@@ -230,11 +231,31 @@
             {%- for block in section.blocks -%}
               {%- if block.type == 'panel_item' and block.settings.label != blank -%}
                 {%- assign has_panel_items = true -%}
-                <li {{ block.shopify_attributes }}>
+                {%- liquid
+                  assign panel_sub_start = 0
+                  for candidate in section.blocks
+                    if candidate.type == 'link' and candidate.settings.link == block.settings.link
+                      assign panel_sub_start = forloop.index
+                    endif
+                  endfor
+                -%}
+                {%- capture panel_subs -%}
+                  {%- if panel_sub_start > 0 -%}
+                    {% render 'category-sublinks', blocks: section.blocks, start: panel_sub_start, item_class: 'category-bar__flyout-item', link_class: 'category-bar__flyout-link' %}
+                  {%- endif -%}
+                {%- endcapture -%}
+                {%- assign panel_subs = panel_subs | strip -%}
+                <li class="category-bar__panel-item{% if panel_subs != '' %} category-bar__panel-item--has-sub{% endif %}" {{ block.shopify_attributes }}>
                   <a class="category-bar__panel-link" href="{% render 'category-link', url: block.settings.link, label: block.settings.label %}">
                     {% render 'category-icon', name: block.settings.icon, class: 'category-bar__panel-icon' %}
                     <span>{{ block.settings.label | escape }}</span>
+                    {%- if panel_subs != '' -%}
+                      <svg class="category-bar__panel-chevron" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    {%- endif -%}
                   </a>
+                  {%- if panel_subs != '' -%}
+                    <ul class="category-bar__flyout" role="list">{{ panel_subs }}</ul>
+                  {%- endif -%}
                 </li>
               {%- endif -%}
             {%- endfor -%}
@@ -253,14 +274,31 @@
         {%- for block in section.blocks -%}
           {%- case block.type -%}
             {%- when 'link' -%}
-              <li {{ block.shopify_attributes }}>
+              {%- capture bar_subs -%}
+                {% render 'category-sublinks', blocks: section.blocks, start: forloop.index, item_class: 'category-bar__sub-item', link_class: 'category-bar__sub-link' %}
+              {%- endcapture -%}
+              {%- assign bar_subs = bar_subs | strip -%}
+              <li class="category-bar__item{% if bar_subs != '' %} category-bar__item--has-sub{% endif %}" {{ block.shopify_attributes }}>
                 <a
                   class="category-bar__link{% if block.settings.bold %} category-bar__link--bold{% endif %}"
                   href="{% render 'category-link', url: block.settings.link, label: block.settings.label %}"
                   {% if block.settings.link != blank and block.settings.link == request.path %}aria-current="page"{% endif %}
                 >
                   {{- block.settings.label | escape -}}
+                  {%- if bar_subs != '' -%}
+                    <svg class="category-bar__chevron" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m4 6 4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  {%- endif -%}
                 </a>
+                {%- if bar_subs != '' -%}
+                  <ul class="category-bar__sub" role="list">
+                    <li class="category-bar__sub-item">
+                      <a class="category-bar__sub-link category-bar__sub-link--all" href="{% render 'category-link', url: block.settings.link, label: block.settings.label %}">
+                        {{- 'sections.header.category_view_all' | t: category: block.settings.label -}}
+                      </a>
+                    </li>
+                    {{ bar_subs }}
+                  </ul>
+                {%- endif -%}
               </li>
             {%- when 'divider' -%}
               <li class="category-bar__divider" aria-hidden="true" {{ block.shopify_attributes }}></li>
@@ -412,11 +450,20 @@
       ]
     },
     {
+      "type": "sublink",
+      "name": "Sublink (submenu)",
+      "settings": [
+        { "type": "paragraph", "content": "Aparece no submenu do Link de categoria logo acima na lista." },
+        { "type": "text", "id": "label", "label": "Texto", "default": "Subcategoria" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    },
+    {
       "type": "divider",
       "name": "Divisor",
       "settings": []
     }
   ],
-  "max_blocks": 24
+  "max_blocks": 50
 }
 {% endschema %}
