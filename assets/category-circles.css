@@ -6,19 +6,19 @@
   O QUE FAZ:
   Estiliza sections/category-circles.liquid: fileira de círculos com
   foto do produto e nome embaixo. A foto é maior que o círculo e vaza
-  pela borda de cima. Hover sobe a foto e pinta o nome.
+  por cima e pelos lados. Hover sobe a foto e pinta o nome.
 
   OBSERVACOES:
   Usa tokens --dmr-* (snippets/css-variables.liquid). O círculo é o
-  ::before de .category-circles__media; a foto tem o tamanho do
-  círculo e sobe --cc-lift, vazando por cima. --blend (só foto da
+  ::before de .category-circles__media, preso na base da caixa; a foto
+  ocupa a caixa (--cc-box), maior que o círculo (--cc-circle). --blend (só foto da
   coleção) faz o fundo branco sumir. No mobile (<= 1000px) a fileira rola na
   horizontal com snap e fade na borda direita.
 */
 
 .category-circles {
-  --cc-circle: 104px;
-  --cc-lift: 18px;
+  --cc-box: 96px;
+  --cc-circle: 72px;
   padding-top: clamp(28px, 4vw, 48px);
   padding-bottom: clamp(8px, 2vw, 16px);
 }
@@ -33,7 +33,7 @@
   justify-content: space-between;
   gap: 16px;
   margin: 0;
-  padding: var(--cc-lift) 0 0;
+  padding: 0;
   list-style: none;
 }
 
@@ -59,8 +59,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: var(--cc-circle);
-  height: var(--cc-circle);
+  width: var(--cc-box);
+  height: var(--cc-box);
 }
 
 .category-circles__media::before {
@@ -78,7 +78,6 @@
 
 .category-circles__image {
   position: relative;
-  top: calc(var(--cc-lift) * -1);
   width: 100%;
   height: 100%;
   object-fit: contain;
@@ -90,10 +89,12 @@
    do círculo. */
 .category-circles__image--blend { mix-blend-mode: multiply; }
 
+/* Ícone no centro do círculo, não da caixa */
 .category-circles__icon {
   position: relative;
-  width: 40px;
-  height: 40px;
+  top: calc((var(--cc-box) - var(--cc-circle)) / 2);
+  width: 32px;
+  height: 32px;
   color: var(--dmr-primary);
   transition: transform 0.3s ease;
 }
@@ -130,14 +131,14 @@
 
 @media screen and (max-width: 1000px) {
   .category-circles {
-    --cc-circle: 84px;
-    --cc-lift: 14px;
+    --cc-box: 80px;
+    --cc-circle: 60px;
   }
 
   .category-circles__list {
     justify-content: flex-start;
     gap: 8px;
-    padding: calc(var(--cc-lift) + 8px) 24px 6px 0;
+    padding: 8px 24px 6px 0;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
@@ -153,7 +154,7 @@
     scroll-snap-align: start;
   }
 
-  .category-circles__icon { width: 32px; height: 32px; }
+  .category-circles__icon { width: 26px; height: 26px; }
   .category-circles__label { font-size: 0.8125rem; }
 }
 
