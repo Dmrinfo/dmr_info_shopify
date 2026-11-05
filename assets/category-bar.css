@@ -1,0 +1,199 @@
+/*
+  ============================================================
+  category-bar.css — barra de categorias abaixo do logo
+  ============================================================
+
+  O QUE FAZ:
+  Estiliza a barra renderizada em sections/nav.liquid: botão
+  "Todas categorias" (hambúrguer + texto), links de categoria
+  (normal ou negrito), divisor vertical e o painel que abre com
+  todas as categorias.
+
+  OBSERVACOES:
+  Usa tokens --dmr-* (snippets/css-variables.liquid). No mobile
+  (<= 1000px) a lista rola na horizontal com fade na borda direita.
+*/
+
+.category-bar {
+  position: relative;
+  border-top: 1px solid var(--dmr-azureish-white);
+}
+
+.category-bar__inner {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  min-height: 56px;
+}
+
+/* Botão "Todas categorias" */
+.category-bar__all { flex: none; }
+
+.category-bar__all-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--dmr-eerie-black);
+  white-space: nowrap;
+  list-style: none;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.category-bar__all-toggle::-webkit-details-marker { display: none; }
+.category-bar__all-icon { width: 24px; height: 24px; flex: none; }
+.category-bar__all-toggle:hover,
+.category-bar__all[open] .category-bar__all-toggle { color: var(--dmr-primary); }
+
+/* Links da barra */
+.category-bar__list {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.category-bar__link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: 0.9375rem;
+  font-weight: 400;
+  color: var(--dmr-eerie-black);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.2s ease;
+}
+
+.category-bar__link--bold { font-weight: 600; }
+
+.category-bar__link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 8px;
+  height: 2px;
+  background: var(--dmr-primary);
+  border-radius: var(--dmr-radius-pill);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.2s ease;
+}
+
+.category-bar__link:hover,
+.category-bar__link[aria-current="page"] { color: var(--dmr-primary); }
+
+.category-bar__link:hover::after,
+.category-bar__link[aria-current="page"]::after { transform: scaleX(1); }
+
+/* Divisor vertical */
+.category-bar__divider {
+  flex: none;
+  width: 2px;
+  height: 20px;
+  background: var(--dmr-eerie-black);
+  border-radius: 2px;
+}
+
+/* Painel "Todas categorias": lista vertical com ícones, presa ao botão */
+.category-bar__all { position: relative; }
+
+.category-bar__panel {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 30;
+  width: 300px;
+  max-width: calc(100vw - 40px);
+  padding: 10px;
+  background: #fff;
+  border: 1px solid var(--dmr-azureish-white);
+  border-radius: var(--dmr-radius-md);
+  box-shadow: var(--dmr-shadow-hover);
+}
+
+.category-bar__panel-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.category-bar__panel-link {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 48px;
+  padding: 10px 14px;
+  font-size: 0.9375rem;
+  font-weight: 400;
+  color: var(--dmr-eerie-black);
+  text-decoration: none;
+  border-radius: var(--dmr-radius-sm);
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.category-bar__panel-icon {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  color: var(--dmr-eerie-black);
+  transition: color 0.2s ease;
+}
+
+.category-bar__panel-link:hover,
+.category-bar__panel-link:focus-visible {
+  color: var(--dmr-primary);
+  background: var(--dmr-alice-blue);
+}
+
+.category-bar__panel-link:hover .category-bar__panel-icon,
+.category-bar__panel-link:focus-visible .category-bar__panel-icon { color: var(--dmr-primary); }
+
+@media screen and (max-width: 1000px) {
+  .category-bar__inner { gap: 20px; min-height: 52px; padding-right: 0; }
+
+  .category-bar__list {
+    justify-content: flex-start;
+    gap: 22px;
+    padding-right: 24px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent);
+    mask-image: linear-gradient(90deg, #000 85%, transparent);
+  }
+
+  .category-bar__list::-webkit-scrollbar { display: none; }
+  .category-bar__panel { max-height: 70vh; overflow-y: auto; }
+}
+
+@media screen and (max-width: 600px) {
+  /* Só o ícone no botão; o texto segue disponível para leitores de tela */
+  .category-bar__all-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .category-bar__link,
+  .category-bar__link::after,
+  .category-bar__all-toggle,
+  .category-bar__panel-link { transition: none; }
+}

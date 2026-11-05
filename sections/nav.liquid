@@ -25,6 +25,12 @@
     os settings enable_country_selector / enable_language_selector.
   - header__mobile-nav: menu alternativo para telas <= 1000px,
     aberto/fechado pelo <script> que alterna aria-expanded/hidden.
+  - category-bar: barra de categorias abaixo do logo. Botão "Todas
+    categorias" abre uma lista vertical com ícones (blocos
+    'panel_item'; sem nenhum, usa os links da barra). Links da barra
+    vêm dos blocos 'link' (com opção de negrito) e 'divider' (barra
+    vertical). Ícones do snippet 'category-icon'. CSS em
+    assets/category-bar.css; no mobile a barra rola na horizontal.
 
   OBSERVAÇÕES:
   - Ícones vêm do snippet 'icon' (search, account, cart, etc.).
@@ -144,6 +150,62 @@
     </div>
   {%- endif -%}
 </header>
+
+{%- if section.settings.show_category_bar -%}
+  {{ 'category-bar.css' | asset_url | stylesheet_tag }}
+  <nav class="category-bar" aria-label="{{ section.settings.all_categories_label | escape }}">
+    <div class="category-bar__inner page-width">
+      <details class="category-bar__all" data-category-all>
+        <summary class="category-bar__all-toggle">
+          <svg class="category-bar__all-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+          <span class="category-bar__all-label">{{ section.settings.all_categories_label | escape }}</span>
+        </summary>
+        <div class="category-bar__panel">
+          <ul class="category-bar__panel-list" role="list">
+            {%- assign has_panel_items = false -%}
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'panel_item' and block.settings.label != blank -%}
+                {%- assign has_panel_items = true -%}
+                <li {{ block.shopify_attributes }}>
+                  <a class="category-bar__panel-link" href="{{ block.settings.link | default: routes.all_products_collection_url }}">
+                    {% render 'category-icon', name: block.settings.icon, class: 'category-bar__panel-icon' %}
+                    <span>{{ block.settings.label | escape }}</span>
+                  </a>
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+            {%- unless has_panel_items -%}
+              {%- for block in section.blocks -%}
+                {%- if block.type == 'link' and block.settings.label != blank -%}
+                  <li><a class="category-bar__panel-link" href="{{ block.settings.link | default: routes.all_products_collection_url }}"><span>{{ block.settings.label | escape }}</span></a></li>
+                {%- endif -%}
+              {%- endfor -%}
+            {%- endunless -%}
+          </ul>
+        </div>
+      </details>
+
+      <ul class="category-bar__list" role="list">
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when 'link' -%}
+              <li {{ block.shopify_attributes }}>
+                <a
+                  class="category-bar__link{% if block.settings.bold %} category-bar__link--bold{% endif %}"
+                  href="{{ block.settings.link | default: routes.all_products_collection_url }}"
+                  {% if block.settings.link != blank and block.settings.link == request.path %}aria-current="page"{% endif %}
+                >
+                  {{- block.settings.label | escape -}}
+                </a>
+              </li>
+            {%- when 'divider' -%}
+              <li class="category-bar__divider" aria-hidden="true" {{ block.shopify_attributes }}></li>
+          {%- endcase -%}
+        {%- endfor -%}
+      </ul>
+    </div>
+  </nav>
+{%- endif -%}
 
 <div class="header__mobile-nav" id="MobileNav-{{ section.id }}" hidden>
   <ul class="header__mobile-menu" role="list">
@@ -310,6 +372,20 @@
         nav.hidden = open;
       });
     }
+
+    // Painel "Todas categorias": fecha ao clicar fora ou com Esc
+    var all = section.parentElement.querySelector('[data-category-all]');
+    if (all) {
+      document.addEventListener('click', function (event) {
+        if (all.open && !all.contains(event.target)) all.open = false;
+      });
+      all.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape' && all.open) {
+          all.open = false;
+          all.querySelector('summary').focus();
+        }
+      });
+    }
   })();
 </script>
 
@@ -339,7 +415,71 @@
       "id": "enable_language_selector",
       "default": true,
       "label": "t:sections.header.settings.enable_language_selector.label"
+    },
+    {
+      "type": "header",
+      "content": "Barra de categorias"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_category_bar",
+      "default": true,
+      "label": "Mostrar barra de categorias abaixo do logo"
+    },
+    {
+      "type": "text",
+      "id": "all_categories_label",
+      "default": "Todas categorias",
+      "label": "Texto do botão de categorias"
+    },
+    {
+      "type": "paragraph",
+      "content": "Os itens do painel \"Todas categorias\" são os blocos \"Item de Todas categorias\". Sem nenhum, o painel lista os links da barra."
     }
-  ]
+  ],
+  "blocks": [
+    {
+      "type": "panel_item",
+      "name": "Item de Todas categorias",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Ícone",
+          "default": "shield",
+          "options": [
+            { "value": "shield", "label": "Escudo (segurança)" },
+            { "value": "wifi", "label": "Wi-Fi (redes)" },
+            { "value": "phone", "label": "Telefone (comunicação)" },
+            { "value": "keypad", "label": "Teclado (controle de acesso)" },
+            { "value": "bolt", "label": "Raio (energia)" },
+            { "value": "solar", "label": "Sol e raio (energia solar)" },
+            { "value": "home", "label": "Casa (casa inteligente)" },
+            { "value": "computer", "label": "Computador (informática)" },
+            { "value": "camera", "label": "Câmera" },
+            { "value": "lock", "label": "Cadeado" },
+            { "value": "network", "label": "Rede" }
+          ]
+        },
+        { "type": "text", "id": "label", "label": "Texto", "default": "Categoria" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    },
+    {
+      "type": "link",
+      "name": "Link de categoria",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Texto", "default": "Categoria" },
+        { "type": "url", "id": "link", "label": "Link" },
+        { "type": "checkbox", "id": "bold", "label": "Destacar em negrito", "default": false }
+      ]
+    },
+    {
+      "type": "divider",
+      "name": "Divisor",
+      "settings": []
+    }
+  ],
+  "max_blocks": 24
 }
 {% endschema %}

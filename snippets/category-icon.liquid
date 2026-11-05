@@ -1,0 +1,47 @@
+{%- comment -%}
+  ============================================================
+  category-icon — ícones de linha para categorias da loja
+  ============================================================
+
+  O QUE FAZ:
+  Renderiza um SVG (24x24, traço) para a categoria pedida. Herda a
+  cor do texto (currentColor).
+
+  COMO USAR:
+  {% render 'category-icon', name: 'shield', class: 'minha-classe' %}
+
+  PARÂMETROS:
+  - name: shield, wifi, phone, keypad, bolt, solar, home, computer,
+    camera, lock, network. Valor desconhecido usa 'computer'.
+  - class: classe CSS do <svg> (opcional).
+
+  OBSERVACOES:
+  Usado em sections/nav.liquid (painel "Todas categorias") e em
+  sections/category-cards.liquid.
+{%- endcomment -%}
+<svg{% if class != blank %} class="{{ class }}"{% endif %} viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+  {%- case name -%}
+    {%- when 'shield' -%}
+      <path d="M12 3 4 6v6c0 4.5 3.2 7.8 8 9 4.8-1.2 8-4.5 8-9V6z"/><path d="m9 12 2 2 4-4"/>
+    {%- when 'wifi' -%}
+      <path d="M2 9a15 15 0 0 1 20 0M5 12.5a10 10 0 0 1 14 0M8.5 16a5 5 0 0 1 7 0"/><circle cx="12" cy="19.5" r="1"/>
+    {%- when 'phone' -%}
+      <rect x="2" y="8" width="20" height="13" rx="2"/><path d="M6 8V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v3"/><rect x="5" y="11" width="5" height="7" rx="1"/><path d="M13 12h1M16.5 12h1M13 15h1M16.5 15h1M13 18h1M16.5 18h1"/>
+    {%- when 'keypad' -%}
+      <rect x="6" y="2" width="12" height="20" rx="2"/><path d="M9.5 6h5M9.5 10h.01M14.5 10h.01M9.5 13.5h.01M14.5 13.5h.01M9.5 17h.01M14.5 17h.01"/>
+    {%- when 'bolt' -%}
+      <path d="M13 2 4 14h7l-1 8 9-12h-7z"/>
+    {%- when 'solar' -%}
+      <circle cx="8" cy="8" r="3"/><path d="M8 1.5v1.5M8 13v1.5M1.5 8H3M13 8h1.5M3.4 3.4l1 1M11.6 11.6l1 1M3.4 12.6l1-1M11.6 4.4l1-1"/><path d="m17 11-3 5h3.5l-1 5 4.5-6.5h-3.5l1.5-3.5z"/>
+    {%- when 'home' -%}
+      <path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v10h14V10"/><path d="M9.2 14.6a4 4 0 0 1 5.6 0M10.6 16.4a2 2 0 0 1 2.8 0"/><circle cx="12" cy="18.2" r=".4"/>
+    {%- when 'camera' -%}
+      <path d="M3 8h13l5-3v14l-5-3H3z"/><circle cx="9" cy="12" r="2.2"/>
+    {%- when 'lock' -%}
+      <rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>
+    {%- when 'network' -%}
+      <rect x="9" y="3" width="6" height="5" rx="1"/><rect x="3" y="16" width="6" height="5" rx="1"/><rect x="15" y="16" width="6" height="5" rx="1"/><path d="M12 8v4M6 16v-4h12v4"/>
+    {%- else -%}
+      <rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/>
+  {%- endcase -%}
+</svg>

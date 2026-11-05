@@ -3,8 +3,135 @@
   "name": "t:section_groups.header.name",
   "sections": {
     "nav": {
-      "type": "nav"
+      "type": "nav",
+      "blocks": {
+        "panel_1": {
+          "type": "panel_item",
+          "settings": {
+            "icon": "shield",
+            "label": "Segurança Eletrônica",
+            "link": "/collections/seguranca-eletronica"
+          }
+        },
+        "panel_2": {
+          "type": "panel_item",
+          "settings": {
+            "icon": "wifi",
+            "label": "Redes",
+            "link": "/collections/redes"
+          }
+        },
+        "panel_3": {
+          "type": "panel_item",
+          "settings": {
+            "icon": "phone",
+            "label": "Comunicação",
+            "link": "/collections/comunicacao"
+          }
+        },
+        "panel_4": {
+          "type": "panel_item",
+          "settings": {
+            "icon": "keypad",
+            "label": "Controle de Acesso",
+            "link": "/collections/controle-de-acesso"
+          }
+        },
+        "panel_5": {
+          "type": "panel_item",
+          "settings": {
+            "icon": "bolt",
+            "label": "Energia",
+            "link": "/collections/energia"
+          }
+        },
+        "panel_6": {
+          "type": "panel_item",
+          "settings": {
+            "icon": "solar",
+            "label": "Energia Solar",
+            "link": "/collections/energia-solar"
+          }
+        },
+        "panel_7": {
+          "type": "panel_item",
+          "settings": {
+            "icon": "home",
+            "label": "Casa Inteligente",
+            "link": "/collections/casa-inteligente"
+          }
+        },
+        "panel_8": {
+          "type": "panel_item",
+          "settings": {
+            "icon": "computer",
+            "label": "Informática",
+            "link": "/collections/informatica"
+          }
+        },
+        "cat_1": {
+          "type": "link",
+          "settings": {
+            "label": "Casa Inteligente",
+            "link": "/collections/casa-inteligente",
+            "bold": true
+          }
+        },
+        "cat_2": {
+          "type": "link",
+          "settings": {
+            "label": "Câmeras",
+            "link": "/collections/cameras",
+            "bold": false
+          }
+        },
+        "cat_3": {
+          "type": "link",
+          "settings": {
+            "label": "Iluminação Inteligente",
+            "link": "/collections/iluminacao-inteligente",
+            "bold": false
+          }
+        },
+        "cat_4": {
+          "type": "link",
+          "settings": {
+            "label": "Fechaduras Digitais",
+            "link": "/collections/fechaduras-digitais",
+            "bold": false
+          }
+        },
+        "cat_5": {
+          "type": "link",
+          "settings": {
+            "label": "Informática",
+            "link": "/collections/informatica",
+            "bold": false
+          }
+        }
+      },
+      "block_order": [
+        "panel_1",
+        "panel_2",
+        "panel_3",
+        "panel_4",
+        "panel_5",
+        "panel_6",
+        "panel_7",
+        "panel_8",
+        "cat_1",
+        "cat_2",
+        "cat_3",
+        "cat_4",
+        "cat_5"
+      ],
+      "settings": {
+        "show_category_bar": true,
+        "all_categories_label": "Todas categorias"
+      }
     }
   },
-  "order": ["nav"]
+  "order": [
+    "nav"
+  ]
 }

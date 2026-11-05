@@ -41,20 +41,7 @@
               }}
             {%- else -%}
               <span class="category-cards__icon" aria-hidden="true">
-                {%- case block.settings.icon -%}
-                  {%- when 'camera' -%}
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h13l5-3v14l-5-3H3z"/><circle cx="9" cy="12" r="2.2"/></svg>
-                  {%- when 'shield' -%}
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 4.5 3.2 7.8 8 9 4.8-1.2 8-4.5 8-9V6z"/><path d="m9 12 2 2 4-4"/></svg>
-                  {%- when 'lock' -%}
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
-                  {%- when 'network' -%}
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="5" rx="1"/><rect x="3" y="16" width="6" height="5" rx="1"/><rect x="15" y="16" width="6" height="5" rx="1"/><path d="M12 8v4M6 16v-4h12v4"/></svg>
-                  {%- when 'wifi' -%}
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9a15 15 0 0 1 20 0M5 12.5a10 10 0 0 1 14 0M8.5 16a5 5 0 0 1 7 0"/><circle cx="12" cy="19.5" r="1"/></svg>
-                  {%- else -%}
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg>
-                {%- endcase -%}
+                {% render 'category-icon', name: block.settings.icon %}
               </span>
             {%- endif -%}
           </span>
@@ -173,12 +160,17 @@
           "label": "Ícone",
           "default": "camera",
           "options": [
+            { "value": "shield", "label": "Escudo (segurança)" },
+            { "value": "wifi", "label": "Wi-Fi (redes)" },
+            { "value": "phone", "label": "Telefone (comunicação)" },
+            { "value": "keypad", "label": "Teclado (controle de acesso)" },
+            { "value": "bolt", "label": "Raio (energia)" },
+            { "value": "solar", "label": "Sol e raio (energia solar)" },
+            { "value": "home", "label": "Casa (casa inteligente)" },
+            { "value": "computer", "label": "Computador (informática)" },
             { "value": "camera", "label": "Câmera" },
-            { "value": "shield", "label": "Escudo" },
             { "value": "lock", "label": "Cadeado" },
-            { "value": "network", "label": "Rede" },
-            { "value": "wifi", "label": "Wi-Fi" },
-            { "value": "computer", "label": "Computador" }
+            { "value": "network", "label": "Rede" }
           ]
         },
         { "type": "text", "id": "title", "label": "Título", "default": "Categoria" },
