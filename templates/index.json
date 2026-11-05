@@ -49,7 +49,7 @@
         "cerca": { "type": "category", "settings": { "collection": "cerca-eletrica", "icon": "fence", "label": "Cerca Elétrica" } },
         "interfonia": { "type": "category", "settings": { "collection": "interfonia", "icon": "intercom", "label": "Interfonia" } },
         "redes": { "type": "category", "settings": { "collection": "redes", "theme_image": "category-redes.webp", "icon": "network", "label": "Redes" } },
-        "acesso": { "type": "category", "settings": { "collection": "controle-de-acesso", "icon": "keypad", "label": "Controle de Acesso" } },
+        "acesso": { "type": "category", "settings": { "collection": "controle-de-acesso", "theme_image": "category-controle-de-acesso.webp", "icon": "keypad", "label": "Controle de Acesso" } },
         "informatica": { "type": "category", "settings": { "collection": "informatica", "icon": "computer", "label": "Informática" } }
       },
       "block_order": [
