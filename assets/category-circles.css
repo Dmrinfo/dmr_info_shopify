@@ -11,8 +11,8 @@
   OBSERVACOES:
   Usa tokens --dmr-* (snippets/css-variables.liquid). O círculo é o
   ::before de .category-circles__media; a foto tem o tamanho do
-  círculo e sobe --cc-lift, vazando por cima. mix-blend-mode faz o fundo
-  branco da foto sumir. No mobile (<= 1000px) a fileira rola na
+  círculo e sobe --cc-lift, vazando por cima. --blend (só foto da
+  coleção) faz o fundo branco sumir. No mobile (<= 1000px) a fileira rola na
   horizontal com snap e fade na borda direita.
 */
 
@@ -82,9 +82,13 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
-  mix-blend-mode: multiply;
   transition: transform 0.3s ease;
 }
+
+/* Só foto de produto com fundo branco: o branco some no círculo.
+   PNG transparente não usa blend, senão o produto branco pega a cor
+   do círculo. */
+.category-circles__image--blend { mix-blend-mode: multiply; }
 
 .category-circles__icon {
   position: relative;

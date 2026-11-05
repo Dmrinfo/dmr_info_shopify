@@ -17,7 +17,9 @@
 
   OBSERVACOES:
   Foto: imagem do bloco > arquivo do tema (theme_image, em assets/)
-  > imagem da coleção (ou do primeiro produto) > ícone. Fotos com fundo branco somem no círculo (mix-blend-mode).
+  > imagem da coleção (ou do primeiro produto) > ícone. Imagem do bloco
+  e do tema: PNG transparente, sem blend. Foto da coleção: blend
+  multiply para sumir o fundo branco.
   No mobile a fileira rola na horizontal.
 {%- endcomment -%}
 {{ 'category-circles.css' | asset_url | stylesheet_tag }}
@@ -54,7 +56,7 @@
               {{
                 cat_image
                 | image_url: width: 320
-                | image_tag: loading: 'lazy', widths: '160, 240, 320', sizes: '120px', alt: '', class: 'category-circles__image'
+                | image_tag: loading: 'lazy', widths: '160, 240, 320', sizes: '120px', alt: '', class: 'category-circles__image category-circles__image--blend'
               }}
             {%- else -%}
               {% render 'category-icon', name: block.settings.icon, class: 'category-circles__icon' %}
