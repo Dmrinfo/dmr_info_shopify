@@ -1,358 +1,314 @@
 {%- comment -%}
   ============================================================
-  MAIN COLLECTION — grade de produtos de uma coleção
+  MAIN COLLECTION — produtos da coleção com filtros laterais
   ============================================================
 
   O QUE FAZ:
-  Mostra a grade de produtos de uma coleção com ordenação,
-  filtros facetados e paginação nativos do Shopify. Tudo funciona
-  sem JavaScript, pois usa formulários GET.
+  - Menu lateral de filtros (collection.filters, configurados no app
+    Search & Discovery): sanfonas com checkboxes e faixa de preço com
+    controle deslizante. Aplica ao marcar (assets/collection.js).
+  - Barra com total de resultados e ordenação.
+  - Filtros ativos como etiquetas removíveis.
+  - Grade de produtos (snippet 'card-product') e paginação.
+  - No mobile (<= 1000px) os filtros viram uma gaveta lateral.
 
   ONDE É USADA:
-  No template de coleção (templates/collection.json), como section
-  principal que lista os produtos da coleção atual.
-
-  PRINCIPAIS PARTES:
-  - {% paginate %}: pagina collection.products conforme o setting
-    products_per_page.
-  - Toolbar de filtros (form GET): percorre collection.filters e
-    monta cada tipo (list/boolean com checkboxes e price_range com
-    inputs de mín/máx). Preserva o sort ativo via input hidden.
-  - Toolbar de ordenação (form GET): select com
-    collection.sort_options que faz submit no onchange; preserva
-    os filtros ativos via inputs hidden. Tem fallback <noscript>.
-  - Estado vazio (collection__empty) quando não há produtos.
-  - Grade: product-grid renderizando o snippet 'card-product'
-    para cada produto, seguida do snippet 'pagination'.
+  templates/collection.json.
 
   OBSERVAÇÕES:
-  - As colunas do desktop vêm do setting columns_desktop, aplicado
-    via variável CSS inline --grid-columns.
-  - Filtros e ordenação podem ser desligados pelos settings
-    enable_filtering e enable_sorting.
-  - Estilos ficam inline no <style>, escopados por
-    #shopify-section-{{ section.id }}.
+  - Funciona sem JavaScript (formulários GET + botão "Aplicar").
+  - Valores de preço vêm em centavos; os campos usam reais
+    (divided_by: 100.0).
+  - Estilos em assets/collection.css.
 {%- endcomment -%}
+{{ 'collection.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign show_filters = false
+  if section.settings.enable_filtering and collection.filters.size > 0
+    assign show_filters = true
+  endif
+
+  assign active_count = 0
+  for filter in collection.filters
+    assign active_count = active_count | plus: filter.active_values.size
+    if filter.type == 'price_range'
+      if filter.min_value.value != nil or filter.max_value.value != nil
+        assign active_count = active_count | plus: 1
+      endif
+    endif
+  endfor
+
+  assign clear_url = collection.url
+  if collection.sort_by != blank
+    assign clear_url = collection.url | append: '?sort_by=' | append: collection.sort_by
+  endif
+-%}
 
 {%- paginate collection.products by section.settings.products_per_page -%}
   <div
-    class="collection page-width"
-    data-section-id="{{ section.id }}"
+    class="collection page-width{% if show_filters %} collection--with-facets{% endif %}"
     style="--grid-columns: {{ section.settings.columns_desktop }};"
+    data-collection
   >
-    {%- if section.settings.enable_sorting or section.settings.enable_filtering -%}
-      <div class="collection__toolbar">
-        {%- if section.settings.enable_filtering and collection.filters.size > 0 -%}
-          <form method="get" class="collection__filters" id="CollectionFilters-{{ section.id }}">
-            {%- comment -%} Preserve current sort when filtering {%- endcomment -%}
-            {%- if collection.sort_by != blank -%}
-              <input type="hidden" name="sort_by" value="{{ collection.sort_by }}">
-            {%- endif -%}
+    {%- if show_filters -%}
+      <div class="facets-overlay" data-facets-close hidden></div>
+      <aside class="facets" id="Facets-{{ section.id }}" aria-labelledby="FacetsTitle-{{ section.id }}" data-facets>
+        <div class="facets__header">
+          <h2 class="facets__title" id="FacetsTitle-{{ section.id }}">{{ 'products.facets.title' | t }}</h2>
+          <button type="button" class="facets__close" aria-label="{{ 'accessibility.close' | t }}" data-facets-close>
+            {% render 'icon', name: 'close' %}
+          </button>
+        </div>
 
-            {%- for filter in collection.filters -%}
-              <details class="collection__filter">
-                <summary class="collection__filter-summary">{{ filter.label | escape }}</summary>
-                <div class="collection__filter-content">
-                  {%- case filter.type -%}
-                    {%- when 'list', 'boolean' -%}
-                      <ul class="collection__filter-values" role="list">
-                        {%- for value in filter.values -%}
-                          <li class="collection__filter-value">
-                            <label>
-                              <input
-                                type="checkbox"
-                                name="{{ value.param_name }}"
-                                value="{{ value.value }}"
-                                {% if value.active %}checked{% endif %}
-                                {% if value.count == 0 and value.active == false %}disabled{% endif %}
-                              >
-                              <span>{{ value.label | escape }}</span>
-                              <span class="collection__filter-count">({{ value.count }})</span>
-                            </label>
-                          </li>
-                        {%- endfor -%}
-                      </ul>
+        <form method="get" action="{{ collection.url }}" class="facets__form" data-facets-form>
+          {%- if collection.sort_by != blank -%}
+            <input type="hidden" name="sort_by" value="{{ collection.sort_by | escape }}">
+          {%- endif -%}
 
-                    {%- when 'price_range' -%}
-                      <div class="collection__filter-price">
-                        <div class="collection__filter-price-field">
-                          <label
-                            class="field__label"
-                            for="Filter-{{ filter.label | escape }}-min-{{ section.id }}"
-                          >
-                            {{ 'products.facets.from' | t }}
+          {%- for filter in collection.filters -%}
+            {%- liquid
+              assign is_open = false
+              if filter.active_values.size > 0
+                assign is_open = true
+              endif
+              if filter.type == 'price_range'
+                if filter.min_value.value != nil or filter.max_value.value != nil
+                  assign is_open = true
+                endif
+              endif
+            -%}
+            <details class="facets__group"{% if is_open %} open{% endif %}>
+              <summary class="facets__summary">
+                <span>{{ filter.label | escape }}</span>
+                {%- if filter.active_values.size > 0 -%}
+                  <span class="facets__badge">{{ filter.active_values.size }}</span>
+                {%- endif -%}
+                <svg class="facets__chevron" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m4 6 4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </summary>
+
+              <div class="facets__content">
+                {%- case filter.type -%}
+                  {%- when 'list', 'boolean' -%}
+                    <ul class="facets__list" role="list">
+                      {%- for value in filter.values -%}
+                        {%- assign value_id = 'Filter-' | append: section.id | append: '-' | append: forloop.parentloop.index | append: '-' | append: forloop.index -%}
+                        {%- assign is_disabled = false -%}
+                        {%- if value.count == 0 and value.active == false -%}{%- assign is_disabled = true -%}{%- endif -%}
+                        <li>
+                          <label class="facets__option{% if is_disabled %} is-disabled{% endif %}" for="{{ value_id }}">
+                            <input
+                              type="checkbox"
+                              id="{{ value_id }}"
+                              name="{{ value.param_name }}"
+                              value="{{ value.value }}"
+                              {% if value.active %}checked{% endif %}
+                              {% if is_disabled %}disabled{% endif %}
+                            >
+                            <span class="facets__checkbox" aria-hidden="true"></span>
+                            <span class="facets__label">{{ value.label | escape }}</span>
+                            <span class="facets__count">{{ value.count }}</span>
                           </label>
+                        </li>
+                      {%- endfor -%}
+                    </ul>
+
+                  {%- when 'price_range' -%}
+                    {%- liquid
+                      assign range_max = filter.range_max | divided_by: 100.0 | ceil
+                      assign current_min = 0
+                      assign current_max = range_max
+                      if filter.min_value.value != nil
+                        assign current_min = filter.min_value.value | divided_by: 100.0 | floor
+                      endif
+                      if filter.max_value.value != nil
+                        assign current_max = filter.max_value.value | divided_by: 100.0 | ceil
+                      endif
+                      assign label_min = current_min | times: 100 | money
+                      assign label_max = current_max | times: 100 | money
+                    -%}
+                    <div
+                      class="facets__price"
+                      data-price-range
+                      data-currency="{{ cart.currency.iso_code }}"
+                      data-locale="{{ request.locale.iso_code }}"
+                    >
+                      <div class="facets__range">
+                        <div class="facets__range-track"><span class="facets__range-fill" data-range-fill></span></div>
+                        <input
+                          class="facets__range-input"
+                          type="range"
+                          min="0"
+                          max="{{ range_max }}"
+                          step="1"
+                          value="{{ current_min }}"
+                          aria-label="{{ 'products.facets.price_min' | t }}"
+                          data-range-min
+                        >
+                        <input
+                          class="facets__range-input"
+                          type="range"
+                          min="0"
+                          max="{{ range_max }}"
+                          step="1"
+                          value="{{ current_max }}"
+                          aria-label="{{ 'products.facets.price_max' | t }}"
+                          data-range-max
+                        >
+                      </div>
+                      <div class="facets__price-labels">
+                        <span data-label-min>{{ label_min }}</span>
+                        <span data-label-max>{{ label_max }}</span>
+                      </div>
+                      <div class="facets__price-fields">
+                        <label class="facets__price-field">
+                          <span class="field__label">{{ 'products.facets.from' | t }}</span>
                           <input
                             class="field__input"
                             type="number"
                             name="{{ filter.min_value.param_name }}"
-                            id="Filter-{{ filter.label | escape }}-min-{{ section.id }}"
                             min="0"
-                            max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
-                            {% if filter.min_value.value %}value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"{% endif %}
+                            max="{{ range_max }}"
                             placeholder="0"
+                            {% if filter.min_value.value != nil %}value="{{ current_min }}"{% endif %}
+                            data-input-min
                           >
-                        </div>
-                        <div class="collection__filter-price-field">
-                          <label
-                            class="field__label"
-                            for="Filter-{{ filter.label | escape }}-max-{{ section.id }}"
-                          >
-                            {{ 'products.facets.to' | t }}
-                          </label>
+                        </label>
+                        <label class="facets__price-field">
+                          <span class="field__label">{{ 'products.facets.to' | t }}</span>
                           <input
                             class="field__input"
                             type="number"
                             name="{{ filter.max_value.param_name }}"
-                            id="Filter-{{ filter.label | escape }}-max-{{ section.id }}"
                             min="0"
-                            max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
-                            {% if filter.max_value.value %}value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"{% endif %}
-                            placeholder="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                            max="{{ range_max }}"
+                            placeholder="{{ range_max }}"
+                            {% if filter.max_value.value != nil %}value="{{ current_max }}"{% endif %}
+                            data-input-max
                           >
-                        </div>
+                        </label>
                       </div>
-                  {%- endcase -%}
-                </div>
-              </details>
-            {%- endfor -%}
+                    </div>
+                {%- endcase -%}
+              </div>
+            </details>
+          {%- endfor -%}
 
-            <div class="collection__filter-actions">
-              <button type="submit" class="button">{{ 'products.facets.apply' | t }}</button>
-              <a href="{{ collection.url }}" class="button button--secondary">
-                {{ 'products.facets.clear_all' | t }}
-              </a>
-            </div>
-          </form>
+          <div class="facets__actions">
+            <button type="submit" class="button facets__apply">{{ 'products.facets.apply' | t }}</button>
+            {%- if active_count > 0 -%}
+              <a class="facets__clear" href="{{ clear_url }}">{{ 'products.facets.clear_all' | t }}</a>
+            {%- endif -%}
+          </div>
+        </form>
+      </aside>
+    {%- elsif section.settings.enable_filtering and request.design_mode -%}
+      <p class="collection__hint">{{ 'products.facets.setup_hint' | t }}</p>
+    {%- endif -%}
+
+    <div class="collection__main">
+      <div class="collection__toolbar">
+        {%- if show_filters -%}
+          <button
+            type="button"
+            class="collection__filter-toggle"
+            aria-controls="Facets-{{ section.id }}"
+            aria-expanded="false"
+            data-facets-open
+          >
+            <svg class="collection__filter-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <span>{{ 'products.facets.filter_button' | t }}</span>
+            {%- if active_count > 0 -%}<span class="facets__badge">{{ active_count }}</span>{%- endif -%}
+          </button>
         {%- endif -%}
 
-        <div class="collection__toolbar-bar">
-          <span class="collection__count">
-            {{- 'products.facets.product_count_simple' | t: count: collection.products_count -}}
-          </span>
+        <p class="collection__count">{{ 'products.facets.results_count' | t: count: collection.products_count }}</p>
 
-          {%- if section.settings.enable_sorting -%}
-            <form method="get" class="collection__sort">
-              {%- comment -%} Preserve active filters when sorting {%- endcomment -%}
-              {%- for filter in collection.filters -%}
-                {%- for value in filter.values -%}
-                  {%- if value.active -%}
-                    <input type="hidden" name="{{ value.param_name }}" value="{{ value.value }}">
-                  {%- endif -%}
-                {%- endfor -%}
-                {%- if filter.type == 'price_range' -%}
-                  {%- if filter.min_value.value -%}
-                    <input
-                      type="hidden"
-                      name="{{ filter.min_value.param_name }}"
-                      value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"
-                    >
-                  {%- endif -%}
-                  {%- if filter.max_value.value -%}
-                    <input
-                      type="hidden"
-                      name="{{ filter.max_value.param_name }}"
-                      value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"
-                    >
-                  {%- endif -%}
-                {%- endif -%}
+        {%- if section.settings.enable_sorting -%}
+          <form method="get" action="{{ collection.url }}" class="collection__sort">
+            {%- for filter in collection.filters -%}
+              {%- for value in filter.active_values -%}
+                <input type="hidden" name="{{ value.param_name }}" value="{{ value.value }}">
               {%- endfor -%}
+              {%- if filter.type == 'price_range' -%}
+                {%- if filter.min_value.value != nil -%}
+                  <input type="hidden" name="{{ filter.min_value.param_name }}" value="{{ filter.min_value.value | divided_by: 100.0 }}">
+                {%- endif -%}
+                {%- if filter.max_value.value != nil -%}
+                  <input type="hidden" name="{{ filter.max_value.param_name }}" value="{{ filter.max_value.value | divided_by: 100.0 }}">
+                {%- endif -%}
+              {%- endif -%}
+            {%- endfor -%}
 
-              <label class="field__label collection__sort-label" for="SortBy-{{ section.id }}">
-                {{ 'products.facets.sort_by_label' | t }}
-              </label>
-              <select
-                name="sort_by"
-                id="SortBy-{{ section.id }}"
-                class="select__select"
-                onchange="this.form.submit()"
-              >
+            <label class="visually-hidden" for="SortBy-{{ section.id }}">{{ 'products.facets.sort_by_label' | t }}</label>
+            <div class="collection__select">
+              <select name="sort_by" id="SortBy-{{ section.id }}" class="collection__sort-select" data-sort-select>
                 {%- for option in collection.sort_options -%}
-                  <option
-                    value="{{ option.value }}"
-                    {% if option.value == collection.sort_by %}selected{% endif %}
-                  >
-                    {{ option.name }}
+                  <option value="{{ option.value }}"{% if option.value == collection.sort_by %} selected{% endif %}>
+                    {{- option.name -}}
                   </option>
                 {%- endfor -%}
               </select>
-              <noscript>
-                <button type="submit" class="button button--secondary">
-                  {{ 'products.facets.apply' | t }}
-                </button>
-              </noscript>
-            </form>
+              <svg class="collection__select-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m4 6 4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <noscript>
+              <button type="submit" class="button button--secondary">{{ 'products.facets.apply' | t }}</button>
+            </noscript>
+          </form>
+        {%- endif -%}
+      </div>
+
+      {%- if active_count > 0 -%}
+        <div class="collection__active">
+          {%- for filter in collection.filters -%}
+            {%- for value in filter.active_values -%}
+              <a class="collection__chip" href="{{ value.url_to_remove }}">
+                {{- value.label | escape -}}
+                <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m4 4 8 8M12 4l-8 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                <span class="visually-hidden">{{ 'products.facets.remove_filter' | t }}</span>
+              </a>
+            {%- endfor -%}
+            {%- if filter.type == 'price_range' -%}
+              {%- if filter.min_value.value != nil or filter.max_value.value != nil -%}
+                {%- assign chip_min = filter.min_value.value | default: 0 | money -%}
+                {%- assign chip_max = filter.max_value.value | default: filter.range_max | money -%}
+                <a class="collection__chip" href="{{ filter.url_to_remove }}">
+                  {{- chip_min }} – {{ chip_max -}}
+                  <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m4 4 8 8M12 4l-8 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                  <span class="visually-hidden">{{ 'products.facets.remove_filter' | t }}</span>
+                </a>
+              {%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+          <a class="collection__clear" href="{{ clear_url }}">{{ 'products.facets.clear_all' | t }}</a>
+        </div>
+      {%- endif -%}
+
+      {%- if collection.products.size == 0 -%}
+        <div class="collection__empty">
+          <p>{{ 'sections.main_collection.empty' | t }}</p>
+          {%- if active_count > 0 -%}
+            <a href="{{ clear_url }}" class="button button--secondary">{{ 'sections.main_collection.use_fewer_filters' | t }}</a>
+          {%- else -%}
+            <a href="{{ routes.all_products_collection_url }}" class="button button--secondary">{{ 'general.continue_shopping' | t }}</a>
           {%- endif -%}
         </div>
-      </div>
-    {%- endif -%}
+      {%- else -%}
+        <ul class="product-grid" role="list">
+          {%- for product in collection.products -%}
+            <li class="product-grid__item">
+              {% render 'card-product', card_product: product %}
+            </li>
+          {%- endfor -%}
+        </ul>
 
-    {%- if collection.products.size == 0 -%}
-      <div class="collection__empty">
-        <p>{{ 'sections.main_collection.empty' | t }}</p>
-        <a href="{{ routes.all_products_collection_url }}" class="button button--secondary">
-          {{ 'sections.main_collection.use_fewer_filters' | t }}
-        </a>
-      </div>
-    {%- else -%}
-      <ul class="product-grid" role="list">
-        {%- for product in collection.products -%}
-          <li class="product-grid__item">
-            {% render 'card-product', card_product: product %}
-          </li>
-        {%- endfor -%}
-      </ul>
-
-      {% render 'pagination', paginate: paginate %}
-    {%- endif -%}
+        {% render 'pagination', paginate: paginate %}
+      {%- endif -%}
+    </div>
   </div>
 {%- endpaginate -%}
 
-<style>
-  #shopify-section-{{ section.id }} .collection {
-    margin-bottom: var(--spacing-sections, 40px);
-  }
-  #shopify-section-{{ section.id }} .collection__toolbar {
-    margin-bottom: 24px;
-  }
-  #shopify-section-{{ section.id }} .collection__filters {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-start;
-    gap: 12px;
-    padding-bottom: 16px;
-    border-bottom: 1px solid var(--color-border, #c2c2c2);
-  }
-  #shopify-section-{{ section.id }} .collection__filter {
-    position: relative;
-  }
-  #shopify-section-{{ section.id }} .collection__filter-summary {
-    cursor: pointer;
-    padding: 8px 12px;
-    font-size: var(--f2);
-    border: 1px solid var(--color-border, #c2c2c2);
-    border-radius: var(--inputs-radius, 4px);
-    list-style: none;
-    user-select: none;
-  }
-  #shopify-section-{{ section.id }} .collection__filter-summary::-webkit-details-marker {
-    display: none;
-  }
-  #shopify-section-{{ section.id }} .collection__filter-content {
-    margin-top: 8px;
-    padding: 12px;
-    border: 1px solid var(--color-border, #c2c2c2);
-    border-radius: var(--inputs-radius, 4px);
-    background-color: var(--color-background, #fff);
-  }
-  #shopify-section-{{ section.id }} .collection__filter-values {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    max-height: 260px;
-    overflow-y: auto;
-  }
-  #shopify-section-{{ section.id }} .collection__filter-value label {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 4px 0;
-    font-size: var(--f2);
-    cursor: pointer;
-  }
-  #shopify-section-{{ section.id }} .collection__filter-count {
-    opacity: 0.6;
-    font-size: var(--f1);
-  }
-  #shopify-section-{{ section.id }} .collection__filter-price {
-    display: flex;
-    gap: 12px;
-  }
-  #shopify-section-{{ section.id }} .collection__filter-price-field {
-    flex: 1;
-  }
-  #shopify-section-{{ section.id }} .collection__filter-actions {
-    display: flex;
-    gap: 8px;
-    align-items: flex-end;
-  }
-  #shopify-section-{{ section.id }} .collection__toolbar-bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    flex-wrap: wrap;
-    margin-top: 16px;
-  }
-  #shopify-section-{{ section.id }} .collection__count {
-    font-size: var(--f2);
-    opacity: 0.8;
-  }
-  #shopify-section-{{ section.id }} .collection__sort {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  #shopify-section-{{ section.id }} .collection__sort-label {
-    margin-bottom: 0;
-    white-space: nowrap;
-  }
-  #shopify-section-{{ section.id }} .collection__sort .select__select {
-    width: auto;
-    min-width: 200px;
-  }
-  #shopify-section-{{ section.id }} .collection__empty {
-    text-align: center;
-    padding: 60px 0;
-    font-size: var(--f3);
-  }
-  #shopify-section-{{ section.id }} .collection__empty .button {
-    margin-top: 20px;
-  }
-  #shopify-section-{{ section.id }} .pagination {
-    margin-top: 40px;
-  }
-  #shopify-section-{{ section.id }} .pagination__list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    gap: 6px;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  #shopify-section-{{ section.id }} .pagination__item {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 40px;
-    min-height: 40px;
-    padding: 0 8px;
-    font-size: var(--f2);
-    color: var(--color-text, #000);
-    text-decoration: none;
-    border: 1px solid transparent;
-    border-radius: var(--inputs-radius, 4px);
-  }
-  #shopify-section-{{ section.id }} a.pagination__item:hover {
-    border-color: var(--color-border, #c2c2c2);
-  }
-  #shopify-section-{{ section.id }} .pagination__item--current {
-    border-color: var(--color-accent, #000);
-    font-weight: bold;
-  }
-  @media screen and (max-width: 1000px) {
-    #shopify-section-{{ section.id }} .collection__toolbar-bar {
-      flex-direction: column;
-      align-items: stretch;
-    }
-    #shopify-section-{{ section.id }} .collection__sort .select__select {
-      min-width: 0;
-      flex: 1;
-    }
-  }
-</style>
+<script src="{{ 'collection.js' | asset_url }}" defer="defer"></script>
 
 {% schema %}
 {
@@ -366,7 +322,7 @@
       "min": 8,
       "max": 24,
       "step": 4,
-      "default": 16,
+      "default": 24,
       "label": "t:sections.main_collection.settings.products_per_page.label"
     },
     {
@@ -375,7 +331,7 @@
       "min": 2,
       "max": 5,
       "step": 1,
-      "default": 4,
+      "default": 3,
       "label": "t:sections.main_collection.settings.columns_desktop.label"
     },
     {
@@ -388,7 +344,8 @@
       "type": "checkbox",
       "id": "enable_filtering",
       "default": true,
-      "label": "t:sections.main_collection.settings.enable_filtering.label"
+      "label": "t:sections.main_collection.settings.enable_filtering.label",
+      "info": "Os filtros são configurados no app Search & Discovery da Shopify."
     }
   ]
 }

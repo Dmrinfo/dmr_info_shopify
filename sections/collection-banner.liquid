@@ -1,88 +1,49 @@
 {%- comment -%}
   ============================================================
-  COLLECTION BANNER — cabeçalho da página de coleção
+  COLLECTION BANNER — topo da página de coleção
   ============================================================
 
   O QUE FAZ:
-  Exibe o topo da página de coleção: título da coleção e,
-  opcionalmente, a imagem e a descrição da coleção.
+  Título da coleção e banner arredondado com a imagem da coleção
+  (cadastrada em Produtos → Coleções → Imagem). Descrição opcional.
 
   ONDE É USADA:
-  No template de coleção (templates/collection.json), geralmente
-  acima da section main-collection.
-
-  PRINCIPAIS PARTES:
-  - Imagem (collection-banner__media): renderizada só se o setting
-    show_image estiver ligado e a coleção tiver imagem.
-  - Título (h1) com collection.title.
-  - Descrição (rte): renderizada só se show_description estiver
-    ligado e collection.description existir.
+  templates/collection.json, acima da section main-collection.
 
   OBSERVAÇÕES:
-  - Usa os dados da coleção atual (objeto collection); não tem
-    campos de texto próprios no schema, apenas os toggles de
-    imagem e descrição.
-  - Estilos inline no <style>, escopados por
-    #shopify-section-{{ section.id }}.
+  - Sem imagem, nada aparece no lugar do banner na loja; no editor de
+    tema aparece um aviso de como adicionar.
+  - Tamanho recomendado da imagem: 2400 × 600 px.
+  - Estilos em assets/collection.css.
 {%- endcomment -%}
+{{ 'collection.css' | asset_url | stylesheet_tag }}
 
-<div class="collection-banner page-width" data-section-id="{{ section.id }}">
+<div class="collection-hero page-width">
+  <h1 class="collection-hero__title">{{ collection.title | escape }}</h1>
+
   {%- if section.settings.show_image and collection.image -%}
-    <div class="collection-banner__media">
-      {%- assign img_alt = collection.image.alt | default: collection.title -%}
+    {%- assign banner_alt = collection.image.alt | default: collection.title -%}
+    <div class="collection-hero__banner">
       {{
         collection.image
-        | image_url: width: 1920
+        | image_url: width: 2400
         | image_tag:
+          class: 'collection-hero__image',
           loading: 'eager',
-          sizes: '100vw',
-          widths: '540, 720, 900, 1080, 1440, 1920',
-          class: 'collection-banner__image',
-          alt: img_alt }}
+          fetchpriority: 'high',
+          widths: '750, 1100, 1500, 1920, 2400',
+          sizes: '(min-width: 1320px) 1280px, 100vw',
+          alt: banner_alt
+      }}
     </div>
+  {%- elsif section.settings.show_image and request.design_mode -%}
+    <div class="collection-hero__placeholder">{{ 'sections.collection_banner.placeholder' | t }}</div>
   {%- endif -%}
 
-  <div class="collection-banner__text">
-    <h1 class="collection-banner__title">{{ collection.title }}</h1>
-    {%- if section.settings.show_description and collection.description != blank -%}
-      <div class="collection-banner__description rte">{{ collection.description }}</div>
-    {%- endif -%}
-  </div>
+  {%- if section.settings.show_description and collection.description != blank -%}
+    <div class="collection-hero__description rte">{{ collection.description }}</div>
+  {%- endif -%}
 </div>
-
-<style>
-  #shopify-section-{{ section.id }} .collection-banner {
-    margin-top: 24px;
-    margin-bottom: 24px;
-  }
-  #shopify-section-{{ section.id }} .collection-banner__media {
-    width: 100%;
-    margin-bottom: 20px;
-    overflow: hidden;
-    border-radius: var(--media-radius, 8px);
-    background-color: var(--color-background-contrast, #f2f3f8);
-  }
-  #shopify-section-{{ section.id }} .collection-banner__image {
-    display: block;
-    width: 100%;
-    height: auto;
-  }
-  #shopify-section-{{ section.id }} .collection-banner__text {
-    text-align: center;
-    max-width: 720px;
-    margin: 0 auto;
-  }
-  #shopify-section-{{ section.id }} .collection-banner__title {
-    font-size: var(--f7);
-    margin: 0;
-  }
-  #shopify-section-{{ section.id }} .collection-banner__description {
-    margin-top: 12px;
-    font-size: var(--f2);
-    color: var(--color-text, #000);
-    opacity: 0.8;
-  }
-</style>
 
 {% schema %}
 {
@@ -92,15 +53,16 @@
   "settings": [
     {
       "type": "checkbox",
-      "id": "show_description",
+      "id": "show_image",
       "default": true,
-      "label": "t:sections.collection_banner.settings.show_description.label"
+      "label": "t:sections.collection_banner.settings.show_image.label",
+      "info": "Usa a imagem da coleção como banner. Recomendado: 2400 × 600 px."
     },
     {
       "type": "checkbox",
-      "id": "show_image",
+      "id": "show_description",
       "default": false,
-      "label": "t:sections.collection_banner.settings.show_image.label"
+      "label": "t:sections.collection_banner.settings.show_description.label"
     }
   ]
 }
