@@ -44,7 +44,7 @@
       "type": "category-circles",
       "blocks": {
         "cameras": { "type": "category", "settings": { "collection": "cameras", "theme_image": "category-cameras.png", "icon": "camera", "label": "Câmeras" } },
-        "gravadores": { "type": "category", "settings": { "collection": "gravadores-digitais", "icon": "recorder", "label": "Gravadores Digitais" } },
+        "gravadores": { "type": "category", "settings": { "collection": "gravadores-digitais", "theme_image": "category-gravadores.webp", "icon": "recorder", "label": "Gravadores Digitais" } },
         "alarme": { "type": "category", "settings": { "collection": "alarme", "icon": "alarm", "label": "Alarme" } },
         "cerca": { "type": "category", "settings": { "collection": "cerca-eletrica", "icon": "fence", "label": "Cerca Elétrica" } },
         "interfonia": { "type": "category", "settings": { "collection": "interfonia", "icon": "intercom", "label": "Interfonia" } },
