@@ -46,7 +46,7 @@
         "cameras": { "type": "category", "settings": { "collection": "cameras", "theme_image": "category-cameras.png", "icon": "camera", "label": "Câmeras" } },
         "gravadores": { "type": "category", "settings": { "collection": "gravadores-digitais", "theme_image": "category-gravadores.webp", "icon": "recorder", "label": "Gravadores Digitais" } },
         "alarme": { "type": "category", "settings": { "collection": "alarme", "theme_image": "category-alarme.png", "icon": "alarm", "label": "Alarme" } },
-        "cerca": { "type": "category", "settings": { "collection": "cerca-eletrica", "icon": "fence", "label": "Cerca Elétrica" } },
+        "cerca": { "type": "category", "settings": { "collection": "cerca-eletrica", "theme_image": "category-cerca-eletrica.png", "icon": "fence", "label": "Cerca Elétrica" } },
         "interfonia": { "type": "category", "settings": { "collection": "interfonia", "icon": "intercom", "label": "Interfonia" } },
         "redes": { "type": "category", "settings": { "collection": "redes", "theme_image": "category-redes.webp", "icon": "network", "label": "Redes" } },
         "acesso": { "type": "category", "settings": { "collection": "controle-de-acesso", "theme_image": "category-controle-de-acesso.webp", "icon": "keypad", "label": "Controle de Acesso" } },
