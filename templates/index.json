@@ -50,7 +50,7 @@
         "interfonia": { "type": "category", "settings": { "collection": "interfonia", "theme_image": "category-interfonia.webp", "icon": "intercom", "label": "Interfonia" } },
         "redes": { "type": "category", "settings": { "collection": "redes", "theme_image": "category-redes.webp", "icon": "network", "label": "Redes" } },
         "acesso": { "type": "category", "settings": { "collection": "controle-de-acesso", "theme_image": "category-controle-de-acesso.webp", "icon": "keypad", "label": "Controle de Acesso" } },
-        "informatica": { "type": "category", "settings": { "collection": "informatica", "icon": "computer", "label": "Informática" } }
+        "informatica": { "type": "category", "settings": { "collection": "informatica", "theme_image": "category-informatica.webp", "icon": "computer", "label": "Informática" } }
       },
       "block_order": [
         "cameras",
