@@ -1,0 +1,254 @@
+/*
+  ============================================================
+  customer.css — páginas de conta do cliente
+  ============================================================
+
+  O QUE FAZ:
+  Estilos de login, cadastro, recuperar/criar senha, ativar conta,
+  minha conta (pedidos), detalhe do pedido e endereços.
+
+  OBSERVACOES:
+  Carregado pelas sections main-login, main-register, main-account,
+  main-order, main-addresses, main-reset-password e
+  main-activate-account. Tokens --dmr-* em css-variables.liquid.
+*/
+
+.customer { padding-top: var(--spacing-sections); padding-bottom: var(--spacing-sections); }
+.customer--narrow { max-width: 520px; }
+
+.customer__title { margin: 0 0 8px; text-align: center; }
+.customer__lead { margin: 0 0 28px; text-align: center; color: var(--dmr-independence); }
+
+.customer__card {
+  padding: 32px;
+  background: #fff;
+  border: 1px solid var(--dmr-azureish-white);
+  border-radius: var(--dmr-radius-card);
+  box-shadow: var(--dmr-shadow-subtle);
+}
+
+.customer__card-title { margin: 0 0 8px; font-size: var(--f4); }
+.customer__card-text { margin: 0 0 20px; color: var(--dmr-independence); font-size: var(--f2); }
+
+.customer__form { display: flex; flex-direction: column; gap: 16px; }
+.customer__field { display: flex; flex-direction: column; }
+.customer__row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+.customer__checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: var(--f1);
+  color: var(--dmr-independence);
+  cursor: pointer;
+}
+
+.customer__checkbox input { width: 18px; height: 18px; margin: 2px 0 0; accent-color: var(--dmr-primary); }
+.customer__submit { width: 100%; }
+
+.customer__links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-top: 20px;
+  font-size: var(--f1);
+  color: var(--dmr-independence);
+  text-align: center;
+}
+
+.customer__links--start { align-items: flex-start; text-align: left; }
+
+.customer__link { color: var(--dmr-primary); font-weight: 500; }
+.customer__link:hover { color: var(--dmr-primary-hover); }
+
+.customer__link--button {
+  padding: 0;
+  font: inherit;
+  font-weight: 500;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.customer__errors,
+.customer__success {
+  padding: 14px 16px;
+  font-size: var(--f1);
+  border-radius: var(--dmr-radius-md);
+}
+
+.customer__errors { color: #991b1b; background: #fef2f2; border: 1px solid #fecaca; }
+.customer__errors ul { margin: 0; padding-left: 18px; }
+.customer__success { margin-bottom: 16px; color: #065f46; background: #ecfdf5; border: 1px solid #a7f3d0; }
+.customer__notice { margin-bottom: 24px; }
+
+.customer__divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 24px 0;
+  font-size: var(--f1);
+  color: var(--dmr-metal-saurus);
+}
+
+.customer__divider::before,
+.customer__divider::after { content: ""; flex: 1; height: 1px; background: var(--dmr-azureish-white); }
+
+/* Recuperar senha: aparece com #recover (ou .is-open após erro) */
+.customer__recover { display: none; }
+.customer__recover:target,
+.customer__recover.is-open { display: block; }
+.customer__recover:target ~ .customer__login,
+.customer__recover.is-open ~ .customer__login { display: none; }
+
+/* Minha conta */
+.customer__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.customer__head .customer__title,
+.customer__head .customer__lead { margin: 0; text-align: left; }
+.customer__head .customer__lead { margin-top: 6px; }
+
+.customer__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(260px, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.customer__section-title { margin: 0 0 16px; font-size: var(--f4); }
+.customer__subheading { margin: 24px 0 8px; font-size: var(--f2); font-weight: 600; }
+.customer__meta { margin: 0; color: var(--dmr-independence); font-size: var(--f2); line-height: 1.6; }
+
+.customer__table { width: 100%; border-collapse: collapse; font-size: var(--f1); }
+
+.customer__table th {
+  padding: 0 12px 12px;
+  font-weight: 600;
+  text-align: left;
+  white-space: nowrap;
+  color: var(--dmr-metal-saurus);
+  border-bottom: 1px solid var(--dmr-azureish-white);
+}
+
+.customer__table td {
+  padding: 14px 12px;
+  vertical-align: top;
+  border-bottom: 1px solid var(--dmr-azureish-white);
+}
+
+.customer__table th:first-child,
+.customer__table td:first-child { padding-left: 0; }
+.customer__table th:last-child,
+.customer__table td:last-child { padding-right: 0; }
+.customer__table .is-right { text-align: right; }
+.customer__table a { color: var(--dmr-primary); font-weight: 500; }
+.customer__item-variant { display: block; margin-top: 2px; color: var(--dmr-metal-saurus); }
+
+.customer__badge {
+  display: inline-flex;
+  padding: 3px 10px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
+  color: var(--dmr-primary);
+  background: var(--dmr-alice-blue);
+  border: 1px solid var(--dmr-azureish-white);
+  border-radius: var(--dmr-radius-pill);
+}
+
+.customer__empty {
+  padding: 28px;
+  text-align: center;
+  color: var(--dmr-independence);
+  background: var(--dmr-alice-blue);
+  border: 1px dashed var(--dmr-azureish-white);
+  border-radius: var(--dmr-radius-lg);
+}
+
+.customer__empty p { margin: 0 0 16px; }
+.customer__empty p:last-child { margin: 0; }
+
+.customer__address { margin: 0; font-style: normal; font-size: var(--f2); line-height: 1.6; color: var(--dmr-independence); }
+.customer__address p { margin: 0; }
+
+.customer__totals { max-width: 360px; margin: 20px 0 0 auto; }
+.customer__totals-row { display: flex; justify-content: space-between; gap: 16px; padding: 6px 0; font-size: var(--f2); }
+
+.customer__totals-row--total {
+  margin-top: 6px;
+  padding-top: 12px;
+  font-size: var(--f3);
+  font-weight: 600;
+  color: var(--dmr-eerie-black);
+  border-top: 1px solid var(--dmr-azureish-white);
+}
+
+/* Endereços */
+.customer__new { margin-bottom: 32px; }
+.customer__new > summary { display: inline-flex; list-style: none; }
+.customer__new > summary::-webkit-details-marker,
+.customer__edit > summary::-webkit-details-marker { display: none; }
+.customer__new[open] > summary { margin-bottom: 20px; }
+
+.customer__address-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.customer__address-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 24px;
+  background: var(--dmr-alice-blue);
+  border: 1px solid var(--dmr-azureish-white);
+  border-radius: var(--dmr-radius-lg);
+}
+
+.customer__address-actions { display: flex; gap: 20px; font-size: var(--f1); }
+.customer__edit { width: 100%; }
+.customer__edit > summary { display: inline-flex; list-style: none; cursor: pointer; }
+.customer__edit[open] > summary { margin-bottom: 16px; }
+
+@media screen and (max-width: 1000px) {
+  .customer__grid,
+  .customer__row { grid-template-columns: 1fr; }
+  .customer__card { padding: 24px; }
+
+  .customer__table--responsive thead { display: none; }
+
+  .customer__table--responsive tr {
+    display: block;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--dmr-azureish-white);
+  }
+
+  .customer__table--responsive td {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 4px 0;
+    text-align: right;
+    border: 0;
+  }
+
+  .customer__table--responsive td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    text-align: left;
+    color: var(--dmr-metal-saurus);
+  }
+}

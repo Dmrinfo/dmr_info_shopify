@@ -1,0 +1,106 @@
+{%- comment -%}
+  ============================================================
+  main-order — detalhe de um pedido (customers/order)
+  ============================================================
+
+  O QUE FAZ:
+  Número e data do pedido, status de pagamento e envio, itens
+  (com link de rastreio quando houver), totais e endereços.
+
+  OBSERVACOES:
+  Só é usado com contas de cliente clássicas.
+{%- endcomment -%}
+{{ 'customer.css' | asset_url | stylesheet_tag }}
+
+{%- assign order_date = order.created_at | date: '%d/%m/%Y' -%}
+<section class="customer page-width">
+  <div class="customer__head">
+    <div>
+      <h1 class="customer__title">{{ 'customer.order.title' | t: name: order.name }}</h1>
+      <p class="customer__lead">{{ 'customer.order.date' | t: date: order_date }}</p>
+    </div>
+    <a class="button button--secondary" href="{{ routes.account_url }}">{{ 'customer.order.back' | t }}</a>
+  </div>
+
+  {%- if order.cancelled -%}
+    {%- assign cancelled_date = order.cancelled_at | date: '%d/%m/%Y' -%}
+    <div class="customer__errors customer__notice" role="status">
+      {{ 'customer.order.cancelled' | t: date: cancelled_date }}
+      {{ 'customer.order.cancelled_reason' | t: reason: order.cancel_reason_label }}
+    </div>
+  {%- endif -%}
+
+  <div class="customer__grid">
+    <div class="customer__card">
+      <table class="customer__table customer__table--responsive">
+        <thead>
+          <tr>
+            <th scope="col">{{ 'customer.order.product' | t }}</th>
+            <th scope="col" class="is-right">{{ 'customer.order.price' | t }}</th>
+            <th scope="col" class="is-right">{{ 'customer.order.quantity' | t }}</th>
+            <th scope="col" class="is-right">{{ 'customer.order.total' | t }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {%- for line_item in order.line_items -%}
+            <tr>
+              <td data-label="{{ 'customer.order.product' | t }}">
+                {%- if line_item.url != blank -%}
+                  <a href="{{ line_item.url }}">{{ line_item.title | escape }}</a>
+                {%- else -%}
+                  {{ line_item.title | escape }}
+                {%- endif -%}
+                {%- if line_item.sku != blank -%}
+                  <span class="customer__item-variant">{{ 'customer.order.sku' | t }}: {{ line_item.sku | escape }}</span>
+                {%- endif -%}
+                {%- if line_item.fulfillment.tracking_url != blank -%}
+                  <a class="customer__item-variant" href="{{ line_item.fulfillment.tracking_url }}" target="_blank" rel="noopener">{{ 'customer.order.tracking' | t }}</a>
+                {%- endif -%}
+              </td>
+              <td data-label="{{ 'customer.order.price' | t }}" class="is-right">{{ line_item.final_price | money }}</td>
+              <td data-label="{{ 'customer.order.quantity' | t }}" class="is-right">{{ line_item.quantity }}</td>
+              <td data-label="{{ 'customer.order.total' | t }}" class="is-right">{{ line_item.final_line_price | money }}</td>
+            </tr>
+          {%- endfor -%}
+        </tbody>
+      </table>
+
+      <div class="customer__totals">
+        <div class="customer__totals-row"><span>{{ 'customer.order.subtotal' | t }}</span><span>{{ order.line_items_subtotal_price | money }}</span></div>
+        {%- if order.total_discounts > 0 -%}
+          <div class="customer__totals-row"><span>{{ 'customer.order.discount' | t }}</span><span>-{{ order.total_discounts | money }}</span></div>
+        {%- endif -%}
+        <div class="customer__totals-row"><span>{{ 'customer.order.shipping' | t }}</span><span>{{ order.shipping_price | money }}</span></div>
+        {%- if order.tax_price > 0 -%}
+          <div class="customer__totals-row"><span>{{ 'customer.order.tax' | t }}</span><span>{{ order.tax_price | money }}</span></div>
+        {%- endif -%}
+        <div class="customer__totals-row customer__totals-row--total"><span>{{ 'customer.order.total' | t }}</span><span>{{ order.total_price | money_with_currency }}</span></div>
+      </div>
+    </div>
+
+    <aside class="customer__card">
+      <h2 class="customer__section-title">{{ 'customer.order.status' | t }}</h2>
+      <p class="customer__meta">
+        {{ 'customer.orders.payment_status' | t }}: <span class="customer__badge">{{ order.financial_status_label }}</span><br>
+        {{ 'customer.orders.fulfillment_status' | t }}: <span class="customer__badge">{{ order.fulfillment_status_label }}</span>
+      </p>
+
+      {%- if order.shipping_address -%}
+        <h3 class="customer__subheading">{{ 'customer.order.shipping_address' | t }}</h3>
+        <address class="customer__address">{{ order.shipping_address | format_address }}</address>
+      {%- endif -%}
+
+      {%- if order.billing_address -%}
+        <h3 class="customer__subheading">{{ 'customer.order.billing_address' | t }}</h3>
+        <address class="customer__address">{{ order.billing_address | format_address }}</address>
+      {%- endif -%}
+    </aside>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Detalhe do pedido",
+  "settings": []
+}
+{% endschema %}

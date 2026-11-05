@@ -1,0 +1,85 @@
+{%- comment -%}
+  ============================================================
+  main-login — página "Entrar" (customers/login)
+  ============================================================
+
+  O QUE FAZ:
+  Formulário de login, recuperação de senha (abre com #recover) e,
+  se a loja permitir, botão de comprar sem cadastro.
+
+  OBSERVACOES:
+  O bloco de recuperar senha vem antes do login no HTML para o
+  seletor CSS :target ~ esconder o login (assets/customer.css).
+  Só é usado com contas de cliente clássicas.
+{%- endcomment -%}
+{{ 'customer.css' | asset_url | stylesheet_tag }}
+
+<section class="customer customer--narrow page-width">
+  <h1 class="customer__title">{{ 'customer.login_page.title' | t }}</h1>
+  <p class="customer__lead">{{ 'customer.login_page.lead' | t }}</p>
+
+  <div class="customer__recover" id="recover" tabindex="-1">
+    <div class="customer__card">
+      <h2 class="customer__card-title">{{ 'customer.login_page.recover_title' | t }}</h2>
+      <p class="customer__card-text">{{ 'customer.login_page.recover_text' | t }}</p>
+      {%- form 'recover_customer_password', class: 'customer__form' -%}
+        {%- assign recover_success = form.posted_successfully? -%}
+        {%- if form.errors -%}
+          <div class="customer__errors" role="alert">{{ form.errors | default_errors }}</div>
+          <script>document.getElementById('recover').classList.add('is-open');</script>
+        {%- endif -%}
+        <div class="customer__field">
+          <label class="field__label" for="RecoverEmail">{{ 'customer.login_page.email' | t }}</label>
+          <input class="field__input" type="email" id="RecoverEmail" name="email" autocomplete="email" autocorrect="off" autocapitalize="off" required>
+        </div>
+        <button type="submit" class="button customer__submit">{{ 'customer.login_page.recover_submit' | t }}</button>
+      {%- endform -%}
+      <div class="customer__links">
+        <a class="customer__link" href="#login">{{ 'customer.login_page.cancel' | t }}</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="customer__login" id="login">
+    {%- if recover_success -%}
+      <p class="customer__success" role="status">{{ 'customer.login_page.recover_success' | t }}</p>
+    {%- endif -%}
+
+    <div class="customer__card">
+      {%- form 'customer_login', class: 'customer__form', novalidate: 'novalidate' -%}
+        {%- if form.errors -%}
+          <div class="customer__errors" role="alert">{{ form.errors | default_errors }}</div>
+        {%- endif -%}
+        <div class="customer__field">
+          <label class="field__label" for="CustomerEmail">{{ 'customer.login_page.email' | t }}</label>
+          <input class="field__input" type="email" id="CustomerEmail" name="customer[email]" autocomplete="email" autocorrect="off" autocapitalize="off" required>
+        </div>
+        <div class="customer__field">
+          <label class="field__label" for="CustomerPassword">{{ 'customer.login_page.password' | t }}</label>
+          <input class="field__input" type="password" id="CustomerPassword" name="customer[password]" autocomplete="current-password" required>
+        </div>
+        <a class="customer__link" href="#recover">{{ 'customer.login_page.forgot_password' | t }}</a>
+        <button type="submit" class="button customer__submit">{{ 'customer.login_page.sign_in' | t }}</button>
+      {%- endform -%}
+
+      <div class="customer__links">
+        <span>{{ 'customer.login_page.no_account' | t }}</span>
+        <a class="customer__link" href="{{ routes.account_register_url }}">{{ 'customer.login_page.create_account' | t }}</a>
+      </div>
+
+      {%- if shop.checkout.guest_login -%}
+        <div class="customer__divider">{{ 'customer.login_page.or' | t }}</div>
+        {%- form 'guest_login' -%}
+          <button type="submit" class="button button--secondary customer__submit">{{ 'customer.login_page.guest_continue' | t }}</button>
+        {%- endform -%}
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Entrar (conta)",
+  "settings": []
+}
+{% endschema %}

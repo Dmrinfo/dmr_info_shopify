@@ -79,7 +79,8 @@
               <li class="comment" id="comment-{{ comment.id }}">
                 <div class="comment__body rte">{{ comment.content }}</div>
                 <cite class="comment__meta">
-                  {{ 'blogs.article.comment_meta_html' | t: author: comment.author, date: comment.created_at | date: format: 'date' }}
+                  {%- assign comment_date = comment.created_at | date: format: 'date' -%}
+                  {{ 'blogs.article.comment_meta_html' | t: author: comment.author, date: comment_date }}
                 </cite>
               </li>
             {%- endfor -%}

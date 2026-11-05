@@ -1,0 +1,92 @@
+{%- comment -%}
+  ============================================================
+  main-addresses — endereços do cliente (customers/addresses)
+  ============================================================
+
+  O QUE FAZ:
+  Lista os endereços (principal marcado), permite editar, excluir e
+  adicionar novo endereço. Campos no snippet 'address-form'.
+
+  OBSERVACOES:
+  - País/estado: Shopify.CountryProvinceSelector e exclusão via
+    Shopify.postLink, ambos de shopify_common.js (CDN da Shopify).
+  - Só é usado com contas de cliente clássicas.
+{%- endcomment -%}
+{{ 'customer.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'shopify_common.js' | shopify_asset_url }}" defer="defer"></script>
+
+<section class="customer page-width">
+  <div class="customer__head">
+    <h1 class="customer__title">{{ 'customer.addresses.title' | t }}</h1>
+    <a class="button button--secondary" href="{{ routes.account_url }}">{{ 'customer.addresses.back' | t }}</a>
+  </div>
+
+  <details class="customer__new">
+    <summary class="button">{{ 'customer.addresses.add_new' | t }}</summary>
+    <div class="customer__card">
+      {%- form 'customer_address', customer.new_address, class: 'customer__form' -%}
+        {% render 'address-form', form: form, id: 'new' %}
+      {%- endform -%}
+    </div>
+  </details>
+
+  {%- paginate customer.addresses by 12 -%}
+    {%- if customer.addresses.size > 0 -%}
+      <ul class="customer__address-list" role="list">
+        {%- for address in customer.addresses -%}
+          <li class="customer__address-card">
+            {%- if address == customer.default_address -%}
+              <span class="customer__badge">{{ 'customer.addresses.default' | t }}</span>
+            {%- endif -%}
+            <address class="customer__address">{{ address | format_address }}</address>
+            <div class="customer__address-actions">
+              <button
+                type="button"
+                class="customer__link customer__link--button"
+                data-address-delete="{{ address.url }}"
+                data-confirm="{{ 'customer.addresses.delete_confirm' | t | escape }}"
+              >
+                {{- 'customer.addresses.delete' | t -}}
+              </button>
+            </div>
+            <details class="customer__edit">
+              <summary class="customer__link">{{ 'customer.addresses.edit' | t }}</summary>
+              {%- form 'customer_address', address, class: 'customer__form' -%}
+                {% render 'address-form', form: form, id: address.id %}
+              {%- endform -%}
+            </details>
+          </li>
+        {%- endfor -%}
+      </ul>
+      {% render 'pagination', paginate: paginate %}
+    {%- else -%}
+      <div class="customer__empty"><p>{{ 'customer.addresses.empty' | t }}</p></div>
+    {%- endif -%}
+  {%- endpaginate -%}
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.Shopify) return;
+    if (Shopify.CountryProvinceSelector) {
+      document.querySelectorAll('[data-address-country]').forEach(function (select) {
+        new Shopify.CountryProvinceSelector(select.id, select.getAttribute('data-province-id'), {
+          hideElement: select.getAttribute('data-province-container')
+        });
+      });
+    }
+    document.querySelectorAll('[data-address-delete]').forEach(function (button) {
+      button.addEventListener('click', function () {
+        if (!window.confirm(button.getAttribute('data-confirm'))) return;
+        Shopify.postLink(button.getAttribute('data-address-delete'), { parameters: { _method: 'delete' } });
+      });
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Endereços",
+  "settings": []
+}
+{% endschema %}

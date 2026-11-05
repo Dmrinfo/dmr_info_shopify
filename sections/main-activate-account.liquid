@@ -1,0 +1,42 @@
+{%- comment -%}
+  ============================================================
+  main-activate-account — Ativar conta
+  ============================================================
+
+  O QUE FAZ:
+  Formulário para o cliente definir a senha (senha + confirmação).
+
+  OBSERVACOES:
+  Só é usado com contas de cliente clássicas.
+{%- endcomment -%}
+{{ 'customer.css' | asset_url | stylesheet_tag }}
+
+<section class="customer customer--narrow page-width">
+  <h1 class="customer__title">{{ 'customer.activate_account.title' | t }}</h1>
+  <p class="customer__lead">{{ 'customer.activate_account.lead' | t }}</p>
+
+  <div class="customer__card">
+    {%- form 'activate_customer_password', class: 'customer__form' -%}
+      {%- if form.errors -%}
+        <div class="customer__errors" role="alert">{{ form.errors | default_errors }}</div>
+      {%- endif -%}
+      <div class="customer__field">
+        <label class="field__label" for="ActivatePassword">{{ 'customer.password_form.password' | t }}</label>
+        <input class="field__input" type="password" id="ActivatePassword" name="customer[password]" autocomplete="new-password" required>
+      </div>
+      <div class="customer__field">
+        <label class="field__label" for="ActivatePasswordConfirmation">{{ 'customer.password_form.password_confirm' | t }}</label>
+        <input class="field__input" type="password" id="ActivatePasswordConfirmation" name="customer[password_confirmation]" autocomplete="new-password" required>
+      </div>
+      <button type="submit" class="button customer__submit">{{ 'customer.activate_account.submit' | t }}</button>
+      <button type="submit" name="decline" class="button button--secondary customer__submit">{{ 'customer.activate_account.decline' | t }}</button>
+    {%- endform -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Ativar conta",
+  "settings": []
+}
+{% endschema %}

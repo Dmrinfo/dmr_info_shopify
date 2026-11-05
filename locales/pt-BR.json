@@ -235,20 +235,110 @@
       "title": "Minha conta",
       "details": "Dados da conta",
       "view_addresses": "Ver endereços",
-      "return": "Voltar aos dados da conta"
+      "return": "Voltar aos dados da conta",
+      "logout": "Sair",
+      "greeting": "Olá, {{ name }}!",
+      "orders_empty": "Você ainda não fez nenhum pedido.",
+      "start_shopping": "Começar a comprar",
+      "default_address": "Endereço principal",
+      "no_address": "Nenhum endereço cadastrado.",
+      "manage_addresses": "Gerenciar endereços ({{ count }})"
     },
     "login_page": {
       "title": "Entrar",
       "email": "E-mail",
       "password": "Senha",
       "sign_in": "Entrar",
-      "create_account": "Criar conta"
+      "create_account": "Criar conta",
+      "lead": "Acompanhe seus pedidos e endereços salvos.",
+      "forgot_password": "Esqueceu sua senha?",
+      "no_account": "Ainda não tem conta?",
+      "or": "ou",
+      "guest_continue": "Comprar sem cadastro",
+      "recover_title": "Recuperar senha",
+      "recover_text": "Enviaremos um e-mail para você criar uma nova senha.",
+      "recover_submit": "Enviar",
+      "recover_success": "Enviamos um e-mail com o link para criar uma nova senha.",
+      "cancel": "Voltar para o login"
     },
     "orders": {
       "title": "Histórico de pedidos",
       "order_number": "Pedido",
       "date": "Data",
-      "total": "Total"
+      "total": "Total",
+      "payment_status": "Pagamento",
+      "fulfillment_status": "Envio",
+      "view": "Ver pedido"
+    },
+    "register": {
+      "title": "Criar conta",
+      "lead": "Acompanhe seus pedidos e salve endereços para comprar mais rápido.",
+      "first_name": "Nome",
+      "last_name": "Sobrenome",
+      "email": "E-mail",
+      "password": "Senha",
+      "accepts_marketing": "Quero receber ofertas e novidades por e-mail",
+      "submit": "Criar conta",
+      "have_account": "Já tem conta?",
+      "sign_in": "Entrar"
+    },
+    "order": {
+      "title": "Pedido {{ name }}",
+      "date": "Feito em {{ date }}",
+      "cancelled": "Pedido cancelado em {{ date }}.",
+      "cancelled_reason": "Motivo: {{ reason }}",
+      "product": "Produto",
+      "sku": "SKU",
+      "price": "Preço",
+      "quantity": "Quantidade",
+      "total": "Total",
+      "subtotal": "Subtotal",
+      "discount": "Desconto",
+      "shipping": "Frete",
+      "tax": "Impostos",
+      "status": "Status",
+      "shipping_address": "Endereço de entrega",
+      "billing_address": "Endereço de cobrança",
+      "tracking": "Rastrear envio",
+      "back": "Voltar para minha conta"
+    },
+    "addresses": {
+      "title": "Endereços",
+      "add_new": "Adicionar endereço",
+      "edit": "Editar",
+      "delete": "Excluir",
+      "delete_confirm": "Tem certeza que deseja excluir este endereço?",
+      "default": "Principal",
+      "set_default": "Usar como endereço principal",
+      "first_name": "Nome",
+      "last_name": "Sobrenome",
+      "company": "Empresa",
+      "address1": "Endereço (rua e número)",
+      "address2": "Complemento",
+      "city": "Cidade",
+      "zip": "CEP",
+      "country": "País",
+      "province": "Estado",
+      "phone": "Telefone",
+      "save": "Salvar endereço",
+      "update": "Atualizar endereço",
+      "back": "Voltar para minha conta",
+      "empty": "Nenhum endereço cadastrado."
+    },
+    "password_form": {
+      "password": "Nova senha",
+      "password_confirm": "Confirme a senha"
+    },
+    "reset_password": {
+      "title": "Criar nova senha",
+      "lead": "Digite a nova senha da sua conta.",
+      "submit": "Salvar nova senha"
+    },
+    "activate_account": {
+      "title": "Ativar conta",
+      "lead": "Crie uma senha para ativar sua conta.",
+      "submit": "Ativar conta",
+      "decline": "Recusar convite"
     }
   },
   "gift_cards": {
