@@ -172,7 +172,26 @@
       "cart_count": {
         "one": "{{ count }} item",
         "other": "{{ count }} items"
-      }
+      },
+      "search_placeholder": "What are you looking for?",
+      "support": "Customer service",
+      "accessibility": "Accessibility",
+      "font_decrease": "Decrease font size",
+      "font_reset": "Default font size",
+      "font_increase": "Increase font size",
+      "high_contrast": "High contrast",
+      "cep_label": "Enter your ZIP code",
+      "cep_saved": "ZIP {{ cep }}",
+      "cep_change": "Change",
+      "cep_title": "Enter your ZIP code",
+      "cep_submit": "OK",
+      "cep_error": "Invalid ZIP code. Type the 8 digits.",
+      "cep_note": "Saved on this device. Shipping is calculated at checkout.",
+      "cep_help": "I don't know my ZIP code",
+      "welcome": "Hello, welcome!",
+      "greeting": "Hello, {{ name }}!",
+      "login": "Sign in",
+      "my_account": "My account"
     },
     "cart": {
       "title": "Your cart",

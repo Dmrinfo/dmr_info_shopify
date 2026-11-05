@@ -4,41 +4,39 @@
   ============================================================
 
   O QUE FAZ:
-  Monta o cabeçalho da loja: logo, navegação de múltiplos níveis
-  (menu com submenus e sub-submenus), busca, link de conta,
-  contador do carrinho e seletores de localização (país/moeda e
-  idioma). Inclui menu mobile com botão hambúrguer.
+  Monta o cabeçalho da loja em duas faixas:
+  1. Linha principal: logo, busca em pílula, atendimento,
+     acessibilidade, CEP, conta ("Olá, Bem-Vindo! / Entrar") e
+     carrinho com contador.
+  2. Barra de categorias: botão "Todas categorias" (painel com
+     ícones) e links de categoria.
+  Inclui menu mobile (hambúrguer) e seletores de localização.
 
   ONDE É USADA:
-  No layout (layout/theme.liquid), como header fixo presente em
-  todas as páginas. É uma section de grupo/header do tema.
+  No layout (layout/theme.liquid), via section group header-group.
 
   PRINCIPAIS PARTES:
-  - Logo: usa settings.logo (imagem) ou, se vazio, o nome da loja
-    (shop.name) como texto.
-  - header__nav: percorre section.settings.menu.links montando o
-    menu desktop com até 3 níveis (link > child > grandchild).
-  - header__actions: busca (details com painel), conta (só se
-    customer_accounts_enabled) e carrinho com contador
-    data-cart-count baseado em cart.item_count.
-  - Localização: renderiza o snippet 'localization-form' conforme
-    os settings enable_country_selector / enable_language_selector.
-  - header__mobile-nav: menu alternativo para telas <= 1000px,
-    aberto/fechado pelo <script> que alterna aria-expanded/hidden.
-  - category-bar: barra de categorias abaixo do logo. Botão "Todas
-    categorias" abre uma lista vertical com ícones (blocos
-    'panel_item'; sem nenhum, usa os links da barra). Links da barra
-    vêm dos blocos 'link' (com opção de negrito) e 'divider' (barra
-    vertical). Ícones do snippet 'category-icon'. CSS em
-    assets/category-bar.css; no mobile a barra rola na horizontal.
+  - Logo: settings.logo ou, se vazio, assets/logo-dmr.svg.
+  - Busca: formulário GET para routes.search_url (sempre visível).
+  - Atendimento: link (support_link, padrão /pages/contato).
+  - Acessibilidade: popover com tamanho de fonte e alto contraste.
+  - CEP: popover que salva o CEP no navegador e mostra no header.
+    Não calcula frete.
+  - Conta: só se customer_accounts_enabled; mostra o nome do
+    cliente logado.
+  - Carrinho: contador [data-cart-count] (atualizado por carrinho.js).
+  - header__mobile-nav: menu (setting menu) para telas <= 1000px.
+  - category-bar: blocos 'panel_item' (painel com ícones), 'link'
+    (com negrito opcional) e 'divider'.
 
   OBSERVAÇÕES:
-  - Ícones vêm do snippet 'icon' (search, account, cart, etc.).
-  - O menu é definido no setting menu (link_list, default
-    "main-menu"); submenus só aparecem se o link tiver filhos.
-  - Estilos e o JS do toggle mobile ficam inline neste arquivo.
+  - CSS: assets/header.css e assets/category-bar.css.
+  - JS: assets/header.js (menu mobile, popovers, CEP, acessibilidade).
+  - Ícones: snippets 'icon' e 'category-icon'.
 {%- endcomment -%}
-<header class="header page-width" data-section-id="{{ section.id }}">
+{{ 'header.css' | asset_url | stylesheet_tag }}
+
+<header class="header page-width" data-header data-section-id="{{ section.id }}">
   <div class="header__inner">
     <button
       type="button"
@@ -52,8 +50,8 @@
 
     <a href="{{ routes.root_url }}" class="header__logo-link">
       {%- if settings.logo != blank -%}
-        {%- assign logo_alt = shop.name | escape -%}
-        {%- assign logo_height = settings.logo_width | divided_by: settings.logo.aspect_ratio -%}
+        {%- assign logo_height = settings.logo_width | divided_by: settings.logo.aspect_ratio | round -%}
+        {%- assign logo_alt = shop.name -%}
         {{
           settings.logo
           | image_url: width: 600
@@ -76,64 +74,125 @@
       {%- endif -%}
     </a>
 
-    <nav class="header__nav" role="navigation" aria-label="{{ 'sections.header.menu' | t }}">
-      <ul class="header__menu" role="list">
-        {%- if section.settings.menu.links.size == 0 -%}
-          {% render 'menu-fallback', item_class: 'header__menu-item', link_class: 'header__menu-link' %}
-        {%- endif -%}
-        {%- for link in section.settings.menu.links -%}
-          <li class="header__menu-item {% if link.links != blank %}header__menu-item--has-dropdown{% endif %}">
-            <a href="{{ link.url }}" class="header__menu-link" {% if link.current %}aria-current="page"{% endif %}>
-              {{ link.title | escape }}
-            </a>
-            {%- if link.links != blank -%}
-              <ul class="header__submenu" role="list">
-                {%- for child in link.links -%}
-                  <li class="header__submenu-item {% if child.links != blank %}header__submenu-item--has-dropdown{% endif %}">
-                    <a href="{{ child.url }}" class="header__submenu-link">{{ child.title | escape }}</a>
-                    {%- if child.links != blank -%}
-                      <ul class="header__submenu header__submenu--nested" role="list">
-                        {%- for grandchild in child.links -%}
-                          <li><a href="{{ grandchild.url }}" class="header__submenu-link">{{ grandchild.title | escape }}</a></li>
-                        {%- endfor -%}
-                      </ul>
-                    {%- endif -%}
-                  </li>
-                {%- endfor -%}
-              </ul>
-            {%- endif -%}
-          </li>
-        {%- endfor -%}
-      </ul>
-    </nav>
+    <form action="{{ routes.search_url }}" method="get" role="search" class="header__search">
+      <label for="HeaderSearch-{{ section.id }}" class="visually-hidden">{{ 'general.search.search' | t }}</label>
+      <input
+        id="HeaderSearch-{{ section.id }}"
+        class="header__search-input"
+        type="search"
+        name="q"
+        value="{{ search.terms | escape }}"
+        placeholder="{{ 'sections.header.search_placeholder' | t }}"
+        autocomplete="off"
+      >
+      <button type="submit" class="header__search-submit" aria-label="{{ 'general.search.submit' | t }}">
+        {% render 'icon', name: 'search' %}
+      </button>
+    </form>
 
     <div class="header__actions">
-      <details class="header__search">
-        <summary class="header__action-button tap-target" aria-label="{{ 'general.search.search' | t }}">
-          {% render 'icon', name: 'search' %}
-        </summary>
-        <div class="header__search-panel">
-          <form action="{{ routes.search_url }}" method="get" role="search" class="header__search-form">
-            <input
-              type="search"
-              name="q"
-              value="{{ search.terms | escape }}"
-              placeholder="{{ 'general.search.placeholder' | t }}"
-              aria-label="{{ 'general.search.search' | t }}"
-              class="field__input"
-            >
-            <button type="submit" class="visually-hidden">{{ 'general.search.submit' | t }}</button>
-          </form>
-        </div>
-      </details>
-
-      {%- if shop.customer_accounts_enabled -%}
-        <a href="{{ routes.account_url }}" class="header__action-button tap-target" aria-label="{{ 'customer.account.title' | t }}">
-          {% render 'icon', name: 'account' %}
+      {%- if section.settings.show_support -%}
+        {%- assign support_url = section.settings.support_link | default: '/pages/contato' -%}
+        <a
+          href="{{ support_url }}"
+          class="header__round-button header__support"
+          aria-label="{{ 'sections.header.support' | t }}"
+          title="{{ 'sections.header.support' | t }}"
+        >
+          {% render 'icon', name: 'headset' %}
         </a>
       {%- endif -%}
 
-      <a href="{{ routes.cart_url }}" class="header__action-button header__cart tap-target" aria-label="{{ 'templates.cart.cart' | t }}">
+      {%- if section.settings.show_accessibility -%}
+        <details class="header__popover-host header__a11y" data-popover data-a11y>
+          <summary
+            class="header__round-button"
+            aria-label="{{ 'sections.header.accessibility' | t }}"
+            title="{{ 'sections.header.accessibility' | t }}"
+          >
+            {% render 'icon', name: 'accessibility' %}
+          </summary>
+          <div class="header__popover">
+            <p class="header__popover-title">{{ 'sections.header.accessibility' | t }}</p>
+            <div class="header__a11y-row">
+              <button type="button" class="header__a11y-button" data-a11y-font="down" aria-label="{{ 'sections.header.font_decrease' | t }}">A−</button>
+              <button type="button" class="header__a11y-button" data-a11y-font="reset" aria-label="{{ 'sections.header.font_reset' | t }}">A</button>
+              <button type="button" class="header__a11y-button" data-a11y-font="up" aria-label="{{ 'sections.header.font_increase' | t }}">A+</button>
+            </div>
+            <button type="button" class="header__a11y-toggle" data-a11y-contrast aria-pressed="false">
+              {{- 'sections.header.high_contrast' | t -}}
+            </button>
+          </div>
+        </details>
+      {%- endif -%}
+
+      {%- if section.settings.show_cep -%}
+        <details
+          class="header__popover-host header__cep"
+          data-popover
+          data-cep
+          data-cep-template="{{ 'sections.header.cep_saved' | t: cep: '__CEP__' | escape }}"
+        >
+          <summary class="header__info" aria-label="{{ 'sections.header.cep_label' | t }}">
+            <span class="header__info-icon">{% render 'icon', name: 'pin' %}</span>
+            <span class="header__info-text">
+              <span class="header__info-label" data-cep-label>{{ 'sections.header.cep_label' | t }}</span>
+              <span class="header__info-action">{{ 'sections.header.cep_change' | t }} {% render 'icon', name: 'chevron' %}</span>
+            </span>
+          </summary>
+          <div class="header__popover">
+            <form class="header__cep-form" data-cep-form novalidate>
+              <label for="HeaderCep-{{ section.id }}" class="header__popover-title">{{ 'sections.header.cep_title' | t }}</label>
+              <div class="header__cep-row">
+                <input
+                  id="HeaderCep-{{ section.id }}"
+                  class="field__input"
+                  type="text"
+                  inputmode="numeric"
+                  autocomplete="postal-code"
+                  maxlength="9"
+                  placeholder="00000-000"
+                  aria-describedby="HeaderCepError-{{ section.id }}"
+                  data-cep-input
+                >
+                <button type="submit" class="button">{{ 'sections.header.cep_submit' | t }}</button>
+              </div>
+              <p class="header__cep-error" id="HeaderCepError-{{ section.id }}" role="alert" data-cep-error hidden>
+                {{- 'sections.header.cep_error' | t -}}
+              </p>
+              <p class="header__cep-note">{{ 'sections.header.cep_note' | t }}</p>
+              <a class="header__cep-help" href="https://buscacepinter.correios.com.br/" target="_blank" rel="noopener">
+                {{- 'sections.header.cep_help' | t -}}
+              </a>
+            </form>
+          </div>
+        </details>
+      {%- endif -%}
+
+      {%- if shop.customer_accounts_enabled -%}
+        <a
+          href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}"
+          class="header__info header__account"
+        >
+          <span class="header__info-icon">{% render 'icon', name: 'account' %}</span>
+          <span class="header__info-text">
+            <span class="header__info-label">
+              {%- if customer -%}
+                {%- assign customer_name = customer.first_name | default: customer.email -%}
+                {{ 'sections.header.greeting' | t: name: customer_name }}
+              {%- else -%}
+                {{ 'sections.header.welcome' | t }}
+              {%- endif -%}
+            </span>
+            <span class="header__info-action">
+              {%- if customer -%}{{ 'sections.header.my_account' | t }}{%- else -%}{{ 'sections.header.login' | t }}{%- endif -%}
+            </span>
+          </span>
+          <span class="visually-hidden">{{ 'customer.account.title' | t }}</span>
+        </a>
+      {%- endif -%}
+
+      <a href="{{ routes.cart_url }}" class="header__cart" aria-label="{{ 'templates.cart.cart' | t }}">
         {% render 'icon', name: 'cart' %}
         <span class="header__cart-count" data-cart-count>{{ cart.item_count }}</span>
       </a>
@@ -155,7 +214,7 @@
   {{ 'category-bar.css' | asset_url | stylesheet_tag }}
   <nav class="category-bar" aria-label="{{ section.settings.all_categories_label | escape }}">
     <div class="category-bar__inner page-width">
-      <details class="category-bar__all" data-category-all>
+      <details class="category-bar__all" data-popover>
         <summary class="category-bar__all-toggle">
           <svg class="category-bar__all-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
           <span class="category-bar__all-label">{{ section.settings.all_categories_label | escape }}</span>
@@ -227,167 +286,7 @@
   </ul>
 </div>
 
-<style>
-  .header__inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-    padding: 16px 0;
-  }
-  .header__logo-image { display: block; height: auto; }
-  .header__logo-text { font-family: var(--font-heading-family); font-size: var(--f4); }
-  .header__nav { flex: 1; }
-  .header__menu {
-    display: flex;
-    align-items: center;
-    gap: 24px;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-  .header__menu-item { position: relative; }
-  .header__menu-link,
-  .header__submenu-link {
-    font-family: var(--font-heading-family);
-    font-size: var(--f2);
-    color: var(--color-text);
-    text-decoration: none;
-    padding: 8px 0;
-    display: inline-block;
-  }
-  .header__submenu {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    min-width: 200px;
-    margin: 0;
-    padding: 8px 0;
-    list-style: none;
-    background-color: var(--color-background);
-    border: 1px solid var(--color-border);
-    border-radius: var(--inputs-radius);
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(6px);
-    transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s;
-    z-index: 20;
-  }
-  .header__submenu--nested { top: 0; left: 100%; }
-  .header__menu-item--has-dropdown:hover > .header__submenu,
-  .header__menu-item--has-dropdown:focus-within > .header__submenu,
-  .header__submenu-item--has-dropdown:hover > .header__submenu,
-  .header__submenu-item--has-dropdown:focus-within > .header__submenu {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-  }
-  .header__submenu-item { position: relative; }
-  .header__submenu-link { padding: 6px 16px; width: 100%; }
-  .header__actions { display: flex; align-items: center; gap: 8px; }
-  .header__action-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    color: var(--color-text);
-    background: none;
-    border: none;
-    cursor: pointer;
-    text-decoration: none;
-  }
-  .header__action-button svg { width: 22px; height: 22px; }
-  .header__cart-count {
-    position: absolute;
-    top: 2px;
-    right: 2px;
-    min-width: 18px;
-    height: 18px;
-    padding: 0 4px;
-    font-size: 11px;
-    line-height: 18px;
-    text-align: center;
-    color: var(--color-accent-text);
-    background-color: var(--color-accent);
-    border-radius: 9px;
-  }
-  .header__search { position: relative; }
-  .header__search summary { list-style: none; }
-  .header__search summary::-webkit-details-marker { display: none; }
-  .header__search-panel {
-    position: absolute;
-    top: 100%;
-    right: 0;
-    width: 320px;
-    max-width: 90vw;
-    padding: 12px;
-    background-color: var(--color-background);
-    border: 1px solid var(--color-border);
-    border-radius: var(--inputs-radius);
-    z-index: 20;
-  }
-  .header__menu-toggle { display: none; background: none; border: none; }
-  .header__burger,
-  .header__burger::before,
-  .header__burger::after {
-    display: block;
-    width: 22px;
-    height: 2px;
-    background-color: var(--color-text);
-    transition: transform 0.2s ease;
-  }
-  .header__burger { position: relative; }
-  .header__burger::before { content: ''; position: absolute; top: -7px; }
-  .header__burger::after { content: ''; position: absolute; top: 7px; }
-  .header__mobile-nav {
-    padding: 16px 20px;
-    border-top: 1px solid var(--color-border);
-  }
-  .header__mobile-menu, .header__mobile-submenu { list-style: none; margin: 0; padding: 0; }
-  .header__mobile-link { display: block; padding: 12px 0; font-size: var(--f3); color: var(--color-text); text-decoration: none; }
-  .header__mobile-link--child { padding-left: 16px; font-size: var(--f2); opacity: 0.8; }
-  .header__localization { padding: 8px 0; }
-
-  @media screen and (max-width: 1000px) {
-    .header__nav { display: none; }
-    .header__menu-toggle { display: inline-flex; }
-    .header__inner { justify-content: space-between; }
-    .header__logo-link { margin: 0 auto; }
-  }
-  @media screen and (min-width: 1001px) {
-    .header__mobile-nav { display: none !important; }
-  }
-</style>
-
-<script>
-  (function () {
-    var section = document.querySelector('.header[data-section-id="{{ section.id }}"]');
-    if (!section) return;
-    var toggle = section.querySelector('.header__menu-toggle');
-    var nav = document.getElementById('MobileNav-{{ section.id }}');
-    if (toggle && nav) {
-      toggle.addEventListener('click', function () {
-        var open = toggle.getAttribute('aria-expanded') === 'true';
-        toggle.setAttribute('aria-expanded', String(!open));
-        nav.hidden = open;
-      });
-    }
-
-    // Painel "Todas categorias": fecha ao clicar fora ou com Esc
-    var all = section.parentElement.querySelector('[data-category-all]');
-    if (all) {
-      document.addEventListener('click', function (event) {
-        if (all.open && !all.contains(event.target)) all.open = false;
-      });
-      all.addEventListener('keydown', function (event) {
-        if (event.key === 'Escape' && all.open) {
-          all.open = false;
-          all.querySelector('summary').focus();
-        }
-      });
-    }
-  })();
-</script>
+<script src="{{ 'header.js' | asset_url }}" defer="defer"></script>
 
 {% schema %}
 {
@@ -398,7 +297,36 @@
       "type": "link_list",
       "id": "menu",
       "default": "main-menu",
-      "label": "t:sections.header.settings.menu.label"
+      "label": "t:sections.header.settings.menu.label",
+      "info": "Usado no menu do celular (botão hambúrguer)."
+    },
+    {
+      "type": "header",
+      "content": "Botões ao lado da busca"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_support",
+      "default": true,
+      "label": "Mostrar botão de atendimento"
+    },
+    {
+      "type": "url",
+      "id": "support_link",
+      "label": "Link do atendimento",
+      "info": "Página de contato ou link do WhatsApp. Vazio: /pages/contato."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_accessibility",
+      "default": true,
+      "label": "Mostrar botão de acessibilidade"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cep",
+      "default": true,
+      "label": "Mostrar \"Informar seu CEP\""
     },
     {
       "type": "header",

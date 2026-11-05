@@ -122,43 +122,20 @@ body textarea.field__input:focus {
   outline: none;
 }
 
-/* ---------- Header em vidro ---------- */
+/* ---------- Header em vidro (fixo só no desktop) ---------- */
 body .shopify-section-group-header-group {
-  position: sticky;
-  top: 0;
-  z-index: 50;
   background: rgba(255, 255, 255, 0.82);
   backdrop-filter: saturate(160%) blur(14px);
   -webkit-backdrop-filter: saturate(160%) blur(14px);
   border-bottom: 1px solid var(--dmr-azureish-white);
 }
 
-body .header__menu-link,
-body .header__submenu-link {
-  font-family: var(--font-body-family);
-  font-size: var(--f1);
-  font-weight: 500;
-  color: var(--dmr-independence);
-  transition: color 0.2s ease;
-}
-
-body .header__menu-link:hover,
-body .header__menu-link[aria-current="page"],
-body .header__submenu-link:hover { color: var(--dmr-primary); }
-
-body .header__submenu,
-body .header__search-panel {
-  border-color: var(--dmr-azureish-white);
-  border-radius: var(--dmr-radius-md);
-  box-shadow: var(--dmr-shadow-hover);
-}
-
-body .header__action-button { color: var(--dmr-eerie-black); transition: color 0.2s ease; }
-body .header__action-button:hover { color: var(--dmr-primary); }
-
-body .header__cart-count {
-  background: var(--dmr-gradient-linear);
-  border-radius: var(--dmr-radius-pill);
+@media screen and (min-width: 1001px) {
+  body .shopify-section-group-header-group {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
 }
 
 /* ---------- Banner (hero) ---------- */

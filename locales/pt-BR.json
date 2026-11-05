@@ -172,7 +172,26 @@
       "cart_count": {
         "one": "{{ count }} item",
         "other": "{{ count }} itens"
-      }
+      },
+      "search_placeholder": "O que você está procurando?",
+      "support": "Atendimento",
+      "accessibility": "Acessibilidade",
+      "font_decrease": "Diminuir fonte",
+      "font_reset": "Tamanho padrão da fonte",
+      "font_increase": "Aumentar fonte",
+      "high_contrast": "Alto contraste",
+      "cep_label": "Informar seu CEP",
+      "cep_saved": "CEP {{ cep }}",
+      "cep_change": "Alterar",
+      "cep_title": "Informe seu CEP",
+      "cep_submit": "OK",
+      "cep_error": "CEP inválido. Digite os 8 números.",
+      "cep_note": "Fica salvo neste dispositivo. O frete é calculado na finalização da compra.",
+      "cep_help": "Não sei meu CEP",
+      "welcome": "Olá, Bem-Vindo!",
+      "greeting": "Olá, {{ name }}!",
+      "login": "Entrar",
+      "my_account": "Minha conta"
     },
     "cart": {
       "title": "Seu carrinho",
