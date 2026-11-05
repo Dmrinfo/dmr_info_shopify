@@ -34,6 +34,7 @@
           <article class="blog-card">
             {%- if article.image -%}
               <a href="{{ article.url }}" class="blog-card__media">
+                {%- assign img_alt = article.image.alt | default: article.title -%}
                 {{
                   article.image
                   | image_url: width: 900
@@ -42,8 +43,7 @@
                     widths: '300, 450, 600, 900',
                     sizes: '(min-width: 1000px) 33vw, 100vw',
                     class: 'blog-card__image',
-                    alt: article.image.alt | default: article.title | escape
-                }}
+                    alt: img_alt }}
               </a>
             {%- endif -%}
 

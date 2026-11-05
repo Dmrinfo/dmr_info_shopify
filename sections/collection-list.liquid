@@ -32,6 +32,7 @@
         <a href="{{ collection.url | default: '#' }}" class="collection-card">
           <div class="collection-card__media">
             {%- if collection.featured_image -%}
+              {%- assign img_alt = collection.title -%}
               {{
                 collection.featured_image
                 | image_url: width: 720
@@ -40,8 +41,7 @@
                   class: 'collection-card__image',
                   widths: '360, 540, 720',
                   sizes: '(min-width: 1000px) 25vw, 50vw',
-                  alt: collection.title | escape
-              }}
+                  alt: img_alt }}
             {%- else -%}
               {{ 'collection-1' | placeholder_svg_tag: 'collection-card__image placeholder-svg' }}
             {%- endif -%}

@@ -41,6 +41,7 @@
 
   {%- if article.image -%}
     <div class="article__media">
+      {%- assign img_alt = article.image.alt | default: article.title -%}
       {{
         article.image
         | image_url: width: 1600
@@ -49,8 +50,7 @@
           widths: '540, 720, 900, 1200, 1600',
           sizes: '(min-width: 1000px) 900px, 100vw',
           class: 'article__image',
-          alt: article.image.alt | default: article.title | escape
-      }}
+          alt: img_alt }}
     </div>
   {%- endif -%}
 

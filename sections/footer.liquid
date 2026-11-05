@@ -40,6 +40,8 @@
         {%- when 'brand' -%}
           <div class="footer__block footer__block--brand" {{ block.shopify_attributes }}>
             {%- if block.settings.logo != blank -%}
+              {%- assign img_height = 150 | divided_by: block.settings.logo.aspect_ratio | round -%}
+              {%- assign img_alt = shop.name -%}
               {{
                 block.settings.logo
                 | image_url: width: 400
@@ -47,9 +49,8 @@
                   class: 'footer__logo',
                   widths: '150, 300, 400',
                   width: 150,
-                  height: 150 | divided_by: block.settings.logo.aspect_ratio,
-                  alt: shop.name | escape
-              }}
+                  height: img_height,
+                  alt: img_alt }}
             {%- else -%}
               <img
                 class="footer__logo"

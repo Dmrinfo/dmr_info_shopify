@@ -29,6 +29,7 @@
 <div class="collection-banner page-width" data-section-id="{{ section.id }}">
   {%- if section.settings.show_image and collection.image -%}
     <div class="collection-banner__media">
+      {%- assign img_alt = collection.image.alt | default: collection.title -%}
       {{
         collection.image
         | image_url: width: 1920
@@ -37,8 +38,7 @@
           sizes: '100vw',
           widths: '540, 720, 900, 1080, 1440, 1920',
           class: 'collection-banner__image',
-          alt: collection.image.alt | default: collection.title | escape
-      }}
+          alt: img_alt }}
     </div>
   {%- endif -%}
 

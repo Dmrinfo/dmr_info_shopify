@@ -37,6 +37,7 @@
   <a href="{{ card_product.url }}" class="card-product__link">
     <div class="card-product__media" style="padding-bottom: {{ 1 | divided_by: ratio | times: 100 }}%;">
       {%- if card_product.featured_media -%}
+        {%- assign img_alt = card_product.featured_media.alt | default: card_product.title -%}
         {{
           card_product.featured_media
           | image_url: width: 720
@@ -45,9 +46,9 @@
             class: 'card-product__image card-product__image--primary',
             widths: '180, 360, 540, 720',
             sizes: '(min-width: 1000px) 25vw, 50vw',
-            alt: card_product.featured_media.alt | default: card_product.title | escape
-        }}
+            alt: img_alt }}
         {%- if settings.card_show_second_image and card_product.media[1] -%}
+          {%- assign img_alt = card_product.media[1].alt | default: card_product.title -%}
           {{
             card_product.media[1]
             | image_url: width: 720
@@ -56,8 +57,7 @@
               class: 'card-product__image card-product__image--secondary',
               widths: '180, 360, 540, 720',
               sizes: '(min-width: 1000px) 25vw, 50vw',
-              alt: card_product.media[1].alt | default: card_product.title | escape
-          }}
+              alt: img_alt }}
         {%- endif -%}
       {%- else -%}
         {{ 'product-1' | placeholder_svg_tag: 'card-product__image placeholder-svg' }}

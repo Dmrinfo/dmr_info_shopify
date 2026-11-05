@@ -28,11 +28,11 @@
       <li class="brands__item" {{ block.shopify_attributes }}>
         {%- if block.settings.link != blank -%}<a class="brands__link" href="{{ block.settings.link }}" aria-label="{{ block.settings.name | escape }}">{%- endif -%}
           {%- if block.settings.logo != blank -%}
+            {%- assign img_alt = block.settings.name -%}
             {{
               block.settings.logo
               | image_url: width: 320
-              | image_tag: class: 'brands__logo', loading: 'lazy', widths: '160, 320', sizes: '160px', alt: block.settings.name | escape
-            }}
+              | image_tag: class: 'brands__logo', loading: 'lazy', widths: '160, 320', sizes: '160px', alt: img_alt }}
           {%- else -%}
             <span class="brands__name">{{ block.settings.name | escape }}</span>
           {%- endif -%}

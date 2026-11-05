@@ -79,6 +79,7 @@
                   <a href="{{ item.url }}" class="search__result-link">
                     {%- if item.image -%}
                       <div class="search__result-media">
+                        {%- assign img_alt = item.title -%}
                         {{
                           item.image
                           | image_url: width: 720
@@ -87,8 +88,7 @@
                             widths: '180, 360, 540, 720',
                             sizes: '(min-width: 1000px) 25vw, 50vw',
                             class: 'search__result-image',
-                            alt: item.title | escape
-                        }}
+                            alt: img_alt }}
                       </div>
                     {%- endif -%}
                     <div class="search__result-info">

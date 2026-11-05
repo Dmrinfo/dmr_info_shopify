@@ -24,6 +24,7 @@
 {%- endcomment -%}
 <div class="image-banner image-banner--{{ section.settings.height }}" data-section-id="{{ section.id }}">
   {%- if section.settings.image != blank -%}
+    {%- assign img_alt = section.settings.image.alt | default: section.settings.heading -%}
     {{
       section.settings.image
       | image_url: width: 3000
@@ -33,8 +34,7 @@
         class: 'image-banner__image',
         widths: '600, 900, 1200, 1600, 2000, 3000',
         sizes: '100vw',
-        alt: section.settings.image.alt | default: section.settings.heading | escape
-    }}
+        alt: img_alt }}
   {%- else -%}
     <div class="image-banner__image image-banner__placeholder">
       {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}

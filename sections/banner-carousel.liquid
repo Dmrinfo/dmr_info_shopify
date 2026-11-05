@@ -60,6 +60,15 @@
                 sizes="100vw"
               >
             {%- endif -%}
+            {%- liquid
+              assign img_loading = 'lazy'
+              assign img_priority = 'auto'
+              if forloop.first
+                assign img_loading = 'eager'
+                assign img_priority = 'high'
+              endif
+              assign img_alt = block.settings.image.alt | default: block.settings.heading
+            -%}
             {{
               block.settings.image
               | image_url: width: 2400
@@ -67,9 +76,9 @@
                 class: 'banner-carousel__image',
                 widths: '750, 1100, 1500, 1920, 2400',
                 sizes: '100vw',
-                loading: forloop.first | ternary: 'eager', 'lazy',
-                fetchpriority: forloop.first | ternary: 'high', 'auto',
-                alt: block.settings.image.alt | default: block.settings.heading | escape
+                loading: img_loading,
+                fetchpriority: img_priority,
+                alt: img_alt
             }}
           </picture>
         {%- endif -%}

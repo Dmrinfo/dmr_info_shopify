@@ -242,6 +242,7 @@
                   <td class="cart-item__media">
                     {%- if item.image -%}
                       <a href="{{ item.url }}" aria-hidden="true" tabindex="-1">
+                        {%- assign img_alt = item.image.alt -%}
                         {{
                           item.image
                           | image_url: width: 300
@@ -250,8 +251,7 @@
                             widths: '100, 200, 300',
                             sizes: '100px',
                             class: 'cart-item__image',
-                            alt: item.image.alt | escape
-                        }}
+                            alt: img_alt }}
                       </a>
                     {%- endif -%}
                   </td>

@@ -40,6 +40,7 @@
           <a href="{{ collection.url }}" class="list-collections__link">
             <div class="list-collections__media">
               {%- if collection_image -%}
+                {%- assign img_alt = collection.title -%}
                 {{
                   collection_image
                   | image_url: width: 720
@@ -48,8 +49,7 @@
                     widths: '180, 360, 540, 720',
                     sizes: '(min-width: 1000px) 25vw, 50vw',
                     class: 'list-collections__image',
-                    alt: collection.title | escape
-                }}
+                    alt: img_alt }}
               {%- else -%}
                 {{ 'collection-1' | placeholder_svg_tag: 'list-collections__image placeholder-svg' }}
               {%- endif -%}

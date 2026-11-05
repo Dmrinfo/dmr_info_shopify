@@ -49,6 +49,7 @@
           <div class="product__media-item" data-media-id="{{ media.id }}">
             {%- case media.media_type -%}
               {%- when 'image' -%}
+                {%- assign img_alt = media.alt | default: product.title -%}
                 {{
                   media
                   | image_url: width: 1920
@@ -56,8 +57,7 @@
                     loading: 'lazy',
                     sizes: '(min-width: 1000px) 55vw, 100vw',
                     widths: '360, 540, 720, 900, 1080, 1440, 1920',
-                    alt: media.alt | default: product.title | escape
-                }}
+                    alt: img_alt }}
               {%- when 'external_video' -%}
                 {{ media | external_video_tag }}
               {%- when 'video' -%}
