@@ -13,11 +13,11 @@
 
   PARÂMETROS (schema):
   - heading: título opcional acima da fileira.
-  - Bloco category: collection, image, icon, label.
+  - Bloco category: collection, image, theme_image, icon, label.
 
   OBSERVACOES:
-  Foto: imagem do bloco > imagem da coleção (ou do primeiro produto)
-  > ícone. Fotos com fundo branco somem no círculo (mix-blend-mode).
+  Foto: imagem do bloco > arquivo do tema (theme_image, em assets/)
+  > imagem da coleção (ou do primeiro produto) > ícone. Fotos com fundo branco somem no círculo (mix-blend-mode).
   No mobile a fileira rola na horizontal.
 {%- endcomment -%}
 {{ 'category-circles.css' | asset_url | stylesheet_tag }}
@@ -31,11 +31,26 @@
     {%- for block in section.blocks -%}
       {%- assign cat = block.settings.collection -%}
       {%- assign cat_label = block.settings.label | default: cat.title -%}
-      {%- assign cat_image = block.settings.image | default: cat.featured_image -%}
+      {%- assign cat_image = cat.featured_image -%}
       <li class="category-circles__item" {{ block.shopify_attributes }}>
         <a class="category-circles__link"{% if cat != blank %} href="{{ cat.url }}"{% endif %}>
           <span class="category-circles__media">
-            {%- if cat_image != blank -%}
+            {%- if block.settings.image != blank -%}
+              {{
+                block.settings.image
+                | image_url: width: 320
+                | image_tag: loading: 'lazy', widths: '160, 240, 320', sizes: '120px', alt: '', class: 'category-circles__image'
+              }}
+            {%- elsif block.settings.theme_image != blank -%}
+              <img
+                class="category-circles__image"
+                src="{{ block.settings.theme_image | asset_url }}"
+                alt=""
+                width="220"
+                height="220"
+                loading="lazy"
+              >
+            {%- elsif cat_image != blank -%}
               {{
                 cat_image
                 | image_url: width: 320
@@ -68,6 +83,7 @@
       "settings": [
         { "type": "collection", "id": "collection", "label": "Coleção" },
         { "type": "image_picker", "id": "image", "label": "Imagem", "info": "Opcional. PNG com fundo transparente ou branco, quadrado. Sem imagem, usa a foto da coleção ou do primeiro produto." },
+        { "type": "text", "id": "theme_image", "label": "Imagem do tema", "info": "Nome de um arquivo da pasta assets do tema (ex.: category-cameras.png). Usado quando o campo Imagem está vazio." },
         {
           "type": "select",
           "id": "icon",
