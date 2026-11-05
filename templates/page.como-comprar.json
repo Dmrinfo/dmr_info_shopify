@@ -1,0 +1,37 @@
+{
+  "sections": {
+    "main": {
+      "type": "rich-text",
+      "blocks": {
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "heading": "Como comprar"
+          }
+        },
+        "text": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>1. Escolha os produtos</strong> navegando pelas categorias ou usando a busca.</p><p><strong>2. Adicione ao carrinho</strong> e revise as quantidades.</p><p><strong>3. Finalize a compra</strong> informando seus dados e o endereço de entrega. O frete é calculado no checkout.</p><p><strong>4. Acompanhe o pedido</strong> pelas atualizações enviadas por e-mail.</p>"
+          }
+        },
+        "button": {
+          "type": "button",
+          "settings": {
+            "button_label": "Ver produtos",
+            "button_link": "shopify://collections/all"
+          }
+        }
+      },
+      "block_order": [
+        "heading",
+        "text",
+        "button"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

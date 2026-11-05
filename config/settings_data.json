@@ -1,0 +1,53 @@
+{
+  "current": {
+    "logo_width": 160,
+    "color_background": "#ffffff",
+    "color_text": "#212121",
+    "color_background_contrast": "#eff4ff",
+    "color_text_contrast": "#111827",
+    "color_accent": "#0040c1",
+    "color_accent_text": "#ffffff",
+    "color_sale": "#15803d",
+    "color_border": "#d1e0ff",
+    "heading_scale": 100,
+    "body_scale": 100,
+    "page_width": 1280,
+    "spacing_sections": 80,
+    "buttons_radius": 100,
+    "inputs_radius": 16,
+    "media_radius": 24,
+    "card_image_ratio": "portrait",
+    "card_show_vendor": false,
+    "card_show_second_image": true,
+    "cart_type": "drawer",
+    "cart_show_note": true,
+    "social_instagram_link": "",
+    "social_facebook_link": "",
+    "social_linkedin_link": ""
+  },
+  "presets": {
+    "Base Liquid": {
+      "logo_width": 160,
+      "color_background": "#ffffff",
+      "color_text": "#212121",
+      "color_background_contrast": "#eff4ff",
+      "color_text_contrast": "#111827",
+      "color_accent": "#0040c1",
+      "color_accent_text": "#ffffff",
+      "color_sale": "#15803d",
+      "color_border": "#d1e0ff",
+      "heading_scale": 100,
+      "body_scale": 100,
+      "page_width": 1280,
+      "spacing_sections": 80,
+      "buttons_radius": 100,
+      "inputs_radius": 16,
+      "media_radius": 24,
+      "card_image_ratio": "portrait",
+      "card_show_vendor": false,
+      "card_show_second_image": true,
+      "cart_type": "drawer",
+      "cart_show_note": true
+    }
+  }
+}

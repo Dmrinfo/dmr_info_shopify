@@ -1,0 +1,170 @@
+/*
+  ============================================================
+  banner-carousel.css — estilos da seção banner-carousel
+  ============================================================
+
+  O QUE FAZ:
+  Carrossel por scroll-snap (sem biblioteca): cada slide ocupa 100%
+  da largura; setas e pontos ficam sobrepostos. Slide sem imagem
+  mostra o gradiente da marca DMR.
+
+  OBSERVACOES:
+  Usa tokens --dmr-* (snippets/css-variables.liquid). Breakpoint
+  mobile em 749px, igual ao <source media> da seção.
+*/
+
+.banner-carousel {
+  position: relative;
+  overflow: hidden;
+}
+
+.banner-carousel__track {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.banner-carousel__track::-webkit-scrollbar { display: none; }
+
+.banner-carousel__slide {
+  position: relative;
+  display: flex;
+  flex: 0 0 100%;
+  align-items: center;
+  scroll-snap-align: start;
+  min-height: var(--banner-height, 460px);
+  color: #fff;
+  text-decoration: none;
+  background: var(--dmr-gradient-linear);
+}
+
+.banner-carousel--small  { --banner-height: 320px; }
+.banner-carousel--medium { --banner-height: 460px; }
+.banner-carousel--large  { --banner-height: 640px; }
+
+.banner-carousel__media,
+.banner-carousel__image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.banner-carousel__image { object-fit: cover; }
+
+/* Escurece a lateral da imagem para o texto ler bem */
+.banner-carousel__slide::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(0, 28, 90, 0.55) 0%, rgba(0, 28, 90, 0) 65%);
+  pointer-events: none;
+}
+
+.banner-carousel__content {
+  position: relative;
+  z-index: 2;
+}
+
+.banner-carousel__box { max-width: 620px; padding: 48px 0; }
+
+.banner-carousel__slide--center .banner-carousel__box { margin: 0 auto; text-align: center; }
+
+.banner-carousel__heading {
+  color: #fff;
+  font-size: clamp(2rem, 1.2rem + 3vw, 3.5rem);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  text-shadow: 0 2px 16px rgba(0, 28, 90, 0.35);
+}
+
+.banner-carousel__text {
+  margin-top: 16px;
+  font-size: var(--f3);
+  line-height: 1.5;
+}
+
+/* Setas */
+.banner-carousel__arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  color: var(--dmr-primary);
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid var(--dmr-azureish-white);
+  border-radius: var(--dmr-radius-pill);
+  box-shadow: var(--dmr-shadow-subtle);
+  cursor: pointer;
+  transform: translateY(-50%);
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.banner-carousel__arrow:hover {
+  background: #fff;
+  box-shadow: var(--dmr-shadow-hover);
+}
+
+.banner-carousel__arrow--prev { left: 20px; }
+.banner-carousel__arrow--next { right: 20px; }
+
+/* Pontos */
+.banner-carousel__dots {
+  position: absolute;
+  bottom: 18px;
+  left: 50%;
+  z-index: 3;
+  display: flex;
+  gap: 8px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: var(--dmr-radius-pill);
+  transform: translateX(-50%);
+}
+
+/* Alvo de toque de 24px com ponto visual de 10px */
+.banner-carousel__dot {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.banner-carousel__dot::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  background: var(--dmr-azureish-white);
+  border-radius: var(--dmr-radius-pill);
+  transition: background-color 0.2s ease, inset 0.2s ease;
+}
+
+.banner-carousel__dot[aria-current="true"]::before {
+  inset: 7px -3px;
+  background: var(--dmr-primary);
+}
+
+@media screen and (max-width: 749px) {
+  .banner-carousel--medium { --banner-height: 400px; }
+  .banner-carousel--large  { --banner-height: 520px; }
+  .banner-carousel__arrow { display: none; }
+  .banner-carousel__slide::after {
+    background: linear-gradient(0deg, rgba(0, 28, 90, 0.6) 0%, rgba(0, 28, 90, 0) 70%);
+  }
+  .banner-carousel__slide { align-items: flex-end; }
+  .banner-carousel__box { padding: 32px 0 56px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .banner-carousel__track { scroll-behavior: auto; }
+}

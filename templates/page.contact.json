@@ -1,0 +1,13 @@
+{
+  "sections": {
+    "main": {
+      "type": "contact-form",
+      "settings": {
+        "heading": "Fale com a DMR"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "sections": {
+    "main": {
+      "type": "rich-text",
+      "blocks": {
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "heading": "Trocas, devoluções e garantia"
+          }
+        },
+        "text": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>Direito de arrependimento:</strong> em compras feitas pela internet, você pode desistir da compra em até 7 dias corridos após o recebimento (Código de Defesa do Consumidor, art. 49).</p><p><strong>Garantia legal:</strong> 90 dias para produtos duráveis, além da garantia do fabricante quando houver (CDC, art. 26).</p><p>Complete esta página com o procedimento de troca da loja e os prazos de garantia de cada marca.</p>"
+          }
+        },
+        "button": {
+          "type": "button",
+          "settings": {
+            "button_label": "Falar com a DMR",
+            "button_link": "shopify://pages/contato"
+          }
+        }
+      },
+      "block_order": [
+        "heading",
+        "text",
+        "button"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

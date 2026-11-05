@@ -1,0 +1,51 @@
+{
+  "type": "footer",
+  "name": "t:section_groups.footer.name",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "brand": {
+          "type": "brand",
+          "settings": {
+            "text": "<p>DMR Info Tecnologia: loja de segurança eletrônica e informática.</p>"
+          }
+        },
+        "menu": {
+          "type": "menu",
+          "settings": {
+            "heading": "Navegue",
+            "menu": "footer"
+          }
+        },
+        "contact": {
+          "type": "text",
+          "settings": {
+            "heading": "Atendimento",
+            "text": "<p>Tem dúvidas sobre algum produto? Fale com a nossa equipe pela página de contato.</p>"
+          }
+        },
+        "news": {
+          "type": "newsletter",
+          "settings": {
+            "heading": "Receba ofertas e novidades"
+          }
+        }
+      },
+      "block_order": [
+        "brand",
+        "menu",
+        "contact",
+        "news"
+      ],
+      "settings": {
+        "show_social": true,
+        "show_payment_icons": true,
+        "enable_localization": false
+      }
+    }
+  },
+  "order": [
+    "footer"
+  ]
+}

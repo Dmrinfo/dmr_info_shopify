@@ -1,0 +1,141 @@
+{
+  "sections": {
+    "hero": {
+      "type": "banner-carousel",
+      "blocks": {
+        "slide1": {
+          "type": "slide",
+          "settings": {
+            "heading": "Segurança eletrônica para o seu negócio",
+            "text": "<p>Câmeras, alarmes, cercas e controle de acesso para proteger o seu espaço.</p>",
+            "link": "shopify://collections/all"
+          }
+        },
+        "slide2": {
+          "type": "slide",
+          "settings": {
+            "heading": "Informática e redes de alto desempenho",
+            "text": "<p>Notebooks, switches, Wi-Fi, racks e nobreaks.</p>",
+            "link": "shopify://collections/all"
+          }
+        },
+        "slide3": {
+          "type": "slide",
+          "settings": {
+            "heading": "Compre online com praticidade",
+            "text": "<p>Equipamentos de segurança eletrônica e informática, direto no site.</p>",
+            "link": "shopify://collections/all"
+          }
+        }
+      },
+      "block_order": [
+        "slide1",
+        "slide2",
+        "slide3"
+      ],
+      "settings": {
+        "height": "medium",
+        "autoplay": true,
+        "autoplay_seconds": 6,
+        "aria_label": "Destaques da loja"
+      }
+    },
+    "categories": {
+      "type": "category-cards",
+      "blocks": {
+        "c1": {
+          "type": "category",
+          "settings": {
+            "icon": "camera",
+            "title": "Câmeras e CFTV",
+            "text": "Monitoramento para casa e empresa.",
+            "link": "shopify://collections/all"
+          }
+        },
+        "c2": {
+          "type": "category",
+          "settings": {
+            "icon": "shield",
+            "title": "Alarmes e sensores",
+            "text": "Proteção contra intrusão.",
+            "link": "shopify://collections/all"
+          }
+        },
+        "c3": {
+          "type": "category",
+          "settings": {
+            "icon": "network",
+            "title": "Redes e Wi-Fi",
+            "text": "Switches, roteadores e racks.",
+            "link": "shopify://collections/all"
+          }
+        },
+        "c4": {
+          "type": "category",
+          "settings": {
+            "icon": "computer",
+            "title": "Informática",
+            "text": "Notebooks, PCs e periféricos.",
+            "link": "shopify://collections/all"
+          }
+        }
+      },
+      "block_order": [
+        "c1",
+        "c2",
+        "c3",
+        "c4"
+      ],
+      "settings": {
+        "eyebrow": "Categorias",
+        "heading": "Encontre o que sua empresa precisa",
+        "columns_desktop": 4
+      }
+    },
+    "featured": {
+      "type": "featured-collection",
+      "settings": {
+        "heading": "Produtos em destaque",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "show_view_all": true
+      }
+    },
+    "cta": {
+      "type": "rich-text",
+      "blocks": {
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "heading": "Precisa de ajuda para escolher?"
+          }
+        },
+        "text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Fale com a nossa equipe e tire suas dúvidas sobre os produtos antes de comprar.</p>"
+          }
+        },
+        "button": {
+          "type": "button",
+          "settings": {
+            "button_label": "Falar com a DMR",
+            "button_link": "shopify://pages/contato"
+          }
+        }
+      },
+      "block_order": [
+        "heading",
+        "text",
+        "button"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "hero",
+    "categories",
+    "featured",
+    "cta"
+  ]
+}

@@ -1,0 +1,417 @@
+/*
+  ============================================================
+  dmr.css — Camada do Design System DMR Info (base Arooth)
+  ============================================================
+
+  O QUE FAZ:
+  Aplica a identidade "Modern Swiss High-Tech" da DMR Info sobre
+  os componentes do tema: titulos Instrument Sans com tracking
+  negativo, corpo Poppins, botoes pilula azul royal, cards com
+  raio de 40px sobre Alice Blue, header em vidro, footer claro.
+
+  OBSERVACOES:
+  Os tokens (--dmr-*) vivem em snippets/css-variables.liquid.
+  As secoes carregam <style> inline DEPOIS deste arquivo; por isso
+  os seletores aqui usam o prefixo "body" para vencer na
+  especificidade sem recorrer a !important.
+*/
+
+/* ---------- Tipografia ---------- */
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+body h1,
+body h2,
+body h3,
+body h4,
+body h5,
+body h6 {
+  color: var(--dmr-eerie-black);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+body h1 { font-size: clamp(2.5rem, 1.5rem + 3.5vw, 4rem); }
+body h2 { font-size: clamp(2rem, 1.3rem + 2.6vw, 3.25rem); line-height: 1.2; }
+body h3 { font-size: clamp(1.5rem, 1.1rem + 1.4vw, 2.5rem); line-height: 1.2; }
+
+body ::selection {
+  background: var(--dmr-diamond);
+  color: var(--dmr-eerie-black);
+}
+
+body .rte a { color: var(--dmr-primary); }
+
+/* Eyebrow: pilula branca com texto azul (uso: <span class="dmr-eyebrow">) */
+.dmr-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  font-size: var(--f1);
+  font-weight: 500;
+  color: var(--dmr-primary);
+  background: #fff;
+  border: 1px solid var(--dmr-azureish-white);
+  border-radius: var(--dmr-radius-pill);
+}
+
+/* ---------- Botoes (pilula) ---------- */
+body .button,
+body button.button {
+  gap: 10px;
+  min-height: 48px;
+  padding: 12px 28px;
+  font-family: var(--font-body-family);
+  font-size: var(--f2);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: #fff;
+  background: var(--dmr-primary);
+  border: 1px solid var(--dmr-primary);
+  border-radius: var(--dmr-radius-pill);
+  box-shadow: var(--dmr-shadow-subtle);
+  transition: background-color 0.2s ease, border-color 0.2s ease,
+    transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+body .button:hover {
+  opacity: 1;
+  background: var(--dmr-primary-hover);
+  border-color: var(--dmr-primary-hover);
+  box-shadow: var(--dmr-shadow-hover);
+  transform: translateY(-1px);
+}
+
+body .button:active { transform: translateY(0); }
+
+body .button--secondary {
+  color: var(--dmr-primary);
+  background: #fff;
+  border-color: var(--dmr-azureish-white);
+  box-shadow: none;
+}
+
+body .button--secondary:hover {
+  color: var(--dmr-primary-hover);
+  background: var(--dmr-alice-blue);
+  border-color: var(--dmr-primary);
+}
+
+/* ---------- Campos de formulario ---------- */
+body .field__input,
+body .select__select,
+body textarea.field__input {
+  background: var(--dmr-ghost-white);
+  border-color: var(--dmr-azureish-white);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+body .field__input:hover,
+body .select__select:hover { border-color: var(--dmr-diamond); }
+
+body .field__input:focus,
+body .select__select:focus,
+body textarea.field__input:focus {
+  background: #fff;
+  border-color: var(--dmr-primary);
+  box-shadow: 0 0 0 4px rgba(0, 64, 193, 0.12);
+  outline: none;
+}
+
+/* ---------- Header em vidro ---------- */
+body .shopify-section-group-header-group {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: saturate(160%) blur(14px);
+  -webkit-backdrop-filter: saturate(160%) blur(14px);
+  border-bottom: 1px solid var(--dmr-azureish-white);
+}
+
+body .header__menu-link,
+body .header__submenu-link {
+  font-family: var(--font-body-family);
+  font-size: var(--f1);
+  font-weight: 500;
+  color: var(--dmr-independence);
+  transition: color 0.2s ease;
+}
+
+body .header__menu-link:hover,
+body .header__menu-link[aria-current="page"],
+body .header__submenu-link:hover { color: var(--dmr-primary); }
+
+body .header__submenu,
+body .header__search-panel {
+  border-color: var(--dmr-azureish-white);
+  border-radius: var(--dmr-radius-md);
+  box-shadow: var(--dmr-shadow-hover);
+}
+
+body .header__action-button { color: var(--dmr-eerie-black); transition: color 0.2s ease; }
+body .header__action-button:hover { color: var(--dmr-primary); }
+
+body .header__cart-count {
+  background: var(--dmr-gradient-linear);
+  border-radius: var(--dmr-radius-pill);
+}
+
+/* ---------- Banner (hero) ---------- */
+body .image-banner::after {
+  background: linear-gradient(180deg, rgba(17, 24, 39, 0.1) 0%, rgba(0, 53, 158, 0.35) 100%);
+}
+
+body .image-banner__heading {
+  color: #fff;
+  letter-spacing: -0.03em;
+}
+
+/* ---------- Cards de produto ---------- */
+body .card-product {
+  padding: 12px;
+  background: var(--dmr-alice-blue);
+  border: 1px solid var(--dmr-azureish-white);
+  border-radius: var(--dmr-radius-card);
+  transition: box-shadow 0.25s ease, transform 0.25s ease, border-color 0.25s ease;
+}
+
+body .card-product:hover {
+  border-color: var(--dmr-diamond);
+  box-shadow: var(--dmr-shadow-hover);
+  transform: translateY(-4px);
+}
+
+body .card-product__media {
+  border-radius: calc(var(--dmr-radius-card) - 12px);
+  background: #fff;
+}
+
+/* Fade organico no pe da imagem (padrao Arooth) */
+body .card-product__media::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 30%;
+  background: linear-gradient(180deg, rgba(239, 244, 255, 0) 0%, rgba(239, 244, 255, 0.85) 100%);
+  pointer-events: none;
+}
+
+body .card-product__info { padding: 16px 12px 8px; }
+
+body .card-product__title {
+  font-family: var(--font-heading-family);
+  font-size: var(--f3);
+  letter-spacing: -0.02em;
+  color: var(--dmr-eerie-black);
+}
+
+body .card-product__vendor { color: var(--dmr-metal-saurus); opacity: 1; }
+
+body .card-product__badge {
+  z-index: 2;
+  top: 14px;
+  left: 14px;
+  padding: 5px 12px;
+  font-weight: 500;
+  color: var(--dmr-primary);
+  background: #fff;
+  border: 1px solid var(--dmr-azureish-white);
+  border-radius: var(--dmr-radius-pill);
+}
+
+body .card-product__badge--sold-out {
+  color: var(--dmr-metal-saurus);
+  background: var(--dmr-ghost-white);
+}
+
+body .price--card { font-weight: 600; color: var(--dmr-primary); }
+
+/* ---------- Produto (galeria) ---------- */
+body .product__media-item {
+  border: 1px solid var(--dmr-azureish-white);
+  border-radius: var(--dmr-radius-lg);
+  background: var(--dmr-alice-blue);
+}
+
+body .product__title { letter-spacing: -0.03em; color: var(--dmr-eerie-black); }
+body .product__vendor { color: var(--dmr-metal-saurus); opacity: 1; }
+
+/* ---------- Footer ---------- */
+body .footer {
+  margin-top: calc(var(--spacing-sections) * 1.5);
+  color: var(--dmr-independence);
+  background: var(--dmr-alice-blue);
+  border-top: 1px solid var(--dmr-azureish-white);
+  border-radius: var(--dmr-radius-card) var(--dmr-radius-card) 0 0;
+}
+
+body .footer__heading {
+  font-family: var(--font-heading-family);
+  font-size: var(--f3);
+  letter-spacing: -0.02em;
+  color: var(--dmr-eerie-black);
+}
+
+body .footer__link { transition: color 0.2s ease; }
+body .footer__link:hover { color: var(--dmr-primary); text-decoration: none; }
+body .footer__bottom { border-top-color: var(--dmr-azureish-white); }
+body .footer__social a { transition: color 0.2s ease; }
+body .footer__social a:hover { color: var(--dmr-primary); }
+
+/* ---------- Alerta global ---------- */
+body .alerta-global .conteudo {
+  border-radius: var(--dmr-radius-lg);
+  box-shadow: var(--dmr-shadow-hover);
+}
+
+body .alerta-global.negativo .conteudo {
+  background: linear-gradient(135deg, #b91c1c, #dc2626);
+}
+
+body .alerta-global.positivo .conteudo {
+  background: var(--dmr-gradient-linear);
+}
+
+/* ---------- Movimento reduzido ---------- */
+@media (prefers-reduced-motion: reduce) {
+  body .button,
+  body .card-product { transition: none; }
+  body .button:hover,
+  body .card-product:hover { transform: none; }
+}
+
+/* ---------- Banner sem imagem: gradiente da marca ---------- */
+body .image-banner { background: var(--dmr-gradient-linear); }
+body .image-banner__text { max-width: 52ch; }
+
+/* ============================================================
+   Demais páginas: produto, carrinho, blog, artigo, busca,
+   contato, 404 e páginas de texto
+   ============================================================ */
+
+/* Títulos de página */
+body .main-page__title,
+body .blog__title,
+body .article__title,
+body .cart__title,
+body .contact__heading,
+body .notfound__title { letter-spacing: -0.03em; color: var(--dmr-eerie-black); }
+
+body .notfound__code {
+  background: var(--dmr-gradient-linear);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+body .notfound__home { color: var(--dmr-primary); font-weight: 500; }
+body .notfound__home:hover { color: var(--dmr-primary-hover); }
+
+/* Produto: opções, quantidade, preço */
+body .product__swatch {
+  border-color: var(--dmr-azureish-white);
+  border-radius: var(--dmr-radius-pill);
+  background: #fff;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+body .product__swatch:hover { border-color: var(--dmr-primary); }
+body .product__swatch.is-selected {
+  color: var(--dmr-primary);
+  background: var(--dmr-alice-blue);
+  border-color: var(--dmr-primary);
+}
+
+body .quantity-selector {
+  border-color: var(--dmr-azureish-white);
+  border-radius: var(--dmr-radius-pill);
+  background: var(--dmr-ghost-white);
+}
+body .quantity__button { color: var(--dmr-primary); }
+
+body .product__price { color: var(--dmr-primary); font-weight: 600; }
+body .price__compare { color: var(--dmr-metal-saurus); opacity: 1; }
+body .price__badge {
+  color: var(--dmr-primary);
+  background: #fff;
+  border: 1px solid var(--dmr-azureish-white);
+  border-radius: var(--dmr-radius-pill);
+}
+
+body .product__description { color: var(--dmr-independence); line-height: 1.7; }
+
+/* Carrinho */
+body .cart__summary {
+  background: var(--dmr-alice-blue);
+  border: 1px solid var(--dmr-azureish-white);
+  border-radius: var(--dmr-radius-card);
+  padding: 28px;
+}
+body .cart-item > td { border-bottom: 1px solid var(--dmr-azureish-white); }
+body .cart-item__image,
+body .cart-item__media { border-radius: var(--dmr-radius-md); background: var(--dmr-alice-blue); }
+body .cart-item__remove { color: var(--dmr-metal-saurus); }
+body .cart-item__remove:hover { color: var(--dmr-primary); }
+body .cart__subtotal { color: var(--dmr-eerie-black); font-weight: 600; }
+body .cart__note { background: var(--dmr-ghost-white); border-color: var(--dmr-azureish-white); border-radius: var(--dmr-radius-md); }
+
+/* Blog e artigo */
+body .blog-card__media,
+body .article__image,
+body .article__media {
+  border: 1px solid var(--dmr-azureish-white);
+  border-radius: var(--dmr-radius-lg);
+  overflow: hidden;
+}
+body .blog-card__title a { color: var(--dmr-eerie-black); }
+body .blog-card__title a:hover { color: var(--dmr-primary); }
+body .blog-card__date,
+body .article__date,
+body .article__author { color: var(--dmr-metal-saurus); }
+body .blog-card__link,
+body .article__back { color: var(--dmr-primary); font-weight: 500; }
+body .comment {
+  background: var(--dmr-alice-blue);
+  border: 1px solid var(--dmr-azureish-white);
+  border-radius: var(--dmr-radius-md);
+}
+
+/* Contato */
+body .contact__notice--success {
+  color: #065f46;
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  border-radius: var(--dmr-radius-md);
+}
+body .contact__notice--error {
+  color: #991b1b;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: var(--dmr-radius-md);
+}
+
+/* Campos soltos (busca, newsletter, 404, comentário) */
+body .notfound__search-input,
+body .newsletter-form__field,
+body .comment-form__textarea,
+body .contact__textarea,
+body .quantity__input {
+  border-color: var(--dmr-azureish-white);
+  background-color: var(--dmr-ghost-white);
+}
+body .notfound__search-input:focus,
+body .newsletter-form__field:focus,
+body .comment-form__textarea:focus,
+body .contact__textarea:focus {
+  border-color: var(--dmr-primary);
+  box-shadow: 0 0 0 4px rgba(0, 64, 193, 0.12);
+  outline: none;
+}
+
+/* Paginação */
+body .pagination a,
+body .pagination span { border-radius: var(--dmr-radius-pill); }

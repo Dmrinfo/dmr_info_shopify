@@ -1,0 +1,42 @@
+{
+  "sections": {
+    "faq": {
+      "type": "faq",
+      "blocks": {
+        "q1": {
+          "type": "question",
+          "settings": {
+            "question": "Como solicito um orçamento?",
+            "answer": "<p>Envie sua necessidade pela <a href=\"/pages/contato\">página de contato</a> e nossa equipe retorna com a proposta.</p>"
+          }
+        },
+        "q2": {
+          "type": "question",
+          "settings": {
+            "question": "Como funciona a entrega?",
+            "answer": "<p>O frete é calculado na finalização da compra, de acordo com o seu CEP.</p>"
+          }
+        },
+        "q3": {
+          "type": "question",
+          "settings": {
+            "question": "Como acompanho meu pedido?",
+            "answer": "<p>Após a compra você recebe as atualizações por e-mail. Se precisar de ajuda, fale com a gente pela página de contato.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "settings": {
+        "eyebrow": "Dúvidas",
+        "heading": "Perguntas frequentes"
+      }
+    }
+  },
+  "order": [
+    "faq"
+  ]
+}

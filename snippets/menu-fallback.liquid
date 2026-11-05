@@ -1,0 +1,29 @@
+{%- comment -%}
+  ============================================================
+  menu-fallback — links padrão quando o menu do admin está vazio
+  ============================================================
+
+  O QUE FAZ:
+  Renderiza <li><a> com os links principais da loja (início, produtos,
+  como comprar, sobre, perguntas frequentes e contato). Garante que o
+  header e o footer sempre levem às demais páginas, mesmo antes de o
+  lojista montar os menus em Navegação.
+
+  COMO USAR:
+  {% render 'menu-fallback', item_class: 'header__menu-item', link_class: 'header__menu-link' %}
+  Use dentro de um <ul>, só quando o menu do admin não tiver links.
+
+  PARÂMETROS:
+  - item_class: classe do <li> (opcional).
+  - link_class: classe do <a> (opcional).
+
+  OBSERVACOES:
+  Os endereços /pages/... dependem de existir uma página com esse
+  handle no admin (como-comprar, sobre, faq, contato).
+{%- endcomment -%}
+<li{% if item_class != blank %} class="{{ item_class }}"{% endif %}><a href="{{ routes.root_url }}"{% if link_class != blank %} class="{{ link_class }}"{% endif %}>Início</a></li>
+<li{% if item_class != blank %} class="{{ item_class }}"{% endif %}><a href="{{ routes.all_products_collection_url }}"{% if link_class != blank %} class="{{ link_class }}"{% endif %}>Produtos</a></li>
+<li{% if item_class != blank %} class="{{ item_class }}"{% endif %}><a href="{{ routes.root_url }}pages/como-comprar"{% if link_class != blank %} class="{{ link_class }}"{% endif %}>Como comprar</a></li>
+<li{% if item_class != blank %} class="{{ item_class }}"{% endif %}><a href="{{ routes.root_url }}pages/sobre"{% if link_class != blank %} class="{{ link_class }}"{% endif %}>Sobre</a></li>
+<li{% if item_class != blank %} class="{{ item_class }}"{% endif %}><a href="{{ routes.root_url }}pages/faq"{% if link_class != blank %} class="{{ link_class }}"{% endif %}>Perguntas frequentes</a></li>
+<li{% if item_class != blank %} class="{{ item_class }}"{% endif %}><a href="{{ routes.root_url }}pages/contato"{% if link_class != blank %} class="{{ link_class }}"{% endif %}>Contato</a></li>

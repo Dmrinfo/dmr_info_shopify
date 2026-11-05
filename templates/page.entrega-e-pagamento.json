@@ -1,0 +1,37 @@
+{
+  "sections": {
+    "main": {
+      "type": "rich-text",
+      "blocks": {
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "heading": "Entrega e pagamento"
+          }
+        },
+        "text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>O valor e o prazo do frete são calculados na finalização da compra, de acordo com o CEP informado.</p><p>As formas de pagamento disponíveis aparecem no checkout.</p><p>Complete esta página com as transportadoras, prazos médios e formas de pagamento aceitas pela loja.</p>"
+          }
+        },
+        "button": {
+          "type": "button",
+          "settings": {
+            "button_label": "Falar com a DMR",
+            "button_link": "shopify://pages/contato"
+          }
+        }
+      },
+      "block_order": [
+        "heading",
+        "text",
+        "button"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

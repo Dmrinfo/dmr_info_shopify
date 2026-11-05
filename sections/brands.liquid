@@ -1,0 +1,102 @@
+{%- comment -%}
+  ============================================================
+  brands — faixa de marcas parceiras
+  ============================================================
+
+  O QUE FAZ:
+  Mostra uma linha de logos de marcas que a loja trabalha (ex.:
+  Intelbras, Hikvision, TP-Link), em escala de cinza que ganha cor
+  no hover. Cada logo pode ter link.
+
+  COMO USAR:
+  Adicione "Marcas parceiras" na home e inclua blocos "Marca".
+  Máximo de 10 marcas.
+
+  PARÂMETROS (schema):
+  - heading: texto acima da faixa.
+  - Bloco brand: logo, name, link. Sem logo, mostra o nome em texto.
+
+  OBSERVACOES:
+  Estilo no <style> abaixo, escopado por .brands.
+{%- endcomment -%}
+<section class="brands page-width">
+  {%- if section.settings.heading != blank -%}
+    <h2 class="brands__heading">{{ section.settings.heading | escape }}</h2>
+  {%- endif -%}
+  <ul class="brands__list" role="list">
+    {%- for block in section.blocks -%}
+      <li class="brands__item" {{ block.shopify_attributes }}>
+        {%- if block.settings.link != blank -%}<a class="brands__link" href="{{ block.settings.link }}" aria-label="{{ block.settings.name | escape }}">{%- endif -%}
+          {%- if block.settings.logo != blank -%}
+            {{
+              block.settings.logo
+              | image_url: width: 320
+              | image_tag: class: 'brands__logo', loading: 'lazy', widths: '160, 320', sizes: '160px', alt: block.settings.name | escape
+            }}
+          {%- else -%}
+            <span class="brands__name">{{ block.settings.name | escape }}</span>
+          {%- endif -%}
+        {%- if block.settings.link != blank -%}</a>{%- endif -%}
+      </li>
+    {%- endfor -%}
+  </ul>
+</section>
+
+<style>
+  .brands { padding-top: calc(var(--spacing-sections) / 2); padding-bottom: calc(var(--spacing-sections) / 2); text-align: center; }
+  .brands__heading { margin-bottom: 28px; font-size: var(--f4); color: var(--dmr-metal-saurus); }
+  .brands__list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 16px 48px;
+    margin: 0;
+    padding: 24px 32px;
+    list-style: none;
+    background: var(--dmr-alice-blue);
+    border: 1px solid var(--dmr-azureish-white);
+    border-radius: var(--dmr-radius-card);
+  }
+  .brands__link { display: inline-flex; }
+  .brands__logo { width: auto; max-width: 140px; height: 40px; object-fit: contain; filter: grayscale(1); opacity: 0.7; transition: filter 0.2s ease, opacity 0.2s ease; }
+  .brands__item:hover .brands__logo, .brands__link:focus-visible .brands__logo { filter: none; opacity: 1; }
+  .brands__name { font-family: var(--font-heading-family); font-size: var(--f4); letter-spacing: -0.02em; color: var(--dmr-independence); }
+  @media screen and (max-width: 1000px) {
+    .brands__list { gap: 12px 28px; padding: 20px; }
+    .brands__logo { height: 32px; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Marcas parceiras",
+  "tag": "div",
+  "max_blocks": 10,
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Título", "default": "Trabalhamos com as principais marcas" }
+  ],
+  "blocks": [
+    {
+      "type": "brand",
+      "name": "Marca",
+      "settings": [
+        { "type": "image_picker", "id": "logo", "label": "Logo", "info": "Preferencialmente PNG/SVG com fundo transparente." },
+        { "type": "text", "id": "name", "label": "Nome da marca", "default": "Marca" },
+        { "type": "url", "id": "link", "label": "Link (coleção da marca)" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Marcas parceiras",
+      "blocks": [
+        { "type": "brand", "settings": { "name": "Intelbras" } },
+        { "type": "brand", "settings": { "name": "Hikvision" } },
+        { "type": "brand", "settings": { "name": "TP-Link" } },
+        { "type": "brand", "settings": { "name": "Ubiquiti" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

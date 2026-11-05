@@ -1,0 +1,37 @@
+{
+  "sections": {
+    "about": {
+      "type": "rich-text",
+      "blocks": {
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "heading": "Sobre a DMR Info Tecnologia"
+          }
+        },
+        "text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>A DMR Info Tecnologia é uma loja de segurança eletrônica e informática: câmeras, alarmes, controle de acesso, redes, computadores e acessórios.</p><p>Complete este texto com a história, os valores e os diferenciais da empresa.</p>"
+          }
+        },
+        "button": {
+          "type": "button",
+          "settings": {
+            "button_label": "Ver produtos",
+            "button_link": "shopify://collections/all"
+          }
+        }
+      },
+      "block_order": [
+        "heading",
+        "text",
+        "button"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "about"
+  ]
+}
