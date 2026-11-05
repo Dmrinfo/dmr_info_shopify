@@ -1,0 +1,108 @@
+{%- comment -%}
+  ============================================================
+  category-circles — atalhos de categoria em círculos (home)
+  ============================================================
+
+  O QUE FAZ:
+  Fileira de categorias com foto do produto dentro de um círculo e o
+  nome embaixo, logo abaixo do carrossel. Cada item leva à coleção.
+
+  COMO USAR:
+  Adicione "Categorias em círculos" na home e inclua blocos
+  "Categoria". Escolha a coleção; nome, foto e link vêm dela.
+
+  PARÂMETROS (schema):
+  - heading: título opcional acima da fileira.
+  - Bloco category: collection, image, icon, label.
+
+  OBSERVACOES:
+  Foto: imagem do bloco > imagem da coleção (ou do primeiro produto)
+  > ícone. Fotos com fundo branco somem no círculo (mix-blend-mode).
+  No mobile a fileira rola na horizontal.
+{%- endcomment -%}
+{{ 'category-circles.css' | asset_url | stylesheet_tag }}
+
+<section class="category-circles page-width"{% if section.settings.heading != blank %} aria-labelledby="CategoryCircles-{{ section.id }}"{% else %} aria-label="Categorias"{% endif %}>
+  {%- if section.settings.heading != blank -%}
+    <h2 id="CategoryCircles-{{ section.id }}" class="category-circles__heading">{{ section.settings.heading | escape }}</h2>
+  {%- endif -%}
+
+  <ul class="category-circles__list" role="list">
+    {%- for block in section.blocks -%}
+      {%- assign cat = block.settings.collection -%}
+      {%- assign cat_label = block.settings.label | default: cat.title -%}
+      {%- assign cat_image = block.settings.image | default: cat.featured_image -%}
+      <li class="category-circles__item" {{ block.shopify_attributes }}>
+        <a class="category-circles__link"{% if cat != blank %} href="{{ cat.url }}"{% endif %}>
+          <span class="category-circles__media">
+            {%- if cat_image != blank -%}
+              {{
+                cat_image
+                | image_url: width: 320
+                | image_tag: loading: 'lazy', widths: '160, 240, 320', sizes: '120px', alt: '', class: 'category-circles__image'
+              }}
+            {%- else -%}
+              {% render 'category-icon', name: block.settings.icon, class: 'category-circles__icon' %}
+            {%- endif -%}
+          </span>
+          <span class="category-circles__label">{{ cat_label | escape }}</span>
+        </a>
+      </li>
+    {%- endfor -%}
+  </ul>
+</section>
+
+{% schema %}
+{
+  "name": "Categorias em círculos",
+  "tag": "div",
+  "class": "section-category-circles",
+  "max_blocks": 12,
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Título", "info": "Opcional. Deixe vazio para mostrar só os círculos." }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Categoria",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Coleção" },
+        { "type": "image_picker", "id": "image", "label": "Imagem", "info": "Opcional. PNG com fundo transparente ou branco, quadrado. Sem imagem, usa a foto da coleção ou do primeiro produto." },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Ícone (quando não há foto)",
+          "default": "camera",
+          "options": [
+            { "value": "camera", "label": "Câmera" },
+            { "value": "recorder", "label": "Gravador (DVR/NVR)" },
+            { "value": "alarm", "label": "Alarme" },
+            { "value": "fence", "label": "Cerca elétrica" },
+            { "value": "intercom", "label": "Interfone" },
+            { "value": "network", "label": "Rede" },
+            { "value": "keypad", "label": "Teclado (controle de acesso)" },
+            { "value": "computer", "label": "Computador (informática)" },
+            { "value": "shield", "label": "Escudo (segurança)" },
+            { "value": "wifi", "label": "Wi-Fi" },
+            { "value": "lock", "label": "Cadeado" },
+            { "value": "bolt", "label": "Raio (energia)" },
+            { "value": "phone", "label": "Telefone" }
+          ]
+        },
+        { "type": "text", "id": "label", "label": "Nome", "info": "Opcional. Vazio usa o nome da coleção." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Categorias em círculos",
+      "blocks": [
+        { "type": "category", "settings": { "icon": "camera", "label": "Câmeras" } },
+        { "type": "category", "settings": { "icon": "recorder", "label": "Gravadores Digitais" } },
+        { "type": "category", "settings": { "icon": "alarm", "label": "Alarme" } },
+        { "type": "category", "settings": { "icon": "fence", "label": "Cerca Elétrica" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

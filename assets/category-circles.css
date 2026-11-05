@@ -1,0 +1,145 @@
+/*
+  ============================================================
+  category-circles.css — atalhos de categoria em círculos
+  ============================================================
+
+  O QUE FAZ:
+  Estiliza sections/category-circles.liquid: fileira de círculos com
+  foto do produto e nome embaixo. Hover sobe a foto e pinta o nome.
+
+  OBSERVACOES:
+  Usa tokens --dmr-* (snippets/css-variables.liquid). mix-blend-mode
+  faz fundo branco da foto sumir no círculo. No mobile (<= 1000px)
+  a fileira rola na horizontal com snap e fade na borda direita.
+*/
+
+.category-circles {
+  padding-top: clamp(28px, 4vw, 48px);
+  padding-bottom: clamp(8px, 2vw, 16px);
+}
+
+.category-circles__heading {
+  margin: 0 0 28px;
+  text-align: center;
+}
+
+.category-circles__list {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.category-circles__item {
+  flex: 0 1 132px;
+  min-width: 0;
+}
+
+.category-circles__link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  color: var(--dmr-eerie-black);
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+}
+
+.category-circles__media {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 112px;
+  height: 112px;
+  background: var(--dmr-alice-blue);
+  border: 1px solid var(--dmr-azureish-white);
+  border-radius: 50%;
+  transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.category-circles__image {
+  width: 84%;
+  height: 84%;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+  transition: transform 0.3s ease;
+}
+
+.category-circles__icon {
+  width: 44px;
+  height: 44px;
+  color: var(--dmr-primary);
+  transition: transform 0.3s ease;
+}
+
+.category-circles__label {
+  display: -webkit-box;
+  overflow: hidden;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  line-height: 1.3;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  transition: color 0.2s ease;
+}
+
+.category-circles__link[href]:hover .category-circles__media,
+.category-circles__link:focus-visible .category-circles__media {
+  background: var(--dmr-azureish-white);
+  border-color: var(--dmr-diamond);
+  box-shadow: var(--dmr-shadow-hover);
+}
+
+.category-circles__link[href]:hover .category-circles__image,
+.category-circles__link[href]:hover .category-circles__icon,
+.category-circles__link:focus-visible .category-circles__image,
+.category-circles__link:focus-visible .category-circles__icon { transform: translateY(-6px) scale(1.06); }
+
+.category-circles__link[href]:hover .category-circles__label,
+.category-circles__link:focus-visible .category-circles__label { color: var(--dmr-primary); }
+
+.category-circles__link:focus-visible .category-circles__media {
+  outline: 2px solid var(--dmr-primary);
+  outline-offset: 3px;
+}
+
+@media screen and (max-width: 1000px) {
+  .category-circles__list {
+    justify-content: flex-start;
+    gap: 12px;
+    padding: 6px 24px 6px 0;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent);
+    mask-image: linear-gradient(90deg, #000 85%, transparent);
+  }
+
+  .category-circles__list::-webkit-scrollbar { display: none; }
+
+  .category-circles__item {
+    flex: 0 0 96px;
+    scroll-snap-align: start;
+  }
+
+  .category-circles__media { width: 88px; height: 88px; }
+  .category-circles__icon { width: 36px; height: 36px; }
+  .category-circles__label { font-size: 0.8125rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .category-circles__media,
+  .category-circles__image,
+  .category-circles__icon,
+  .category-circles__label { transition: none; }
+
+  .category-circles__link[href]:hover .category-circles__image,
+  .category-circles__link[href]:hover .category-circles__icon,
+  .category-circles__link:focus-visible .category-circles__image,
+  .category-circles__link:focus-visible .category-circles__icon { transform: none; }
+}

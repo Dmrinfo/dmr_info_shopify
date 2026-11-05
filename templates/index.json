@@ -40,6 +40,32 @@
         "aria_label": "Destaques da loja"
       }
     },
+    "category_circles": {
+      "type": "category-circles",
+      "blocks": {
+        "cameras": { "type": "category", "settings": { "collection": "cameras", "icon": "camera", "label": "Câmeras" } },
+        "gravadores": { "type": "category", "settings": { "collection": "gravadores-digitais", "icon": "recorder", "label": "Gravadores Digitais" } },
+        "alarme": { "type": "category", "settings": { "collection": "alarme", "icon": "alarm", "label": "Alarme" } },
+        "cerca": { "type": "category", "settings": { "collection": "cerca-eletrica", "icon": "fence", "label": "Cerca Elétrica" } },
+        "interfonia": { "type": "category", "settings": { "collection": "interfonia", "icon": "intercom", "label": "Interfonia" } },
+        "redes": { "type": "category", "settings": { "collection": "redes", "icon": "network", "label": "Redes" } },
+        "acesso": { "type": "category", "settings": { "collection": "controle-de-acesso", "icon": "keypad", "label": "Controle de Acesso" } },
+        "informatica": { "type": "category", "settings": { "collection": "informatica", "icon": "computer", "label": "Informática" } }
+      },
+      "block_order": [
+        "cameras",
+        "gravadores",
+        "alarme",
+        "cerca",
+        "interfonia",
+        "redes",
+        "acesso",
+        "informatica"
+      ],
+      "settings": {
+        "heading": ""
+      }
+    },
     "categories": {
       "type": "category-cards",
       "blocks": {
@@ -134,6 +160,7 @@
   },
   "order": [
     "hero",
+    "category_circles",
     "categories",
     "featured",
     "cta"
