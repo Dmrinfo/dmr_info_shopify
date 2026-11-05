@@ -216,6 +216,45 @@
         "id": "card_show_second_image",
         "default": true,
         "label": "t:settings_schema.product_cards.settings.card_show_second_image.label"
+      },
+      {
+        "type": "header",
+        "content": "Preço e compra no card"
+      },
+      {
+        "type": "range",
+        "id": "card_pix_discount",
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "unit": "%",
+        "default": 0,
+        "label": "Desconto no PIX",
+        "info": "Mostra o preço com desconto e \"no PIX à vista\". Use o mesmo desconto que o checkout aplica. 0 esconde."
+      },
+      {
+        "type": "range",
+        "id": "card_installments",
+        "min": 1,
+        "max": 12,
+        "step": 1,
+        "unit": "x",
+        "default": 1,
+        "label": "Parcelas sem juros",
+        "info": "Mostra \"ou Nx de R$ ... sem juros\". 1 esconde."
+      },
+      {
+        "type": "text",
+        "id": "card_free_shipping_tag",
+        "default": "frete-gratis",
+        "label": "Tag de frete grátis",
+        "info": "Produtos com essa tag mostram a etiqueta \"Frete Grátis\"."
+      },
+      {
+        "type": "checkbox",
+        "id": "card_show_buttons",
+        "default": true,
+        "label": "Mostrar \"Comprar agora\" e \"Ver mais\" no hover"
       }
     ]
   },

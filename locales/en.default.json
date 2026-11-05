@@ -114,6 +114,18 @@
       "choose_options": "Choose options",
       "choose_product_options": "Choose options for {{ product_name }}"
     },
+    "card": {
+      "off": "{{ percent }}% OFF",
+      "regular_price": "Regular price",
+      "pix_price": "PIX price",
+      "pix": "with PIX",
+      "from": "from",
+      "installments": "or {{ n }}x of {{ value }} interest-free",
+      "free_shipping": "Free shipping",
+      "buy_now": "Buy now",
+      "view_more": "View more",
+      "view_more_label": "View more about {{ product }}"
+    },
     "facets": {
       "sort_by_label": "Sort by:",
       "filter_by_label": "Filter:",

@@ -4,9 +4,10 @@
   ============================================================
 
   O QUE FAZ:
-  Renderiza o card de um produto: imagem (com troca de imagem no hover se
-  ativado nas settings), badge de promoção/esgotado, vendor opcional,
-  título e preço (via snippet 'price').
+  Renderiza o card de um produto: imagem (com troca no hover se ativado
+  nas settings), selo de esgotado, vendor opcional, título, preço (via
+  snippet 'card-price'), etiqueta "Frete Grátis" e, no hover, os botões
+  "Comprar agora" e "Ver mais".
 
   COMO USAR:
   {% render 'card-product', card_product: product %}
@@ -16,9 +17,14 @@
   - card_product: objeto product a ser exibido no card.
 
   OBSERVAÇÕES:
-  O aspect ratio da imagem vem de settings.card_image_ratio
-  ('portrait', 'square' ou 'adapt'). A segunda imagem no hover depende de
-  settings.card_show_second_image; o vendor depende de settings.card_show_vendor.
+  O card inteiro é clicável pelo link do título (::after cobre o card);
+  os botões ficam por cima. "Comprar agora" adiciona 1 unidade e vai ao
+  checkout (data-buy-now faz carrinho.js não interceptar); produto com
+  variantes leva à página dele para escolher. "Frete Grátis" aparece se
+  o produto tiver a tag de settings.card_free_shipping_tag.
+  Aspect ratio da imagem vem de settings.card_image_ratio; segunda imagem
+  de settings.card_show_second_image; vendor de settings.card_show_vendor;
+  botões de settings.card_show_buttons.
 {%- endcomment -%}
 {%- liquid
   assign ratio = 1
@@ -32,50 +38,95 @@
         assign ratio = card_product.featured_media.aspect_ratio
       endif
   endcase
+
+  assign has_free_shipping = false
+  assign free_tag = settings.card_free_shipping_tag | handleize
+  if free_tag != blank
+    for tag in card_product.tags
+      assign tag_handle = tag | handleize
+      if tag_handle == free_tag
+        assign has_free_shipping = true
+        break
+      endif
+    endfor
+  endif
+
+  assign checkout_url = routes.root_url | append: 'checkout' | replace: '//', '/'
 -%}
-<div class="card-product">
-  <a href="{{ card_product.url }}" class="card-product__link">
-    <div class="card-product__media" style="padding-bottom: {{ 1 | divided_by: ratio | times: 100 }}%;">
-      {%- if card_product.featured_media -%}
-        {%- assign img_alt = card_product.featured_media.alt | default: card_product.title -%}
+<div class="card-product{% if settings.card_show_buttons %} card-product--actions{% endif %}">
+  <div class="card-product__media" style="padding-bottom: {{ 1 | divided_by: ratio | times: 100 }}%;">
+    {%- if card_product.featured_media -%}
+      {%- assign img_alt = card_product.featured_media.alt | default: card_product.title -%}
+      {{
+        card_product.featured_media
+        | image_url: width: 720
+        | image_tag:
+          loading: 'lazy',
+          class: 'card-product__image card-product__image--primary',
+          widths: '180, 360, 540, 720',
+          sizes: '(min-width: 1000px) 25vw, 50vw',
+          alt: img_alt }}
+      {%- if settings.card_show_second_image and card_product.media[1] -%}
+        {%- assign img_alt = card_product.media[1].alt | default: card_product.title -%}
         {{
-          card_product.featured_media
+          card_product.media[1]
           | image_url: width: 720
           | image_tag:
             loading: 'lazy',
-            class: 'card-product__image card-product__image--primary',
+            class: 'card-product__image card-product__image--secondary',
             widths: '180, 360, 540, 720',
             sizes: '(min-width: 1000px) 25vw, 50vw',
             alt: img_alt }}
-        {%- if settings.card_show_second_image and card_product.media[1] -%}
-          {%- assign img_alt = card_product.media[1].alt | default: card_product.title -%}
-          {{
-            card_product.media[1]
-            | image_url: width: 720
-            | image_tag:
-              loading: 'lazy',
-              class: 'card-product__image card-product__image--secondary',
-              widths: '180, 360, 540, 720',
-              sizes: '(min-width: 1000px) 25vw, 50vw',
-              alt: img_alt }}
+      {%- endif -%}
+    {%- else -%}
+      {{ 'product-1' | placeholder_svg_tag: 'card-product__image placeholder-svg' }}
+    {%- endif -%}
+
+    {%- if card_product.available == false -%}
+      <span class="card-product__badge card-product__badge--sold-out">{{ 'products.product.sold_out' | t }}</span>
+    {%- endif -%}
+  </div>
+
+  <div class="card-product__info">
+    {%- if settings.card_show_vendor and card_product.vendor != blank -%}
+      <span class="card-product__vendor">{{ card_product.vendor }}</span>
+    {%- endif -%}
+    <h3 class="card-product__title">
+      <a href="{{ card_product.url }}" class="card-product__link">{{ card_product.title | escape }}</a>
+    </h3>
+    {% render 'card-price', product: card_product %}
+    {%- if has_free_shipping -%}
+      <ul class="card-product__tags" role="list">
+        <li class="card-product__tag">{{ 'products.card.free_shipping' | t }}</li>
+      </ul>
+    {%- endif -%}
+  </div>
+
+  {%- if settings.card_show_buttons -%}
+    <div class="card-product__actions">
+      {%- if card_product.available -%}
+        {%- if card_product.has_only_default_variant -%}
+          {%- form 'product', card_product, class: 'card-product__buy-form', data-buy-now: 'true' -%}
+            <input type="hidden" name="id" value="{{ card_product.selected_or_first_available_variant.id }}">
+            <input type="hidden" name="quantity" value="1">
+            <input type="hidden" name="return_to" value="{{ checkout_url }}">
+            <button type="submit" class="card-product__button card-product__button--primary">
+              {{- 'products.card.buy_now' | t -}}
+            </button>
+          {%- endform -%}
+        {%- else -%}
+          <a href="{{ card_product.url }}" class="card-product__button card-product__button--primary">
+            {{- 'products.card.buy_now' | t -}}
+          </a>
         {%- endif -%}
-      {%- else -%}
-        {{ 'product-1' | placeholder_svg_tag: 'card-product__image placeholder-svg' }}
       {%- endif -%}
-
-      {%- if card_product.compare_at_price > card_product.price and card_product.available -%}
-        <span class="card-product__badge">{{ 'products.product.on_sale' | t }}</span>
-      {%- elsif card_product.available == false -%}
-        <span class="card-product__badge card-product__badge--sold-out">{{ 'products.product.sold_out' | t }}</span>
-      {%- endif -%}
+      <a
+        href="{{ card_product.url }}"
+        class="card-product__button card-product__button--secondary"
+        aria-label="{{ 'products.card.view_more_label' | t: product: card_product.title | escape }}"
+      >
+        {{- 'products.card.view_more' | t -}}
+      </a>
     </div>
-
-    <div class="card-product__info">
-      {%- if settings.card_show_vendor and card_product.vendor != blank -%}
-        <span class="card-product__vendor">{{ card_product.vendor }}</span>
-      {%- endif -%}
-      <h3 class="card-product__title">{{ card_product.title | escape }}</h3>
-      {% render 'price', product: card_product, use_variant: false, show_compare: true, price_class: 'price--card' %}
-    </div>
-  </a>
+  {%- endif -%}
 </div>

@@ -1,0 +1,74 @@
+{%- comment -%}
+  ============================================================
+  card-price — bloco de preço do card de produto
+  ============================================================
+
+  O QUE FAZ:
+  Mostra o preço de referência riscado + pílula "X% OFF", o preço
+  grande (com desconto do PIX, se houver) + "no PIX à vista" e a
+  linha de parcelamento sem juros.
+
+  COMO USAR:
+  {% render 'card-price', product: card_product %}
+
+  PARÂMETROS:
+  - product: objeto product.
+
+  OBSERVACOES:
+  Lê settings.card_pix_discount (%) e settings.card_installments (x).
+  Referência riscada = compare_at_price se maior que o preço, senão o
+  próprio preço. O % OFF compara a referência com o preço final (PIX).
+  As parcelas usam o preço sem o desconto do PIX, arredondadas para
+  cima. Valores em centavos, como o Shopify entrega.
+{%- endcomment -%}
+{%- liquid
+  assign pix = settings.card_pix_discount | default: 0
+  assign installments = settings.card_installments | default: 1
+  assign price = product.price
+
+  assign final_price = price
+  if pix > 0
+    assign factor = 100 | minus: pix
+    assign final_price = price | times: factor | divided_by: 100
+  endif
+
+  assign reference = price
+  if product.compare_at_price > price
+    assign reference = product.compare_at_price
+  endif
+
+  assign off = 0
+  if reference > final_price
+    assign off = reference | minus: final_price | times: 100.0 | divided_by: reference | round
+  endif
+-%}
+<div class="card-price">
+  {%- if off > 0 -%}
+    <div class="card-price__top">
+      <span class="visually-hidden">{{ 'products.card.regular_price' | t }}</span>
+      <s class="card-price__compare">{{ reference | money }}</s>
+      <span class="card-price__off">{{ 'products.card.off' | t: percent: off }}</span>
+    </div>
+  {%- endif -%}
+
+  <div class="card-price__main">
+    {%- if product.price_varies -%}
+      <span class="card-price__from">{{ 'products.card.from' | t }}</span>
+    {%- endif -%}
+    {%- if pix > 0 -%}
+      <span class="visually-hidden">{{ 'products.card.pix_price' | t }}</span>
+    {%- endif -%}
+    <span class="card-price__value">{{ final_price | money }}</span>
+    {%- if pix > 0 -%}
+      <span class="card-price__pix">{{ 'products.card.pix' | t }}</span>
+    {%- endif -%}
+  </div>
+
+  {%- if installments > 1 -%}
+    {%- liquid
+      assign installment_value = price | plus: installments | minus: 1 | divided_by: installments
+      assign installment_money = installment_value | money
+    -%}
+    <p class="card-price__installments">{{ 'products.card.installments' | t: n: installments, value: installment_money }}</p>
+  {%- endif -%}
+</div>

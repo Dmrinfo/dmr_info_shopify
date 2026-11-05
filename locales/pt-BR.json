@@ -114,6 +114,18 @@
       "choose_options": "Escolher opções",
       "choose_product_options": "Escolher opções de {{ product_name }}"
     },
+    "card": {
+      "off": "{{ percent }}% OFF",
+      "regular_price": "Preço de",
+      "pix_price": "Preço no PIX",
+      "pix": "no PIX à vista",
+      "from": "a partir de",
+      "installments": "ou {{ n }}x de {{ value }} sem juros",
+      "free_shipping": "Frete Grátis",
+      "buy_now": "Comprar agora",
+      "view_more": "Ver mais",
+      "view_more_label": "Ver mais sobre {{ product }}"
+    },
     "facets": {
       "sort_by_label": "Ordenar por:",
       "filter_by_label": "Filtrar:",

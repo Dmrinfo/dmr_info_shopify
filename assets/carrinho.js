@@ -17,6 +17,7 @@
   fallback e submete o formulario do jeito tradicional.
   O contador usa elementos com [data-cart-count]. O texto do
   alerta vem de window.themeStrings.addedToCart quando disponivel.
+  Formularios com data-buy-now nao sao interceptados (vao ao checkout).
 */
 (function () {
   'use strict';
@@ -39,6 +40,8 @@
   function handleSubmit(event) {
     var form = event.target;
     if (!form.matches('form[action$="/cart/add"], form[data-type="add-to-cart-form"]')) return;
+    // "Comprar agora" (card-product) envia direto para seguir ao checkout.
+    if (form.hasAttribute('data-buy-now')) return;
 
     event.preventDefault();
     var button = form.querySelector('[type="submit"], [name="add"]');
