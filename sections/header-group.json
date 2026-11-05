@@ -8,12 +8,44 @@
         "panel_1": {
           "type": "panel_item",
           "settings": {
-            "icon": "shield",
-            "label": "Segurança Eletrônica",
-            "link": "/collections/seguranca-eletronica"
+            "icon": "camera",
+            "label": "Câmeras",
+            "link": "/collections/cameras"
           }
         },
         "panel_2": {
+          "type": "panel_item",
+          "settings": {
+            "icon": "recorder",
+            "label": "Gravadores Digitais",
+            "link": "/collections/gravadores-digitais"
+          }
+        },
+        "panel_3": {
+          "type": "panel_item",
+          "settings": {
+            "icon": "alarm",
+            "label": "Alarme",
+            "link": "/collections/alarme"
+          }
+        },
+        "panel_4": {
+          "type": "panel_item",
+          "settings": {
+            "icon": "fence",
+            "label": "Cerca Elétrica",
+            "link": "/collections/cerca-eletrica"
+          }
+        },
+        "panel_5": {
+          "type": "panel_item",
+          "settings": {
+            "icon": "intercom",
+            "label": "Interfonia",
+            "link": "/collections/interfonia"
+          }
+        },
+        "panel_6": {
           "type": "panel_item",
           "settings": {
             "icon": "wifi",
@@ -21,44 +53,12 @@
             "link": "/collections/redes"
           }
         },
-        "panel_3": {
-          "type": "panel_item",
-          "settings": {
-            "icon": "phone",
-            "label": "Comunicação",
-            "link": "/collections/comunicacao"
-          }
-        },
-        "panel_4": {
+        "panel_7": {
           "type": "panel_item",
           "settings": {
             "icon": "keypad",
             "label": "Controle de Acesso",
             "link": "/collections/controle-de-acesso"
-          }
-        },
-        "panel_5": {
-          "type": "panel_item",
-          "settings": {
-            "icon": "bolt",
-            "label": "Energia",
-            "link": "/collections/energia"
-          }
-        },
-        "panel_6": {
-          "type": "panel_item",
-          "settings": {
-            "icon": "solar",
-            "label": "Energia Solar",
-            "link": "/collections/energia-solar"
-          }
-        },
-        "panel_7": {
-          "type": "panel_item",
-          "settings": {
-            "icon": "home",
-            "label": "Casa Inteligente",
-            "link": "/collections/casa-inteligente"
           }
         },
         "panel_8": {
