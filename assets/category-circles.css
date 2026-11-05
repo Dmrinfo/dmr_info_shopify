@@ -5,15 +5,20 @@
 
   O QUE FAZ:
   Estiliza sections/category-circles.liquid: fileira de círculos com
-  foto do produto e nome embaixo. Hover sobe a foto e pinta o nome.
+  foto do produto e nome embaixo. A foto é maior que o círculo e vaza
+  pela borda de cima. Hover sobe a foto e pinta o nome.
 
   OBSERVACOES:
-  Usa tokens --dmr-* (snippets/css-variables.liquid). mix-blend-mode
-  faz fundo branco da foto sumir no círculo. No mobile (<= 1000px)
-  a fileira rola na horizontal com snap e fade na borda direita.
+  Usa tokens --dmr-* (snippets/css-variables.liquid). O círculo é o
+  ::before de .category-circles__media; a foto tem o tamanho do
+  círculo e sobe --cc-lift, vazando por cima. mix-blend-mode faz o fundo
+  branco da foto sumir. No mobile (<= 1000px) a fileira rola na
+  horizontal com snap e fade na borda direita.
 */
 
 .category-circles {
+  --cc-circle: 104px;
+  --cc-lift: 18px;
   padding-top: clamp(28px, 4vw, 48px);
   padding-bottom: clamp(8px, 2vw, 16px);
 }
@@ -28,7 +33,7 @@
   justify-content: space-between;
   gap: 16px;
   margin: 0;
-  padding: 0;
+  padding: var(--cc-lift) 0 0;
   list-style: none;
 }
 
@@ -41,37 +46,50 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
   color: var(--dmr-eerie-black);
   text-align: center;
   text-decoration: none;
   outline: none;
 }
 
+/* Caixa da foto; o círculo fica atrás */
 .category-circles__media {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 112px;
-  height: 112px;
+  width: var(--cc-circle);
+  height: var(--cc-circle);
+}
+
+.category-circles__media::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: var(--cc-circle);
+  height: var(--cc-circle);
   background: var(--dmr-alice-blue);
-  border: 1px solid var(--dmr-azureish-white);
   border-radius: 50%;
-  transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  transform: translateX(-50%);
+  transition: background-color 0.25s ease, box-shadow 0.25s ease;
 }
 
 .category-circles__image {
-  width: 84%;
-  height: 84%;
+  position: relative;
+  top: calc(var(--cc-lift) * -1);
+  width: 100%;
+  height: 100%;
   object-fit: contain;
   mix-blend-mode: multiply;
   transition: transform 0.3s ease;
 }
 
 .category-circles__icon {
-  width: 44px;
-  height: 44px;
+  position: relative;
+  width: 40px;
+  height: 40px;
   color: var(--dmr-primary);
   transition: transform 0.3s ease;
 }
@@ -87,10 +105,9 @@
   transition: color 0.2s ease;
 }
 
-.category-circles__link[href]:hover .category-circles__media,
-.category-circles__link:focus-visible .category-circles__media {
+.category-circles__link[href]:hover .category-circles__media::before,
+.category-circles__link:focus-visible .category-circles__media::before {
   background: var(--dmr-azureish-white);
-  border-color: var(--dmr-diamond);
   box-shadow: var(--dmr-shadow-hover);
 }
 
@@ -102,16 +119,21 @@
 .category-circles__link[href]:hover .category-circles__label,
 .category-circles__link:focus-visible .category-circles__label { color: var(--dmr-primary); }
 
-.category-circles__link:focus-visible .category-circles__media {
+.category-circles__link:focus-visible .category-circles__media::before {
   outline: 2px solid var(--dmr-primary);
   outline-offset: 3px;
 }
 
 @media screen and (max-width: 1000px) {
+  .category-circles {
+    --cc-circle: 84px;
+    --cc-lift: 14px;
+  }
+
   .category-circles__list {
     justify-content: flex-start;
-    gap: 12px;
-    padding: 6px 24px 6px 0;
+    gap: 8px;
+    padding: calc(var(--cc-lift) + 8px) 24px 6px 0;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
@@ -127,13 +149,12 @@
     scroll-snap-align: start;
   }
 
-  .category-circles__media { width: 88px; height: 88px; }
-  .category-circles__icon { width: 36px; height: 36px; }
+  .category-circles__icon { width: 32px; height: 32px; }
   .category-circles__label { font-size: 0.8125rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .category-circles__media,
+  .category-circles__media::before,
   .category-circles__image,
   .category-circles__icon,
   .category-circles__label { transition: none; }
