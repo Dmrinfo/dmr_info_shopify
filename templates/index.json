@@ -151,9 +151,9 @@
         "c1": {
           "type": "category",
           "settings": {
-            "image": "shopify://shop_images/card-cameras-cftv.png",
+            "image": "shopify://shop_images/card-cameras-cftv-azul.jpg",
             "icon": "camera",
-            "title": "Câmeras e CFTV",
+            "title": "SISTEMA DE CÂMERAS DE SEGURANÇA",
             "text": "Monitoramento para casa e empresa.",
             "link": "shopify://collections/all"
           }
