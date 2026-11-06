@@ -324,7 +324,8 @@ body .card-product__button--secondary:hover { background: var(--dmr-alice-blue);
 
 body .card-product__button:focus-visible { outline: 2px solid var(--dmr-primary); outline-offset: 2px; }
 
-@media (hover: hover) and (pointer: fine) {
+/* any-hover: vale se houver mouse/touchpad, mesmo em notebook com tela touch */
+@media (any-hover: hover) {
   body .card-product:hover,
   body .card-product:focus-within {
     z-index: 4;

@@ -170,7 +170,7 @@ Pedaços reutilizáveis chamados via `{% render 'nome' %}`.
 ### `assets/`
 | Arquivo | Função |
 |---|---|
-| `index.css` | Ponto de entrada do CSS (importa os demais) |
+| `index.css` | Importa os demais; usado só no gift card (o layout carrega cada CSS direto, com versão) |
 | `normalizar.css` | Reset/normalização de estilos do navegador |
 | `base.css` | Estilos base compartilhados (grid, botões, inputs, acessibilidade) |
 | `fontes.css` | Placeholder para fontes próprias (por padrão usa fontes do Shopify) |

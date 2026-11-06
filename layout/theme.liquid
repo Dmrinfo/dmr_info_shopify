@@ -13,8 +13,9 @@
     meta description, URL canonica.
   - Favicon e apple-touch-icon (config settings.favicon).
   - Open Graph / JSON-LD e demais tags via {% render 'meta-tags' %}.
-  - CSS: index.css (ponto de entrada) + css-variables (variaveis
-    do tema geradas pelas settings).
+  - CSS: fontes, normalizar, base e dmr (nessa ordem, cada um com
+    asset_url versionado) + css-variables (variaveis do tema geradas
+    pelas settings).
   - Scripts: troca no-js -> js e carrega carrinho.js (defer).
   - {{ content_for_header }}: scripts obrigatorios do Shopify.
 
@@ -58,7 +59,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap">
-    {{ 'index.css' | asset_url | stylesheet_tag }}
+    {%- comment -%} Um stylesheet_tag por arquivo: asset_url põe ?v= e o CDN
+    não serve versão antiga (o @import do antigo index.css não tinha versão). {%- endcomment -%}
+    {{ 'fontes.css' | asset_url | stylesheet_tag }}
+    {{ 'normalizar.css' | asset_url | stylesheet_tag }}
+    {{ 'base.css' | asset_url | stylesheet_tag }}
+    {{ 'dmr.css' | asset_url | stylesheet_tag }}
     {% render 'css-variables' %}
 
     <script>document.documentElement.className = document.documentElement.className.replace('no-js', 'js');</script>
