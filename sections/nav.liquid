@@ -222,7 +222,7 @@
     <div class="category-bar__inner page-width">
       <details class="category-bar__all" data-popover>
         <summary class="category-bar__all-toggle">
-          <svg class="category-bar__all-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+          {% render 'icon', name: 'menu', class: 'category-bar__all-icon' %}
           <span class="category-bar__all-label">{{ section.settings.all_categories_label | escape }}</span>
         </summary>
         <div class="category-bar__panel">
@@ -250,7 +250,7 @@
                     {% render 'category-icon', name: block.settings.icon, class: 'category-bar__panel-icon' %}
                     <span>{{ block.settings.label | escape }}</span>
                     {%- if panel_subs != '' -%}
-                      <svg class="category-bar__panel-chevron" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m6 4 4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      {% render 'icon', name: 'chevron-right', class: 'category-bar__panel-chevron' %}
                     {%- endif -%}
                   </a>
                   {%- if panel_subs != '' -%}
@@ -286,7 +286,7 @@
                 >
                   {{- block.settings.label | escape -}}
                   {%- if bar_subs != '' -%}
-                    <svg class="category-bar__chevron" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m4 6 4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    {% render 'icon', name: 'chevron', class: 'category-bar__chevron' %}
                   {%- endif -%}
                 </a>
                 {%- if bar_subs != '' -%}

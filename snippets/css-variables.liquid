@@ -22,24 +22,35 @@
 {%- endcomment -%}
 <style>
   :root {
-    /* DMR Design System (Arooth) */
-    --dmr-primary: #0040c1;
-    --dmr-primary-hover: #00359e;
-    --dmr-alice-blue: #eff4ff;
-    --dmr-azureish-white: #d1e0ff;
-    --dmr-diamond: #c2e0ff;
+    /* DMR Design System — mesmos valores do site dmrinfo.com.br
+       (assets/css/dmr.css de lá). #0668ab passa AA em texto; o azul-céu
+       (#2ebbf4 -> #009fe3) é só para botões, ícones e destaques. */
+    --dmr-primary: #0668ab;
+    --dmr-primary-hover: #044e80;
+    --dmr-accent: #2ebbf4;
+    --dmr-accent-strong: #009fe3;
+    --dmr-gradient-button: linear-gradient(90deg, #2ebbf4 0%, #009fe3 100%);
+    --dmr-gradient-button-hover: linear-gradient(90deg, #009fe3 0%, #2ebbf4 100%);
+    --dmr-alice-blue: #eff6fb;
+    --dmr-azureish-white: #c9e0f0;
+    --dmr-diamond: #b4d8ec;
+    --dmr-light-bg: #f4fafd;
     --dmr-ghost-white: #f9f9f9;
     --dmr-gradient-linear: linear-gradient(135deg, #00359e 0%, #0042c5 50%, #2970ff 100%);
-    --dmr-eerie-black: #111827;
+    --dmr-eerie-black: #0f172a;
     --dmr-independence: #4b5563;
     --dmr-metal-saurus: #6b7280;
     --dmr-sale: #dc2626;
+    --dmr-radius-button: 6px;
     --dmr-radius-md: 1.25rem;
     --dmr-radius-lg: 1.5rem;
     --dmr-radius-card: 2.5rem;
     --dmr-radius-pill: 6.25rem;
-    --dmr-shadow-subtle: 0 4px 24px -2px rgba(0, 64, 193, 0.06);
-    --dmr-shadow-hover: 0 12px 36px -4px rgba(0, 64, 193, 0.12);
+    --dmr-shadow-subtle: 0 4px 24px -2px rgba(6, 104, 171, 0.06);
+    --dmr-shadow-hover: 0 12px 36px -4px rgba(6, 104, 171, 0.12);
+    --dmr-shadow-button: 0 4px 10px rgba(0, 159, 227, 0.2);
+    --dmr-shadow-button-hover: 0 6px 15px rgba(0, 159, 227, 0.4);
+    --dmr-focus-ring: 0 0 0 4px rgba(6, 104, 171, 0.15);
 
     /* Colors */
     --cor-branco: #ffffff;

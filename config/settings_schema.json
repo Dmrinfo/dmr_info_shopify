@@ -60,13 +60,13 @@
         "type": "color",
         "id": "color_background_contrast",
         "label": "t:settings_schema.colors.settings.color_background_contrast.label",
-        "default": "#eff4ff"
+        "default": "#eff6fb"
       },
       {
         "type": "color",
         "id": "color_text_contrast",
         "label": "t:settings_schema.colors.settings.color_text_contrast.label",
-        "default": "#111827"
+        "default": "#0f172a"
       },
       {
         "type": "header",
@@ -76,7 +76,7 @@
         "type": "color",
         "id": "color_accent",
         "label": "t:settings_schema.colors.settings.color_accent.label",
-        "default": "#0040c1"
+        "default": "#0668ab"
       },
       {
         "type": "color",
@@ -98,7 +98,7 @@
         "type": "color",
         "id": "color_border",
         "label": "t:settings_schema.colors.settings.color_border.label",
-        "default": "#d1e0ff"
+        "default": "#c9e0f0"
       }
     ]
   },

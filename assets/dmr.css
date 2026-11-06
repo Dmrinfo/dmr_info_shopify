@@ -45,60 +45,98 @@ body ::selection {
 
 body .rte a { color: var(--dmr-primary); }
 
-/* Eyebrow: pilula branca com texto azul (uso: <span class="dmr-eyebrow">) */
+/* Eyebrow: pilula branca, borda azul clara, ponto + texto azul
+   (igual a .subtitle-wrap do site; uso: <span class="dmr-eyebrow">) */
 .dmr-eyebrow {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 6px 14px;
+  padding: 0.625rem 1rem;
   font-size: var(--f1);
-  font-weight: 500;
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
   color: var(--dmr-primary);
   background: #fff;
   border: 1px solid var(--dmr-azureish-white);
   border-radius: var(--dmr-radius-pill);
 }
 
-/* ---------- Botoes (pilula) ---------- */
+.dmr-eyebrow::before {
+  content: "";
+  flex: none;
+  width: 0.5rem;
+  height: 0.5rem;
+  background: var(--dmr-primary);
+  border-radius: 50%;
+}
+
+/* ---------- Botoes (padrao do site dmrinfo.com.br) ----------
+   Degrade azul-ceu, raio 6px, texto branco em caixa alta. No hover o
+   degrade inverte, o botao sobe 2px e a sombra cresce. Links (<a>)
+   ganham a seta da Tabler "arrow-up-right", como os CTAs do site. */
 body .button,
 body button.button {
-  gap: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
   min-height: 48px;
-  padding: 12px 28px;
+  padding: 0.875rem 2rem;
   font-family: var(--font-body-family);
-  font-size: var(--f2);
-  font-weight: 500;
-  letter-spacing: -0.01em;
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.5;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-decoration: none;
   color: #fff;
-  background: var(--dmr-primary);
-  border: 1px solid var(--dmr-primary);
-  border-radius: var(--dmr-radius-pill);
-  box-shadow: var(--dmr-shadow-subtle);
-  transition: background-color 0.2s ease, border-color 0.2s ease,
-    transform 0.2s ease, box-shadow 0.2s ease;
+  background-color: var(--dmr-accent-strong);
+  background-image: var(--dmr-gradient-button);
+  border: 0;
+  border-radius: var(--dmr-radius-button);
+  box-shadow: var(--dmr-shadow-button);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 body .button:hover {
   opacity: 1;
-  background: var(--dmr-primary-hover);
-  border-color: var(--dmr-primary-hover);
-  box-shadow: var(--dmr-shadow-hover);
-  transform: translateY(-1px);
+  color: #fff;
+  background-image: var(--dmr-gradient-button-hover);
+  box-shadow: var(--dmr-shadow-button-hover);
+  transform: translateY(-2px);
 }
 
 body .button:active { transform: translateY(0); }
 
-body .button--secondary {
+body a.button::after {
+  content: "";
+  flex: none;
+  width: 1.1em;
+  height: 1.1em;
+  background-color: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M17 7l-10 10'/%3E%3Cpath d='M8 7l9 0l0 9'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M17 7l-10 10'/%3E%3Cpath d='M8 7l9 0l0 9'/%3E%3C/svg%3E") center / contain no-repeat;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body a.button:hover::after { transform: translateX(4px); }
+
+/* Secundario: contorno em degrade (truque padding-box/border-box), texto
+   azul DMR; no hover preenche com o degrade e o texto fica branco. */
+body .button--secondary,
+body button.button--secondary {
   color: var(--dmr-primary);
-  background: #fff;
-  border-color: var(--dmr-azureish-white);
+  background: linear-gradient(#fff, #fff) padding-box, var(--dmr-gradient-button) border-box;
+  border: 1.5px solid transparent;
   box-shadow: none;
 }
 
-body .button--secondary:hover {
-  color: var(--dmr-primary-hover);
-  background: var(--dmr-alice-blue);
-  border-color: var(--dmr-primary);
+body .button--secondary:hover,
+body button.button--secondary:hover {
+  color: #fff;
+  background: var(--dmr-gradient-button-hover) border-box;
+  box-shadow: var(--dmr-shadow-button-hover);
 }
 
 /* ---------- Campos de formulario ---------- */
@@ -118,7 +156,7 @@ body .select__select:focus,
 body textarea.field__input:focus {
   background: #fff;
   border-color: var(--dmr-primary);
-  box-shadow: 0 0 0 4px rgba(0, 64, 193, 0.12);
+  box-shadow: 0 0 0 4px rgba(6, 104, 171, 0.12);
   outline: none;
 }
 
@@ -295,6 +333,7 @@ body .card-product__tag {
 /* Botões do hover */
 body .card-product__actions { display: none; }
 
+/* Mesmo desenho do .button (degrade, raio 6px, caixa alta), mais baixo */
 body .card-product__button {
   display: flex;
   align-items: center;
@@ -303,24 +342,40 @@ body .card-product__button {
   min-height: 44px;
   padding: 0 16px;
   font: inherit;
-  font-size: 0.9375rem;
-  font-weight: 600;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
   text-decoration: none;
   cursor: pointer;
-  border: 1px solid var(--dmr-primary);
-  border-radius: var(--dmr-radius-pill);
-  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  border: 1.5px solid transparent;
+  border-radius: var(--dmr-radius-button);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-body .card-product__button--primary { color: #fff; background: var(--dmr-primary); }
+body .card-product__button--primary {
+  color: #fff;
+  background: var(--dmr-gradient-button) border-box;
+  box-shadow: var(--dmr-shadow-button);
+}
 
 body .card-product__button--primary:hover {
-  background: var(--dmr-primary-hover);
-  border-color: var(--dmr-primary-hover);
+  background: var(--dmr-gradient-button-hover) border-box;
+  box-shadow: var(--dmr-shadow-button-hover);
+  transform: translateY(-2px);
 }
 
-body .card-product__button--secondary { color: var(--dmr-primary); background: #fff; }
-body .card-product__button--secondary:hover { background: var(--dmr-alice-blue); }
+body .card-product__button--secondary {
+  color: var(--dmr-primary);
+  background: linear-gradient(#fff, #fff) padding-box, var(--dmr-gradient-button) border-box;
+}
+
+body .card-product__button--secondary:hover {
+  color: #fff;
+  background: var(--dmr-gradient-button-hover) border-box;
+  box-shadow: var(--dmr-shadow-button-hover);
+  transform: translateY(-2px);
+}
 
 body .card-product__button:focus-visible { outline: 2px solid var(--dmr-primary); outline-offset: 2px; }
 
@@ -423,6 +478,8 @@ body .alerta-global.positivo .conteudo {
   body .card-product__actions,
   body .card-product__button { transition: none; }
   body .button:hover,
+  body a.button:hover::after,
+  body .card-product__button:hover,
   body .card-product .card-product__actions { transform: none; }
 }
 
@@ -549,7 +606,7 @@ body .newsletter-form__field:focus,
 body .comment-form__textarea:focus,
 body .contact__textarea:focus {
   border-color: var(--dmr-primary);
-  box-shadow: 0 0 0 4px rgba(0, 64, 193, 0.12);
+  box-shadow: 0 0 0 4px rgba(6, 104, 171, 0.12);
   outline: none;
 }
 

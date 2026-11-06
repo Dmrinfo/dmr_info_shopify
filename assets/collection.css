@@ -231,7 +231,7 @@
   background: var(--dmr-primary);
   border: 3px solid #fff;
   border-radius: 50%;
-  box-shadow: 0 0 0 1px var(--dmr-primary), 0 2px 6px rgba(0, 64, 193, 0.3);
+  box-shadow: 0 0 0 1px var(--dmr-primary), 0 2px 6px rgba(6, 104, 171, 0.3);
   cursor: pointer;
   pointer-events: auto;
   -webkit-appearance: none;
@@ -244,13 +244,13 @@
   background: var(--dmr-primary);
   border: 3px solid #fff;
   border-radius: 50%;
-  box-shadow: 0 0 0 1px var(--dmr-primary), 0 2px 6px rgba(0, 64, 193, 0.3);
+  box-shadow: 0 0 0 1px var(--dmr-primary), 0 2px 6px rgba(6, 104, 171, 0.3);
   cursor: pointer;
   pointer-events: auto;
 }
 
-.facets__range-input:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 4px rgba(0, 64, 193, 0.25); }
-.facets__range-input:focus-visible::-moz-range-thumb { box-shadow: 0 0 0 4px rgba(0, 64, 193, 0.25); }
+.facets__range-input:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 4px rgba(6, 104, 171, 0.25); }
+.facets__range-input:focus-visible::-moz-range-thumb { box-shadow: 0 0 0 4px rgba(6, 104, 171, 0.25); }
 
 .facets__price-labels {
   display: flex;
@@ -309,7 +309,7 @@
 
 .collection__sort-select:focus {
   border-color: var(--dmr-primary);
-  box-shadow: 0 0 0 4px rgba(0, 64, 193, 0.12);
+  box-shadow: 0 0 0 4px rgba(6, 104, 171, 0.12);
   outline: none;
 }
 
