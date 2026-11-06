@@ -25,6 +25,7 @@
         "slide2": {
           "type": "slide",
           "settings": {
+            "image": "shopify://shop_images/banner-redes-home.jpg",
             "link": "shopify://collections/all",
             "heading": "Informática e redes de alto desempenho",
             "text": "<p>Notebooks, switches, Wi-Fi, racks e nobreaks.</p>",
