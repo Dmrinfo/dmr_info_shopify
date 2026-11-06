@@ -6,7 +6,7 @@
   O QUE FAZ:
   Carrossel por scroll-snap (sem biblioteca): cada slide ocupa 100%
   da largura; setas e pontos ficam sobrepostos. Slide sem imagem
-  mostra o gradiente da marca DMR.
+  mostra o fundo escuro com brilho azul-ceu do site DMR.
 
   OBSERVACOES:
   Usa tokens --dmr-* (snippets/css-variables.liquid). Breakpoint
@@ -38,7 +38,10 @@
   min-height: var(--banner-height, 460px);
   color: #fff;
   text-decoration: none;
-  background: var(--dmr-gradient-linear);
+  /* Sem imagem: fundo escuro com brilho azul-ceu, como as faixas escuras do site */
+  background:
+    radial-gradient(60% 90% at 78% 20%, rgba(0, 159, 227, 0.35) 0%, rgba(0, 159, 227, 0) 70%),
+    linear-gradient(135deg, var(--dmr-eerie-black) 0%, #1e293b 100%);
 }
 
 .banner-carousel--small  { --banner-height: 320px; }
@@ -60,7 +63,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, rgba(0, 28, 90, 0.55) 0%, rgba(0, 28, 90, 0) 65%);
+  background: linear-gradient(90deg, rgba(15, 23, 42, 0.55) 0%, rgba(15, 23, 42, 0) 65%);
   pointer-events: none;
 }
 
@@ -78,7 +81,7 @@
   font-size: clamp(2rem, 1.2rem + 3vw, 3.5rem);
   letter-spacing: -0.03em;
   line-height: 1.1;
-  text-shadow: 0 2px 16px rgba(0, 28, 90, 0.35);
+  text-shadow: 0 2px 16px rgba(15, 23, 42, 0.35);
 }
 
 .banner-carousel__text {
@@ -159,7 +162,7 @@
   .banner-carousel--large  { --banner-height: 520px; }
   .banner-carousel__arrow { display: none; }
   .banner-carousel__slide::after {
-    background: linear-gradient(0deg, rgba(0, 28, 90, 0.6) 0%, rgba(0, 28, 90, 0) 70%);
+    background: linear-gradient(0deg, rgba(15, 23, 42, 0.6) 0%, rgba(15, 23, 42, 0) 70%);
   }
   .banner-carousel__slide { align-items: flex-end; }
   .banner-carousel__box { padding: 32px 0 56px; }
