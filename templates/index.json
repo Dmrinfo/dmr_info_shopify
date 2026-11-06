@@ -171,6 +171,7 @@
         "c3": {
           "type": "category",
           "settings": {
+            "image": "shopify://shop_images/card-redes-wifi-azul.jpg",
             "icon": "network",
             "title": "Redes e Wi-Fi",
             "text": "Switches, roteadores e racks.",
