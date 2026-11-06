@@ -4,10 +4,10 @@
   ============================================================
 
   O QUE FAZ:
-  Aplica a identidade "Modern Swiss High-Tech" da DMR Info sobre
-  os componentes do tema: titulos Instrument Sans com tracking
-  negativo, corpo Poppins, botoes pilula azul royal, cards com
-  raio de 40px sobre Alice Blue, header em vidro, footer claro.
+  Aplica a identidade do site dmrinfo.com.br sobre os componentes
+  do tema: titulos Impact (Anton fora do Windows/macOS) sem tracking,
+  corpo Inter, botoes em degrade azul-ceu com raio 6px e caixa alta,
+  icones Tabler, header em vidro, footer claro.
 
   OBSERVACOES:
   Os tokens (--dmr-*) vivem em snippets/css-variables.liquid.
@@ -30,7 +30,7 @@ body h5,
 body h6 {
   color: var(--dmr-eerie-black);
   font-weight: 400;
-  letter-spacing: -0.03em;
+  letter-spacing: var(--dmr-title-tracking);
   line-height: 1.1;
 }
 
@@ -183,7 +183,7 @@ body .image-banner::after {
 
 body .image-banner__heading {
   color: #fff;
-  letter-spacing: -0.03em;
+  letter-spacing: var(--dmr-title-tracking);
 }
 
 /* ---------- Cards de produto ---------- */
@@ -432,7 +432,7 @@ body .product__media-item {
   background: var(--dmr-alice-blue);
 }
 
-body .product__title { letter-spacing: -0.03em; color: var(--dmr-eerie-black); }
+body .product__title { letter-spacing: var(--dmr-title-tracking); color: var(--dmr-eerie-black); }
 body .product__vendor { color: var(--dmr-metal-saurus); opacity: 1; }
 
 /* ---------- Footer ---------- */
@@ -447,7 +447,7 @@ body .footer {
 body .footer__heading {
   font-family: var(--font-heading-family);
   font-size: var(--f3);
-  letter-spacing: -0.02em;
+  letter-spacing: var(--dmr-title-tracking);
   color: var(--dmr-eerie-black);
 }
 
@@ -498,7 +498,7 @@ body .blog__title,
 body .article__title,
 body .cart__title,
 body .contact__heading,
-body .notfound__title { letter-spacing: -0.03em; color: var(--dmr-eerie-black); }
+body .notfound__title { letter-spacing: var(--dmr-title-tracking); color: var(--dmr-eerie-black); }
 
 body .notfound__code {
   background: var(--dmr-gradient-linear);

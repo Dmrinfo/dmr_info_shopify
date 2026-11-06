@@ -71,11 +71,15 @@
     --cor-verde: {{ settings.color_sale }};
 
     /* Typography */
-    /* Fontes DMR (Google Fonts carregadas em theme.liquid) */
-    --font-heading-family: 'Instrument Sans', system-ui, sans-serif;
+    /* Fontes DMR, iguais ao site dmrinfo.com.br: Impact nos títulos e
+       Inter no corpo. Impact é fonte de sistema (Windows/macOS); fora
+       deles entra Anton, a substituta livre (Google Fonts, theme.liquid).
+       Impact tem peso único e já é condensada: tracking dos títulos = 0. */
+    --font-heading-family: Impact, 'Anton', Haettenschweiler, 'Franklin Gothic Bold', 'Arial Narrow Bold', sans-serif;
     --font-heading-weight: 400;
-    --font-body-family: 'Poppins', system-ui, sans-serif;
+    --font-body-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
     --font-body-weight: 400;
+    --dmr-title-tracking: 0em;
     --font-heading-scale: {{ settings.heading_scale | divided_by: 100.0 }};
     --font-body-scale: {{ settings.body_scale | divided_by: 100.0 }};
 

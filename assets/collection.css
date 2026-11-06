@@ -22,7 +22,7 @@
   margin: 0 0 24px;
   font-size: clamp(1.75rem, 1.2rem + 1.8vw, 2.5rem);
   line-height: 1.15;
-  letter-spacing: -0.03em;
+  letter-spacing: var(--dmr-title-tracking);
   color: var(--dmr-primary);
 }
 
@@ -79,7 +79,7 @@
   border-bottom: 1px solid var(--dmr-azureish-white);
 }
 
-.facets__title { margin: 0; font-size: var(--f4); letter-spacing: -0.02em; }
+.facets__title { margin: 0; font-size: var(--f4); letter-spacing: var(--dmr-title-tracking); }
 .facets__close { display: none; }
 
 .facets__group { border-bottom: 1px solid var(--dmr-azureish-white); }

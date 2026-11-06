@@ -79,7 +79,7 @@
 .banner-carousel__heading {
   color: #fff;
   font-size: clamp(2rem, 1.2rem + 3vw, 3.5rem);
-  letter-spacing: -0.03em;
+  letter-spacing: var(--dmr-title-tracking);
   line-height: 1.1;
   text-shadow: 0 2px 16px rgba(15, 23, 42, 0.35);
 }
