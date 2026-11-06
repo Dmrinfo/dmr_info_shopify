@@ -151,6 +151,7 @@
         "c1": {
           "type": "category",
           "settings": {
+            "image": "shopify://shop_images/card-cameras-cftv.png",
             "icon": "camera",
             "title": "Câmeras e CFTV",
             "text": "Monitoramento para casa e empresa.",
@@ -160,6 +161,7 @@
         "c2": {
           "type": "category",
           "settings": {
+            "image": "shopify://shop_images/card-alarmes-sensores.png",
             "icon": "shield",
             "title": "Alarmes e sensores",
             "text": "Proteção contra intrusão.",
