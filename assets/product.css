@@ -325,6 +325,19 @@
 
 .product-details__description img { max-width: 100%; height: auto; border-radius: var(--dmr-radius-md); }
 
+/* Subtítulos e blocos que vêm da descrição do produto (editor do Shopify) */
+.section-product-details .product-details__description :is(h1, h2, h3, h4) {
+  margin: 1.75em 0 0.5em;
+  font-size: clamp(1.25rem, 1.05rem + 0.7vw, 1.6rem);
+  line-height: 1.25;
+  color: var(--dmr-eerie-black);
+}
+
+.product-details__description :is(h1, h2, h3, h4):first-child { margin-top: 0; }
+.product-details__description p { margin: 0 0 1em; }
+.product-details__description :is(ul, ol) { margin: 0 0 1em; padding-left: 1.25em; }
+.product-details__description li + li { margin-top: 0.35em; }
+
 .product-specs {
   width: 100%;
   max-width: 960px;
