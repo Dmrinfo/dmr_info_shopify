@@ -155,15 +155,14 @@ Pedaços reutilizáveis chamados via `{% render 'nome' %}`.
 | `meta-tags.liquid` | Meta tags de SEO e redes sociais (Open Graph, Twitter) |
 | `structured-data-product.liquid` | JSON-LD do produto (rich snippet do Google) |
 | `structured-data-website.liquid` | JSON-LD do site/organização |
-| `price.liquid` | Renderiza preço (com preço "de/por" quando em promoção) |
 | `card-product.liquid` | Card de produto reutilizável (grades) |
 | `icon.liquid` | Ícones SVG inline (busca, carrinho, conta, redes…) |
 | `pagination.liquid` | Paginação acessível |
 | `localization-form.liquid` | Seletores nativos de país/moeda e idioma |
 | `newsletter-form.liquid` | Formulário de inscrição em newsletter |
 | `share-button.liquid` | Botão de compartilhar (Web Share API) |
-| `product-variant-selection.liquid` | JS que atualiza preço/disponibilidade ao trocar variante |
-| `product-media-gallery.liquid` | Estilos da galeria de mídia do produto |
+| `product-badges.liquid` | Etiquetas do produto (Frete Grátis) no card e na página de produto |
+| `card-price.liquid` | Preço com PIX, parcelas e (página de produto) De/Por e formas de pagamento |
 | `carrinho.liquid` | Placeholder do drawer de carrinho |
 | `alerta.liquid` | Toast de notificação (ex: "adicionado ao carrinho") |
 

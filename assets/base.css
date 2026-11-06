@@ -192,7 +192,6 @@ textarea.field__input {
 .card-product__info { padding: 12px 4px; }
 .card-product__vendor { display: block; font-size: var(--f0); opacity: 0.6; margin-bottom: 4px; }
 .card-product__title { font-size: var(--f2); font-weight: normal; margin-bottom: 6px; }
-.price--card { font-size: var(--f2); }
 
 /* Rich text content (RTE) shared styles */
 .rte a { color: var(--color-accent); }

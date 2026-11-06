@@ -1,0 +1,40 @@
+{%- comment -%}
+  ============================================================
+  product-badges — etiquetas do produto (ex.: "Frete Grátis")
+  ============================================================
+
+  O QUE FAZ:
+  Renderiza a lista de pílulas do produto. Hoje: "Frete Grátis" quando
+  o produto tem a tag de settings.card_free_shipping_tag (comparação
+  pelo handle, então "Frete Grátis" e "frete-gratis" valem igual).
+  Não renderiza nada se não houver etiqueta.
+
+  COMO USAR:
+  {% render 'product-badges', product: card_product, class: 'card-product__tags' %}
+
+  PARÂMETROS:
+  - product: objeto product.
+  - class: classe do <ul> (opcional; padrão 'card-product__tags').
+
+  OBSERVACOES:
+  Usado em snippets/card-product.liquid e sections/main-product.liquid.
+  Estilo em assets/dmr.css (.card-product__tags / .card-product__tag).
+{%- endcomment -%}
+{%- liquid
+  assign has_free_shipping = false
+  assign free_tag = settings.card_free_shipping_tag | handleize
+  if free_tag != blank
+    for tag in product.tags
+      assign tag_handle = tag | handleize
+      if tag_handle == free_tag
+        assign has_free_shipping = true
+        break
+      endif
+    endfor
+  endif
+-%}
+{%- if has_free_shipping -%}
+  <ul class="{{ class | default: 'card-product__tags' }}" role="list">
+    <li class="card-product__tag">{{ 'products.card.free_shipping' | t }}</li>
+  </ul>
+{%- endif -%}

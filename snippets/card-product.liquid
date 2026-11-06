@@ -20,8 +20,8 @@
   O card inteiro é clicável pelo link do título (::after cobre o card);
   os botões ficam por cima. "Comprar agora" adiciona 1 unidade e vai ao
   checkout (data-buy-now faz carrinho.js não interceptar); produto com
-  variantes leva à página dele para escolher. "Frete Grátis" aparece se
-  o produto tiver a tag de settings.card_free_shipping_tag.
+  variantes leva à página dele para escolher. "Frete Grátis" vem do
+  snippet 'product-badges' (tag de settings.card_free_shipping_tag).
   Aspect ratio da imagem vem de settings.card_image_ratio; segunda imagem
   de settings.card_show_second_image; vendor de settings.card_show_vendor;
   botões de settings.card_show_buttons.
@@ -38,18 +38,6 @@
         assign ratio = card_product.featured_media.aspect_ratio
       endif
   endcase
-
-  assign has_free_shipping = false
-  assign free_tag = settings.card_free_shipping_tag | handleize
-  if free_tag != blank
-    for tag in card_product.tags
-      assign tag_handle = tag | handleize
-      if tag_handle == free_tag
-        assign has_free_shipping = true
-        break
-      endif
-    endfor
-  endif
 
   assign checkout_url = routes.root_url | append: 'checkout' | replace: '//', '/'
 -%}
@@ -95,11 +83,7 @@
       <a href="{{ card_product.url }}" class="card-product__link">{{ card_product.title | escape }}</a>
     </h3>
     {% render 'card-price', product: card_product %}
-    {%- if has_free_shipping -%}
-      <ul class="card-product__tags" role="list">
-        <li class="card-product__tag">{{ 'products.card.free_shipping' | t }}</li>
-      </ul>
-    {%- endif -%}
+    {% render 'product-badges', product: card_product %}
   </div>
 
   {%- if settings.card_show_buttons -%}

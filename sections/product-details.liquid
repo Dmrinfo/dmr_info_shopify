@@ -1,0 +1,113 @@
+{%- comment -%}
+  ============================================================
+  product-details — "Detalhes" e "Especificações técnicas"
+  ============================================================
+
+  O QUE FAZ:
+  Abaixo do topo da página de produto: título centralizado "Detalhes"
+  com a descrição do produto e, em seguida, "Especificações técnicas"
+  numa tabela de duas colunas (rótulo | valor), como na loja Intelbras.
+
+  COMO USAR:
+  Em templates/product.json, depois de main-product. Cada linha da
+  tabela é um bloco "Linha da especificação" com o rótulo e o metacampo
+  de onde vem o valor (formato namespace.chave, ex.: custom.garantia).
+
+  PARÂMETROS (schema):
+  - details_heading, specs_heading: títulos das duas partes.
+  - Bloco spec_row: label, metafield.
+
+  OBSERVACOES:
+  Linha sem valor no produto não aparece; se nenhuma tiver valor, a
+  tabela inteira some. Metacampo de texto com várias linhas vira <br>;
+  rich text é renderizado com metafield_tag. Os metacampos precisam
+  existir em Configurações > Dados personalizados > Produtos.
+{%- endcomment -%}
+{{ 'product.css' | asset_url | stylesheet_tag }}
+
+{%- capture spec_rows -%}
+  {%- for block in section.blocks -%}
+    {%- liquid
+      assign key_parts = block.settings.metafield | strip | split: '.'
+      assign spec_value = nil
+      if key_parts.size == 2
+        assign spec_value = product.metafields[key_parts[0]][key_parts[1]]
+      endif
+    -%}
+    {%- if block.settings.label != blank and spec_value != blank -%}
+      <tr class="product-specs__row" {{ block.shopify_attributes }}>
+        <th class="product-specs__label" scope="row">{{ block.settings.label | escape }}</th>
+        <td class="product-specs__value">
+          {%- if spec_value.type == 'rich_text_field' -%}
+            {{ spec_value | metafield_tag }}
+          {%- else -%}
+            {{ spec_value.value | escape | newline_to_br }}
+          {%- endif -%}
+        </td>
+      </tr>
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+{%- assign spec_rows = spec_rows | strip -%}
+
+{%- if product.description != blank or spec_rows != '' -%}
+  <div class="product-details page-width">
+    {%- if product.description != blank -%}
+      <section class="product-details__part" aria-labelledby="ProductDetails-{{ section.id }}">
+        <h2 id="ProductDetails-{{ section.id }}" class="product-details__heading">{{ section.settings.details_heading | escape }}</h2>
+        <div class="product-details__description rte">{{ product.description }}</div>
+      </section>
+    {%- endif -%}
+
+    {%- if spec_rows != '' -%}
+      <section class="product-details__part" aria-labelledby="ProductSpecs-{{ section.id }}">
+        <h2 id="ProductSpecs-{{ section.id }}" class="product-details__heading">{{ section.settings.specs_heading | escape }}</h2>
+        <table class="product-specs">
+          <tbody>{{ spec_rows }}</tbody>
+        </table>
+      </section>
+    {%- endif -%}
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Detalhes e especificações",
+  "tag": "div",
+  "class": "section-product-details",
+  "max_blocks": 20,
+  "settings": [
+    { "type": "text", "id": "details_heading", "label": "Título da descrição", "default": "Detalhes" },
+    { "type": "text", "id": "specs_heading", "label": "Título da tabela", "default": "Especificações técnicas" }
+  ],
+  "blocks": [
+    {
+      "type": "spec_row",
+      "name": "Linha da especificação",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Rótulo", "default": "Garantia" },
+        {
+          "type": "text",
+          "id": "metafield",
+          "label": "Metacampo do produto",
+          "default": "custom.garantia",
+          "info": "Formato namespace.chave (ex.: custom.garantia). Crie em Configurações > Dados personalizados > Produtos."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Detalhes e especificações",
+      "blocks": [
+        { "type": "spec_row", "settings": { "label": "Características técnicas", "metafield": "custom.caracteristicas_tecnicas" } },
+        { "type": "spec_row", "settings": { "label": "Garantia", "metafield": "custom.garantia" } },
+        { "type": "spec_row", "settings": { "label": "Modelo do produto", "metafield": "custom.modelo" } },
+        { "type": "spec_row", "settings": { "label": "Cor", "metafield": "custom.cor" } },
+        { "type": "spec_row", "settings": { "label": "Conteúdo da embalagem", "metafield": "custom.conteudo_embalagem" } }
+      ]
+    }
+  ],
+  "enabled_on": { "templates": ["product"] }
+}
+{% endschema %}

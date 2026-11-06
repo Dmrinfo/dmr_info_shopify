@@ -124,7 +124,23 @@
       "free_shipping": "Free shipping",
       "buy_now": "Buy now",
       "view_more": "View more",
-      "view_more_label": "View more about {{ product }}"
+      "view_more_label": "View more about {{ product }}",
+      "from_label": "Was:",
+      "to_label": "Now:",
+      "pix_off": "({{ percent }}% OFF)",
+      "payment_options": "See payment options",
+      "payment_pix": "PIX",
+      "payment_card": "Credit card",
+      "installment_row": "{{ n }}x of {{ value }} interest-free"
+    },
+    "page": {
+      "breadcrumb": "You are here",
+      "home": "Home",
+      "sku": "Product code: {{ sku }}",
+      "gallery_previous": "Previous image",
+      "gallery_next": "Next image",
+      "gallery_thumbnail": "Show image {{ index }}",
+      "add_to_cart": "Add to cart"
     },
     "facets": {
       "sort_by_label": "Sort by:",

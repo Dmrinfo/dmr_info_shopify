@@ -124,7 +124,23 @@
       "free_shipping": "Frete Grátis",
       "buy_now": "Comprar agora",
       "view_more": "Ver mais",
-      "view_more_label": "Ver mais sobre {{ product }}"
+      "view_more_label": "Ver mais sobre {{ product }}",
+      "from_label": "De:",
+      "to_label": "Por:",
+      "pix_off": "({{ percent }}% OFF)",
+      "payment_options": "Ver formas de pagamento",
+      "payment_pix": "PIX à vista",
+      "payment_card": "Cartão de crédito",
+      "installment_row": "{{ n }}x de {{ value }} sem juros"
+    },
+    "page": {
+      "breadcrumb": "Você está em",
+      "home": "Início",
+      "sku": "Código do produto: {{ sku }}",
+      "gallery_previous": "Imagem anterior",
+      "gallery_next": "Próxima imagem",
+      "gallery_thumbnail": "Ver imagem {{ index }}",
+      "add_to_cart": "Adicionar ao carrinho"
     },
     "facets": {
       "sort_by_label": "Ordenar por:",

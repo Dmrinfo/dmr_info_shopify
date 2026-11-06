@@ -425,15 +425,7 @@ body .card-product__button:focus-visible { outline: 2px solid var(--dmr-primary)
   }
 }
 
-/* ---------- Produto (galeria) ---------- */
-body .product__media-item {
-  border: 1px solid var(--dmr-azureish-white);
-  border-radius: var(--dmr-radius-lg);
-  background: var(--dmr-alice-blue);
-}
-
-body .product__title { letter-spacing: var(--dmr-title-tracking); color: var(--dmr-eerie-black); }
-body .product__vendor { color: var(--dmr-metal-saurus); opacity: 1; }
+/* Página de produto: estilos em assets/product.css (carregado pela seção) */
 
 /* ---------- Footer ---------- */
 body .footer {
@@ -510,37 +502,13 @@ body .notfound__code {
 body .notfound__home { color: var(--dmr-primary); font-weight: 500; }
 body .notfound__home:hover { color: var(--dmr-primary-hover); }
 
-/* Produto: opções, quantidade, preço */
-body .product__swatch {
-  border-color: var(--dmr-azureish-white);
-  border-radius: var(--dmr-radius-pill);
-  background: #fff;
-  transition: border-color 0.2s ease, background-color 0.2s ease;
-}
-body .product__swatch:hover { border-color: var(--dmr-primary); }
-body .product__swatch.is-selected {
-  color: var(--dmr-primary);
-  background: var(--dmr-alice-blue);
-  border-color: var(--dmr-primary);
-}
-
+/* Seletor de quantidade (produto e carrinho) */
 body .quantity-selector {
   border-color: var(--dmr-azureish-white);
   border-radius: var(--dmr-radius-pill);
   background: var(--dmr-ghost-white);
 }
 body .quantity__button { color: var(--dmr-primary); }
-
-body .product__price { color: var(--dmr-primary); font-weight: 600; }
-body .price__compare { color: var(--dmr-metal-saurus); opacity: 1; }
-body .price__badge {
-  color: var(--dmr-primary);
-  background: #fff;
-  border: 1px solid var(--dmr-azureish-white);
-  border-radius: var(--dmr-radius-pill);
-}
-
-body .product__description { color: var(--dmr-independence); line-height: 1.7; }
 
 /* Carrinho */
 body .cart__summary {

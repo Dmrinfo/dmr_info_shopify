@@ -3,32 +3,49 @@
     "main": {
       "type": "main-product",
       "blocks": {
-        "vendor": { "type": "vendor" },
         "title": { "type": "title" },
+        "sku": { "type": "sku" },
+        "badges": { "type": "badges" },
         "price": { "type": "price" },
         "variant_picker": { "type": "variant_picker" },
-        "quantity": { "type": "quantity" },
         "buy_buttons": {
           "type": "buy_buttons",
-          "settings": { "show_dynamic_checkout": true }
-        },
-        "description": { "type": "description" },
-        "share": { "type": "share" }
+          "settings": { "show_buy_now": true, "show_dynamic_checkout": false }
+        }
       },
       "block_order": [
-        "vendor",
         "title",
+        "sku",
+        "badges",
         "price",
         "variant_picker",
-        "quantity",
-        "buy_buttons",
-        "description",
-        "share"
+        "buy_buttons"
       ]
+    },
+    "details": {
+      "type": "product-details",
+      "blocks": {
+        "spec_caracteristicas": { "type": "spec_row", "settings": { "label": "Características técnicas", "metafield": "custom.caracteristicas_tecnicas" } },
+        "spec_garantia": { "type": "spec_row", "settings": { "label": "Garantia", "metafield": "custom.garantia" } },
+        "spec_modelo": { "type": "spec_row", "settings": { "label": "Modelo do produto", "metafield": "custom.modelo" } },
+        "spec_cor": { "type": "spec_row", "settings": { "label": "Cor", "metafield": "custom.cor" } },
+        "spec_embalagem": { "type": "spec_row", "settings": { "label": "Conteúdo da embalagem", "metafield": "custom.conteudo_embalagem" } }
+      },
+      "block_order": [
+        "spec_caracteristicas",
+        "spec_garantia",
+        "spec_modelo",
+        "spec_cor",
+        "spec_embalagem"
+      ],
+      "settings": {
+        "details_heading": "Detalhes",
+        "specs_heading": "Especificações técnicas"
+      }
     },
     "related": {
       "type": "related-products"
     }
   },
-  "order": ["main", "related"]
+  "order": ["main", "details", "related"]
 }

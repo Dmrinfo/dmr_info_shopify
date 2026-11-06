@@ -1,18 +1,23 @@
 {%- comment -%}
   ============================================================
-  card-price — bloco de preço do card de produto
+  card-price — bloco de preço (card e página de produto)
   ============================================================
 
   O QUE FAZ:
   Mostra o preço de referência riscado + pílula "X% OFF", o preço
   grande (com desconto do PIX, se houver) + "no PIX à vista" e a
-  linha de parcelamento sem juros.
+  linha de parcelamento sem juros. No modo da página de produto
+  (labels: true) acrescenta "De:" / "Por:", o "(X% OFF)" do PIX e o
+  quadro "Ver formas de pagamento" com PIX e todas as parcelas.
 
   COMO USAR:
   {% render 'card-price', product: card_product %}
+  {% render 'card-price', product: product, variant: current_variant, labels: true %}
 
   PARÂMETROS:
   - product: objeto product.
+  - variant: variante (opcional). Com ela, o preço é o da variante.
+  - labels (bool): modo página de produto.
 
   OBSERVACOES:
   Lê settings.card_pix_discount (%) e settings.card_installments (x).
@@ -24,17 +29,28 @@
 {%- liquid
   assign pix = settings.card_pix_discount | default: 0
   assign installments = settings.card_installments | default: 1
-  assign price = product.price
+
+  if variant
+    assign price = variant.price
+    assign compare_at = variant.compare_at_price | default: 0
+    assign price_varies = false
+  else
+    assign price = product.price
+    assign compare_at = product.compare_at_price | default: 0
+    assign price_varies = product.price_varies
+  endif
 
   assign final_price = price
+  assign pix_off = 0
   if pix > 0
     assign factor = 100 | minus: pix
     assign final_price = price | times: factor | divided_by: 100
+    assign pix_off = pix
   endif
 
   assign reference = price
-  if product.compare_at_price > price
-    assign reference = product.compare_at_price
+  if compare_at > price
+    assign reference = compare_at
   endif
 
   assign off = 0
@@ -42,17 +58,24 @@
     assign off = reference | minus: final_price | times: 100.0 | divided_by: reference | round
   endif
 -%}
-<div class="card-price">
+<div class="card-price{% if labels %} card-price--product{% endif %}">
   {%- if off > 0 -%}
     <div class="card-price__top">
-      <span class="visually-hidden">{{ 'products.card.regular_price' | t }}</span>
+      {%- if labels -%}
+        <span class="card-price__label">{{ 'products.card.from_label' | t }}</span>
+      {%- else -%}
+        <span class="visually-hidden">{{ 'products.card.regular_price' | t }}</span>
+      {%- endif -%}
       <s class="card-price__compare">{{ reference | money }}</s>
       <span class="card-price__off">{{ 'products.card.off' | t: percent: off }}</span>
     </div>
   {%- endif -%}
 
   <div class="card-price__main">
-    {%- if product.price_varies -%}
+    {%- if labels and off > 0 -%}
+      <span class="card-price__label">{{ 'products.card.to_label' | t }}</span>
+    {%- endif -%}
+    {%- if price_varies -%}
       <span class="card-price__from">{{ 'products.card.from' | t }}</span>
     {%- endif -%}
     {%- if pix > 0 -%}
@@ -60,7 +83,10 @@
     {%- endif -%}
     <span class="card-price__value">{{ final_price | money }}</span>
     {%- if pix > 0 -%}
-      <span class="card-price__pix">{{ 'products.card.pix' | t }}</span>
+      <span class="card-price__pix">
+        {{- 'products.card.pix' | t -}}
+        {%- if labels %} {{ 'products.card.pix_off' | t: percent: pix_off }}{% endif -%}
+      </span>
     {%- endif -%}
   </div>
 
@@ -70,5 +96,38 @@
       assign installment_money = installment_value | money
     -%}
     <p class="card-price__installments">{{ 'products.card.installments' | t: n: installments, value: installment_money }}</p>
+  {%- endif -%}
+
+  {%- if labels and pix > 0 or labels and installments > 1 -%}
+    <details class="card-price__payments">
+      <summary class="card-price__payments-toggle">
+        {{- 'products.card.payment_options' | t -}}
+        {% render 'icon', name: 'chevron-right', class: 'card-price__payments-icon' %}
+      </summary>
+      <div class="card-price__payments-panel">
+        {%- if pix > 0 -%}
+          <p class="card-price__payments-title">{{ 'products.card.payment_pix' | t }}</p>
+          <p class="card-price__payments-row">
+            <span>{{ final_price | money }}</span>
+            <span>{{ 'products.card.pix_off' | t: percent: pix_off }}</span>
+          </p>
+        {%- endif -%}
+        {%- if installments > 1 -%}
+          <p class="card-price__payments-title">{{ 'products.card.payment_card' | t }}</p>
+          <ul class="card-price__payments-list" role="list">
+            {%- for n in (1..installments) -%}
+              {%- liquid
+                assign row_value = price | plus: n | minus: 1 | divided_by: n
+                assign row_money = row_value | money
+              -%}
+              <li class="card-price__payments-row">
+                <span>{{ 'products.card.installment_row' | t: n: n, value: row_money }}</span>
+                <span>{{ price | money }}</span>
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      </div>
+    </details>
   {%- endif -%}
 </div>
