@@ -1,0 +1,129 @@
+{%- comment -%}
+  ============================================================
+  product-carousel — vitrine com abas e carrossel de produtos
+  ============================================================
+
+  O QUE FAZ:
+  Abas no topo (ex.: "Mais vendidos", "Ofertas do dia",
+  "Lançamentos"), cada uma mostrando os produtos de uma coleção num
+  carrossel com setas e bolinhas, usando o mesmo card da loja
+  (snippets/card-product.liquid, com preço PIX e botões no hover).
+
+  COMO USAR:
+  Adicione "Carrossel de produtos" na home e inclua blocos "Aba",
+  escolhendo a coleção de cada uma.
+
+  PARÂMETROS (schema):
+  - heading: título opcional acima das abas.
+  - products_to_show: produtos por aba (4 a 24).
+  - Bloco tab: label, collection.
+
+  OBSERVACOES:
+  Aba sem coleção ou com coleção vazia não aparece. Se nenhuma aba
+  tiver produtos, mostra os produtos da loja (coleção "all").
+  Carrossel por scroll-snap; setas, bolinhas e troca de aba em
+  assets/product-carousel.js. A faixa tem respiro embaixo para os
+  botões do hover dos cards não serem cortados.
+{%- endcomment -%}
+{{ 'product-carousel.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign limit = section.settings.products_to_show
+  assign tab_count = 0
+  for block in section.blocks
+    if block.settings.collection != blank and block.settings.collection.products_count > 0
+      assign tab_count = tab_count | plus: 1
+    endif
+  endfor
+  assign prev_label = 'sections.product_carousel.previous' | t
+  assign next_label = 'sections.product_carousel.next' | t
+  assign region_label = section.settings.heading | default: 'Produtos'
+-%}
+
+<section class="product-carousel page-width" data-product-carousel aria-label="{{ region_label | escape }}">
+  {%- if section.settings.heading != blank -%}
+    <h2 class="product-carousel__heading">{{ section.settings.heading | escape }}</h2>
+  {%- endif -%}
+
+  {%- if tab_count > 0 -%}
+    {%- if tab_count > 1 -%}
+      <div class="product-carousel__tabs" role="tablist">
+        {%- assign first_done = false -%}
+        {%- for block in section.blocks -%}
+          {%- if block.settings.collection != blank and block.settings.collection.products_count > 0 -%}
+            <button
+              type="button"
+              class="product-carousel__tab"
+              role="tab"
+              id="Tab-{{ section.id }}-{{ block.id }}"
+              aria-controls="Panel-{{ section.id }}-{{ block.id }}"
+              aria-selected="{% if first_done %}false{% else %}true{% endif %}"
+              {% if first_done %}tabindex="-1"{% endif %}
+              {{ block.shopify_attributes }}
+            >
+              {{- block.settings.label | default: block.settings.collection.title | escape -}}
+            </button>
+            {%- assign first_done = true -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    {%- assign first_done = false -%}
+    {%- for block in section.blocks -%}
+      {%- if block.settings.collection != blank and block.settings.collection.products_count > 0 -%}
+        <div
+          class="product-carousel__panel"
+          id="Panel-{{ section.id }}-{{ block.id }}"
+          {% if tab_count > 1 %}role="tabpanel" aria-labelledby="Tab-{{ section.id }}-{{ block.id }}"{% endif %}
+          {% if first_done %}hidden{% endif %}
+          data-carousel-panel
+        >
+          {% render 'product-carousel-track', products: block.settings.collection.products, limit: limit, prev_label: prev_label, next_label: next_label %}
+        </div>
+        {%- assign first_done = true -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- elsif collections.all.products_count > 0 -%}
+    <div class="product-carousel__panel" data-carousel-panel>
+      {% render 'product-carousel-track', products: collections.all.products, limit: limit, prev_label: prev_label, next_label: next_label %}
+    </div>
+  {%- elsif request.design_mode -%}
+    <p class="product-carousel__empty">{{ 'sections.product_carousel.empty' | t }}</p>
+  {%- endif -%}
+</section>
+
+<script src="{{ 'product-carousel.js' | asset_url }}" defer="defer"></script>
+
+{% schema %}
+{
+  "name": "Carrossel de produtos",
+  "tag": "div",
+  "class": "section-product-carousel",
+  "max_blocks": 6,
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Título", "info": "Opcional." },
+    { "type": "range", "id": "products_to_show", "min": 4, "max": 24, "step": 1, "label": "Produtos por aba", "default": 12 }
+  ],
+  "blocks": [
+    {
+      "type": "tab",
+      "name": "Aba",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Nome da aba", "default": "Mais vendidos" },
+        { "type": "collection", "id": "collection", "label": "Coleção", "info": "Para \"Mais vendidos\", use uma coleção com ordenação \"Mais vendidos\"." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Carrossel de produtos",
+      "blocks": [
+        { "type": "tab", "settings": { "label": "Mais vendidos" } },
+        { "type": "tab", "settings": { "label": "Ofertas do dia" } },
+        { "type": "tab", "settings": { "label": "Lançamentos" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

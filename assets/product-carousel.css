@@ -1,0 +1,181 @@
+/*
+  ============================================================
+  product-carousel.css — vitrine com abas e carrossel de produtos
+  ============================================================
+
+  O QUE FAZ:
+  Estiliza sections/product-carousel.liquid e o snippet
+  product-carousel-track: abas de texto com sublinhado em degradê,
+  faixa de cards com scroll-snap (4 por vez no desktop, 3 no tablet,
+  2 no celular) e controles embaixo (setas redondas + bolinhas).
+
+  OBSERVACOES:
+  Os botões do hover do card (dmr.css) descem abaixo do card; por isso
+  a faixa tem padding-bottom e margin-bottom negativo do mesmo tamanho
+  (--pc-hover-room) só onde existe hover. Tokens --dmr-*.
+*/
+
+.product-carousel {
+  --pc-per-view: 4;
+  --pc-gap: 20px;
+  --pc-hover-room: 0px;
+  padding-top: clamp(32px, 5vw, 64px);
+  padding-bottom: clamp(16px, 3vw, 32px);
+}
+
+@media (any-hover: hover) {
+  .product-carousel { --pc-hover-room: 132px; }
+}
+
+.product-carousel__heading {
+  margin: 0 0 16px;
+  text-align: center;
+}
+
+/* Abas */
+.product-carousel__tabs {
+  display: flex;
+  justify-content: center;
+  gap: clamp(20px, 4vw, 56px);
+  margin-bottom: 24px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.product-carousel__tabs::-webkit-scrollbar { display: none; }
+
+.product-carousel__tab {
+  position: relative;
+  flex: none;
+  padding: 6px 0 10px;
+  font: inherit;
+  font-size: clamp(1.0625rem, 0.95rem + 0.5vw, 1.375rem);
+  font-weight: 500;
+  color: var(--dmr-metal-saurus);
+  white-space: nowrap;
+  cursor: pointer;
+  background: none;
+  border: 0;
+  transition: color 0.2s ease;
+}
+
+.product-carousel__tab::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  background: var(--dmr-gradient-button);
+  border-radius: var(--dmr-radius-pill);
+  transform: scaleX(0);
+  transition: transform 0.25s ease;
+}
+
+.product-carousel__tab:hover { color: var(--dmr-eerie-black); }
+.product-carousel__tab[aria-selected="true"] { color: var(--dmr-primary); }
+.product-carousel__tab[aria-selected="true"]::after { transform: scaleX(1); }
+.product-carousel__tab:focus-visible { outline: 2px solid var(--dmr-primary); outline-offset: 4px; border-radius: 4px; }
+
+/* Faixa */
+.product-carousel__track {
+  display: flex;
+  gap: var(--pc-gap);
+  margin: 0 0 calc(var(--pc-hover-room) * -1);
+  padding: 4px 2px var(--pc-hover-room);
+  overflow-x: auto;
+  list-style: none;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.product-carousel__track::-webkit-scrollbar { display: none; }
+
+.product-carousel__item {
+  flex: 0 0 calc((100% - (var(--pc-per-view) - 1) * var(--pc-gap)) / var(--pc-per-view));
+  min-width: 0;
+  scroll-snap-align: start;
+}
+
+/* Controles */
+.product-carousel__controls {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.product-carousel__controls[hidden] { display: none; }
+
+.product-carousel__arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  color: #fff;
+  cursor: pointer;
+  background: var(--dmr-gradient-button);
+  border: 0;
+  border-radius: 50%;
+  box-shadow: var(--dmr-shadow-button);
+  transition: box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.product-carousel__arrow:hover { box-shadow: var(--dmr-shadow-button-hover); }
+.product-carousel__arrow:focus-visible { outline: 2px solid var(--dmr-primary); outline-offset: 2px; }
+
+.product-carousel__arrow:disabled {
+  color: var(--dmr-metal-saurus);
+  cursor: default;
+  background: #fff;
+  border: 1px solid var(--dmr-azureish-white);
+  box-shadow: none;
+  opacity: 0.6;
+}
+
+.product-carousel__arrow--prev .product-carousel__arrow-icon { transform: rotate(180deg); }
+.product-carousel__arrow-icon { width: 18px; height: 18px; }
+
+.product-carousel__dots { display: flex; align-items: center; gap: 6px; }
+
+.product-carousel__dot {
+  width: 10px;
+  height: 10px;
+  padding: 0;
+  cursor: pointer;
+  background: var(--dmr-azureish-white);
+  border: 0;
+  border-radius: var(--dmr-radius-pill);
+  transition: width 0.25s ease, background-color 0.2s ease;
+}
+
+.product-carousel__dot[aria-current="true"] {
+  width: 28px;
+  background: var(--dmr-gradient-button);
+}
+
+.product-carousel__dot:focus-visible { outline: 2px solid var(--dmr-primary); outline-offset: 2px; }
+
+.product-carousel__empty { text-align: center; color: var(--dmr-metal-saurus); }
+
+@media screen and (max-width: 1000px) {
+  .product-carousel { --pc-per-view: 3; --pc-gap: 14px; }
+}
+
+@media screen and (max-width: 749px) {
+  .product-carousel { --pc-per-view: 2; --pc-gap: 12px; }
+  .product-carousel__tabs { justify-content: flex-start; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .product-carousel__tab,
+  .product-carousel__tab::after,
+  .product-carousel__arrow,
+  .product-carousel__dot { transition: none; }
+}

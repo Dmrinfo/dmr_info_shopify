@@ -266,6 +266,12 @@
     },
     "collection_banner": {
       "placeholder": "Add an image to this collection (Products → Collections → Image) to show the banner. Recommended size: 2400 × 600 px."
+    },
+    "product_carousel": {
+      "previous": "Previous products",
+      "next": "Next products",
+      "page": "Page",
+      "empty": "Pick a collection with products for each tab."
     }
   },
   "customer": {
