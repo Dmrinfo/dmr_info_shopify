@@ -12,8 +12,7 @@
      controles somem.
 
   OBSERVACOES:
-  Marcação em sections/product-carousel.liquid e
-  snippets/product-carousel-track.liquid. O texto das bolinhas vem de
+  Marcação em sections/product-carousel.liquid. O texto das bolinhas vem de
   data-dot-label ("Página") + número. Recalcula ao redimensionar.
 */
 (function () {

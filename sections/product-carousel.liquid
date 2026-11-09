@@ -49,7 +49,21 @@
   assign prev_label = 'sections.product_carousel.previous' | t
   assign next_label = 'sections.product_carousel.next' | t
   assign region_label = section.settings.heading | default: 'Produtos'
+  assign dot_label = 'sections.product_carousel.page' | t
 -%}
+
+{%- comment -%} Controles (setas + bolinhas geradas pelo JS), iguais em todo painel {%- endcomment -%}
+{%- capture carousel_controls -%}
+  <div class="product-carousel__controls" data-carousel-controls>
+    <button type="button" class="product-carousel__arrow product-carousel__arrow--prev" data-carousel-prev aria-label="{{ prev_label | escape }}" disabled>
+      {% render 'icon', name: 'chevron-right', class: 'product-carousel__arrow-icon' %}
+    </button>
+    <div class="product-carousel__dots" data-carousel-dots data-dot-label="{{ dot_label | escape }}"></div>
+    <button type="button" class="product-carousel__arrow product-carousel__arrow--next" data-carousel-next aria-label="{{ next_label | escape }}">
+      {% render 'icon', name: 'chevron-right', class: 'product-carousel__arrow-icon' %}
+    </button>
+  </div>
+{%- endcapture -%}
 
 <section class="product-carousel page-width" data-product-carousel aria-label="{{ region_label | escape }}">
   {%- if section.settings.heading != blank -%}
@@ -104,14 +118,24 @@
           {% if first_done %}hidden{% endif %}
           data-carousel-panel
         >
-          {% render 'product-carousel-track', products: tab_collection.products, limit: limit, prev_label: prev_label, next_label: next_label %}
+          <ul class="product-carousel__track" role="list" data-carousel-track>
+            {%- for product in tab_collection.products limit: limit -%}
+              <li class="product-carousel__item">{% render 'card-product', card_product: product %}</li>
+            {%- endfor -%}
+          </ul>
+          {{ carousel_controls }}
         </div>
         {%- assign first_done = true -%}
       {%- endif -%}
     {%- endfor -%}
   {%- elsif collections.all.products.size > 0 -%}
     <div class="product-carousel__panel" data-carousel-panel>
-      {% render 'product-carousel-track', products: collections.all.products, limit: limit, prev_label: prev_label, next_label: next_label %}
+      <ul class="product-carousel__track" role="list" data-carousel-track>
+        {%- for product in collections.all.products limit: limit -%}
+          <li class="product-carousel__item">{% render 'card-product', card_product: product %}</li>
+        {%- endfor -%}
+      </ul>
+      {{ carousel_controls }}
     </div>
   {%- elsif request.design_mode -%}
     <p class="product-carousel__empty">{{ 'sections.product_carousel.empty' | t }}</p>
