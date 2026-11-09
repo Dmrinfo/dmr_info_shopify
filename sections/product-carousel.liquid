@@ -27,11 +27,22 @@
 {%- endcomment -%}
 {{ 'product-carousel.css' | asset_url | stylesheet_tag }}
 
+{%- comment -%}
+  Coleção de cada aba: a escolhida no bloco; se vazia, a de handle igual
+  ao nome da aba ("Mais vendidos" -> mais-vendidos). Assim a aba funciona
+  mesmo quando a coleção foi criada depois de a seção ser configurada.
+  Aba só conta se a coleção tiver produtos (products.size).
+{%- endcomment -%}
 {%- liquid
   assign limit = section.settings.products_to_show
   assign tab_count = 0
   for block in section.blocks
-    if block.settings.collection != blank and block.settings.collection.products_count > 0
+    assign tab_collection = block.settings.collection
+    if tab_collection == blank
+      assign tab_handle = block.settings.label | handleize
+      assign tab_collection = collections[tab_handle]
+    endif
+    if tab_collection != blank and tab_collection.products.size > 0
       assign tab_count = tab_count | plus: 1
     endif
   endfor
@@ -50,7 +61,14 @@
       <div class="product-carousel__tabs" role="tablist">
         {%- assign first_done = false -%}
         {%- for block in section.blocks -%}
-          {%- if block.settings.collection != blank and block.settings.collection.products_count > 0 -%}
+          {%- liquid
+            assign tab_collection = block.settings.collection
+            if tab_collection == blank
+              assign tab_handle = block.settings.label | handleize
+              assign tab_collection = collections[tab_handle]
+            endif
+          -%}
+          {%- if tab_collection != blank and tab_collection.products.size > 0 -%}
             <button
               type="button"
               class="product-carousel__tab"
@@ -61,7 +79,7 @@
               {% if first_done %}tabindex="-1"{% endif %}
               {{ block.shopify_attributes }}
             >
-              {{- block.settings.label | default: block.settings.collection.title | escape -}}
+              {{- block.settings.label | default: tab_collection.title | escape -}}
             </button>
             {%- assign first_done = true -%}
           {%- endif -%}
@@ -71,7 +89,14 @@
 
     {%- assign first_done = false -%}
     {%- for block in section.blocks -%}
-      {%- if block.settings.collection != blank and block.settings.collection.products_count > 0 -%}
+      {%- liquid
+        assign tab_collection = block.settings.collection
+        if tab_collection == blank
+          assign tab_handle = block.settings.label | handleize
+          assign tab_collection = collections[tab_handle]
+        endif
+      -%}
+      {%- if tab_collection != blank and tab_collection.products.size > 0 -%}
         <div
           class="product-carousel__panel"
           id="Panel-{{ section.id }}-{{ block.id }}"
@@ -79,12 +104,12 @@
           {% if first_done %}hidden{% endif %}
           data-carousel-panel
         >
-          {% render 'product-carousel-track', products: block.settings.collection.products, limit: limit, prev_label: prev_label, next_label: next_label %}
+          {% render 'product-carousel-track', products: tab_collection.products, limit: limit, prev_label: prev_label, next_label: next_label %}
         </div>
         {%- assign first_done = true -%}
       {%- endif -%}
     {%- endfor -%}
-  {%- elsif collections.all.products_count > 0 -%}
+  {%- elsif collections.all.products.size > 0 -%}
     <div class="product-carousel__panel" data-carousel-panel>
       {% render 'product-carousel-track', products: collections.all.products, limit: limit, prev_label: prev_label, next_label: next_label %}
     </div>
