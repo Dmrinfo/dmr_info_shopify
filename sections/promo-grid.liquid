@@ -1,0 +1,124 @@
+{%- comment -%}
+  ============================================================
+  promo-grid — grade de banners promocionais (bento)
+  ============================================================
+
+  O QUE FAZ:
+  Até 4 banners num mosaico: 1º alto à esquerda, 2º largo em cima à
+  direita, 3º e 4º quadrados embaixo. Cada banner tem a arte (imagem)
+  sobre fundo escuro e o botão "Comprar" embaixo, centralizado.
+
+  COMO USAR:
+  Adicione "Banners em grade" na home e preencha os blocos "Banner"
+  na ordem do mosaico. Tamanhos sugeridos da arte:
+  1º 900×1100, 2º 1200×640, 3º e 4º 640×640 (PNG/JPG/WebP).
+
+  PARÂMETROS (schema):
+  - heading: título opcional acima da grade.
+  - Bloco banner: image, image_mobile, heading, text, button_label, link.
+
+  OBSERVACOES:
+  Sem imagem, o banner mostra título e texto sobre o fundo escuro com
+  brilho azul-céu (padrão do site DMR). O banner inteiro é clicável
+  quando há link (::after do botão cobre o card). No celular os banners
+  ficam empilhados. Estilo em assets/promo-grid.css.
+{%- endcomment -%}
+{{ 'promo-grid.css' | asset_url | stylesheet_tag }}
+
+<section class="promo-grid page-width"{% if section.settings.heading != blank %} aria-labelledby="PromoGrid-{{ section.id }}"{% else %} aria-label="Ofertas"{% endif %}>
+  {%- if section.settings.heading != blank -%}
+    <h2 id="PromoGrid-{{ section.id }}" class="promo-grid__heading">{{ section.settings.heading | escape }}</h2>
+  {%- endif -%}
+
+  <div class="promo-grid__grid promo-grid__grid--{{ section.blocks.size }}">
+    {%- for block in section.blocks -%}
+      {%- liquid
+        assign has_image = false
+        if block.settings.image != blank
+          assign has_image = true
+        endif
+        assign img_alt = block.settings.image.alt | default: block.settings.heading
+        assign img_sizes = '(min-width: 750px) 33vw, 100vw'
+        if forloop.index == 1 or forloop.index == 2
+          assign img_sizes = '(min-width: 750px) 50vw, 100vw'
+        endif
+      -%}
+      <article class="promo-grid__item promo-grid__item--{{ forloop.index }}{% unless has_image %} promo-grid__item--text{% endunless %}" {{ block.shopify_attributes }}>
+        <div class="promo-grid__media">
+          {%- if has_image -%}
+            <picture>
+              {%- if block.settings.image_mobile != blank -%}
+                <source media="(max-width: 749px)" srcset="{{ block.settings.image_mobile | image_url: width: 900 }}">
+              {%- endif -%}
+              {{
+                block.settings.image
+                | image_url: width: 1400
+                | image_tag: loading: 'lazy', widths: '480, 720, 960, 1200, 1400', sizes: img_sizes, alt: img_alt, class: 'promo-grid__image'
+              }}
+            </picture>
+          {%- else -%}
+            <div class="promo-grid__text">
+              {%- if block.settings.heading != blank -%}
+                <h3 class="promo-grid__title">{{ block.settings.heading | escape }}</h3>
+              {%- endif -%}
+              {%- if block.settings.text != blank -%}
+                <p class="promo-grid__copy">{{ block.settings.text | escape }}</p>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        </div>
+
+        {%- if block.settings.button_label != blank and block.settings.link != blank -%}
+          <a class="promo-grid__button" href="{{ block.settings.link }}">
+            {{- block.settings.button_label | escape -}}
+            {%- if has_image and block.settings.heading != blank -%}
+              <span class="visually-hidden">: {{ block.settings.heading | escape }}</span>
+            {%- endif -%}
+          </a>
+        {%- endif -%}
+      </article>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Banners em grade",
+  "tag": "div",
+  "class": "section-promo-grid",
+  "max_blocks": 4,
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Título", "info": "Opcional." }
+  ],
+  "blocks": [
+    {
+      "type": "banner",
+      "name": "Banner",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Arte do banner",
+          "info": "Sugestão: 1º banner 900×1100, 2º 1200×640, 3º e 4º 640×640."
+        },
+        { "type": "image_picker", "id": "image_mobile", "label": "Arte no celular", "info": "Opcional." },
+        { "type": "text", "id": "heading", "label": "Título", "default": "Oferta", "info": "Aparece quando não há arte; com arte, é usado só por leitores de tela." },
+        { "type": "text", "id": "text", "label": "Texto", "info": "Aparece quando não há arte." },
+        { "type": "text", "id": "button_label", "label": "Texto do botão", "default": "Comprar" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Banners em grade",
+      "blocks": [
+        { "type": "banner" },
+        { "type": "banner" },
+        { "type": "banner" },
+        { "type": "banner" }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -210,6 +210,17 @@
         "show_view_all": true
       }
     },
+    "promo_grid": {
+      "type": "promo-grid",
+      "blocks": {
+        "banner_1": { "type": "banner", "settings": { "heading": "Câmeras de segurança", "text": "Monitore casa e empresa com imagens em alta definição.", "button_label": "Comprar", "link": "shopify://collections/cameras" } },
+        "banner_2": { "type": "banner", "settings": { "heading": "Alarmes", "text": "Centrais, sensores e sirenes para proteger o seu espaço.", "button_label": "Comprar", "link": "shopify://collections/alarme" } },
+        "banner_3": { "type": "banner", "settings": { "heading": "Redes e Wi-Fi", "text": "Roteadores e equipamentos de rede.", "button_label": "Comprar", "link": "shopify://collections/redes" } },
+        "banner_4": { "type": "banner", "settings": { "heading": "Controle de acesso", "text": "Catracas, leitores e fechaduras.", "button_label": "Comprar", "link": "shopify://collections/controle-de-acesso" } }
+      },
+      "block_order": ["banner_1", "banner_2", "banner_3", "banner_4"],
+      "settings": { "heading": "" }
+    },
     "cta": {
       "type": "rich-text",
       "blocks": {
@@ -246,6 +257,7 @@
     "category_circles",
     "categories",
     "featured",
+    "promo_grid",
     "cta"
   ]
 }
