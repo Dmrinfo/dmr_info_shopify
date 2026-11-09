@@ -104,7 +104,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 20px;
+  gap: clamp(32px, 8vw, 96px);
   margin-top: 20px;
 }
 

@@ -224,6 +224,70 @@
       "block_order": ["banner_1", "banner_2", "banner_3", "banner_4"],
       "settings": { "heading": "" }
     },
+    "carousel_cameras": {
+      "type": "product-carousel",
+      "blocks": {
+        "tab": { "type": "tab", "settings": { "label": "Câmeras", "collection": "cameras" } }
+      },
+      "block_order": ["tab"],
+      "settings": { "heading": "Câmeras", "products_to_show": 12, "fallback_all": false }
+    },
+    "carousel_gravadores_digitais": {
+      "type": "product-carousel",
+      "blocks": {
+        "tab": { "type": "tab", "settings": { "label": "Gravadores Digitais", "collection": "gravadores-digitais" } }
+      },
+      "block_order": ["tab"],
+      "settings": { "heading": "Gravadores Digitais", "products_to_show": 12, "fallback_all": false }
+    },
+    "carousel_alarme": {
+      "type": "product-carousel",
+      "blocks": {
+        "tab": { "type": "tab", "settings": { "label": "Alarme", "collection": "alarme" } }
+      },
+      "block_order": ["tab"],
+      "settings": { "heading": "Alarme", "products_to_show": 12, "fallback_all": false }
+    },
+    "carousel_cerca_eletrica": {
+      "type": "product-carousel",
+      "blocks": {
+        "tab": { "type": "tab", "settings": { "label": "Cerca Elétrica", "collection": "cerca-eletrica" } }
+      },
+      "block_order": ["tab"],
+      "settings": { "heading": "Cerca Elétrica", "products_to_show": 12, "fallback_all": false }
+    },
+    "carousel_interfonia": {
+      "type": "product-carousel",
+      "blocks": {
+        "tab": { "type": "tab", "settings": { "label": "Interfonia", "collection": "interfonia" } }
+      },
+      "block_order": ["tab"],
+      "settings": { "heading": "Interfonia", "products_to_show": 12, "fallback_all": false }
+    },
+    "carousel_redes": {
+      "type": "product-carousel",
+      "blocks": {
+        "tab": { "type": "tab", "settings": { "label": "Redes", "collection": "redes" } }
+      },
+      "block_order": ["tab"],
+      "settings": { "heading": "Redes", "products_to_show": 12, "fallback_all": false }
+    },
+    "carousel_controle_de_acesso": {
+      "type": "product-carousel",
+      "blocks": {
+        "tab": { "type": "tab", "settings": { "label": "Controle de Acesso", "collection": "controle-de-acesso" } }
+      },
+      "block_order": ["tab"],
+      "settings": { "heading": "Controle de Acesso", "products_to_show": 12, "fallback_all": false }
+    },
+    "carousel_informatica": {
+      "type": "product-carousel",
+      "blocks": {
+        "tab": { "type": "tab", "settings": { "label": "Informática", "collection": "informatica" } }
+      },
+      "block_order": ["tab"],
+      "settings": { "heading": "Informática", "products_to_show": 12, "fallback_all": false }
+    },
     "cta": {
       "type": "rich-text",
       "blocks": {
@@ -261,6 +325,14 @@
     "categories",
     "product_carousel",
     "promo_grid",
+    "carousel_cameras",
+    "carousel_gravadores_digitais",
+    "carousel_alarme",
+    "carousel_cerca_eletrica",
+    "carousel_interfonia",
+    "carousel_redes",
+    "carousel_controle_de_acesso",
+    "carousel_informatica",
     "cta"
   ]
 }
