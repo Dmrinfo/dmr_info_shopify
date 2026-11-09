@@ -200,17 +200,14 @@
         "columns_desktop": 4
       }
     },
-    "product_carousel": {
-      "type": "product-carousel",
-      "blocks": {
-        "tab_mais_vendidos": { "type": "tab", "settings": { "label": "Mais vendidos", "collection": "mais-vendidos" } },
-        "tab_ofertas": { "type": "tab", "settings": { "label": "Ofertas do dia", "collection": "ofertas-do-dia" } },
-        "tab_lancamentos": { "type": "tab", "settings": { "label": "Lançamentos", "collection": "lancamentos" } }
-      },
-      "block_order": ["tab_mais_vendidos", "tab_ofertas", "tab_lancamentos"],
+    "featured": {
+      "type": "featured-collection",
       "settings": {
-        "heading": "",
-        "products_to_show": 12
+        "heading": "Produtos em destaque",
+        "collection": "mais-vendidos",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "show_view_all": true
       }
     },
     "cta": {
@@ -247,8 +244,8 @@
   "order": [
     "hero",
     "category_circles",
-    "product_carousel",
     "categories",
+    "featured",
     "cta"
   ]
 }
