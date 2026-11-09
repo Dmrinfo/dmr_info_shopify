@@ -213,6 +213,18 @@
         "products_to_show": 12
       }
     },
+    "big_banner": {
+      "type": "big-banner",
+      "settings": {
+        "image_side": "left",
+        "style": "blue",
+        "heading": "Segurança e tecnologia que resolvem para você.",
+        "text": "Câmeras, alarmes, controle de acesso e redes para proteger e conectar a sua casa ou empresa.",
+        "tagline": "A escolha é sua. A proteção é DMR.",
+        "button_label": "Ver produtos",
+        "link": "shopify://collections/all"
+      }
+    },
     "promo_grid": {
       "type": "promo-grid",
       "blocks": {
@@ -324,6 +336,7 @@
     "category_circles",
     "categories",
     "product_carousel",
+    "big_banner",
     "promo_grid",
     "carousel_cameras",
     "carousel_gravadores_digitais",

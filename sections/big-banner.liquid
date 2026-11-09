@@ -1,0 +1,114 @@
+{%- comment -%}
+  ============================================================
+  big-banner — faixa larga com produto "saltando" da faixa
+  ============================================================
+
+  O QUE FAZ:
+  Faixa de largura total na cor da marca. De um lado, a arte do
+  produto (PNG sem fundo) que ultrapassa a faixa por cima; do outro,
+  logo opcional, título, texto, frase de efeito e botão.
+
+  COMO USAR:
+  Adicione "Big banner" na home. Arte recomendada: PNG transparente,
+  cerca de 1200×1000 px, com os produtos encostados embaixo.
+
+  PARÂMETROS (schema):
+  - image, image_side (left/right), logo, heading, text, tagline,
+    button_label, link, style (blue/dark).
+
+  OBSERVACOES:
+  Sem arte, o conteúdo fica centralizado na faixa. O "salto" da arte é
+  um margin-top negativo (--bb-pop); a seção reserva esse espaço acima
+  da faixa. Estilo em assets/big-banner.css.
+{%- endcomment -%}
+{{ 'big-banner.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign has_image = false
+  if section.settings.image != blank
+    assign has_image = true
+  endif
+  assign image_alt = section.settings.image.alt | default: section.settings.heading
+  assign logo_alt = section.settings.logo.alt | default: ''
+-%}
+
+<section class="big-banner big-banner--{{ section.settings.style }}{% if has_image %} big-banner--has-image big-banner--image-{{ section.settings.image_side }}{% endif %}"{% if section.settings.heading != blank %} aria-labelledby="BigBanner-{{ section.id }}"{% endif %}>
+  <div class="big-banner__band">
+    <div class="big-banner__inner page-width">
+      {%- if has_image -%}
+        <div class="big-banner__media">
+          {{
+            section.settings.image
+            | image_url: width: 1400
+            | image_tag: loading: 'lazy', widths: '480, 720, 960, 1200, 1400', sizes: '(min-width: 750px) 50vw, 100vw', alt: image_alt, class: 'big-banner__image'
+          }}
+        </div>
+      {%- endif -%}
+
+      <div class="big-banner__content">
+        {%- if section.settings.logo != blank -%}
+          {{
+            section.settings.logo
+            | image_url: width: 640
+            | image_tag: loading: 'lazy', widths: '320, 480, 640', sizes: '320px', alt: logo_alt, class: 'big-banner__logo'
+          }}
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 id="BigBanner-{{ section.id }}" class="big-banner__heading">{{ section.settings.heading | escape }}</h2>
+        {%- endif -%}
+        {%- if section.settings.text != blank -%}
+          <p class="big-banner__text">{{ section.settings.text | escape }}</p>
+        {%- endif -%}
+        {%- if section.settings.tagline != blank -%}
+          <p class="big-banner__tagline">{{ section.settings.tagline | escape }}</p>
+        {%- endif -%}
+        {%- if section.settings.button_label != blank and section.settings.link != blank -%}
+          <a class="big-banner__button" href="{{ section.settings.link }}">{{ section.settings.button_label | escape }}</a>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Big banner",
+  "tag": "div",
+  "class": "section-big-banner",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Arte do produto",
+      "info": "PNG sem fundo, ~1200×1000 px. A parte de cima ultrapassa a faixa."
+    },
+    {
+      "type": "select",
+      "id": "image_side",
+      "label": "Lado da arte",
+      "default": "left",
+      "options": [
+        { "value": "left", "label": "Esquerda" },
+        { "value": "right", "label": "Direita" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "style",
+      "label": "Cor da faixa",
+      "default": "blue",
+      "options": [
+        { "value": "blue", "label": "Azul DMR (degradê)" },
+        { "value": "dark", "label": "Escura com brilho azul" }
+      ]
+    },
+    { "type": "image_picker", "id": "logo", "label": "Logo ou selo", "info": "Opcional. PNG branco sem fundo." },
+    { "type": "text", "id": "heading", "label": "Título", "default": "Segurança e tecnologia que resolvem para você." },
+    { "type": "textarea", "id": "text", "label": "Texto", "default": "Câmeras, alarmes, controle de acesso e redes para proteger e conectar a sua casa ou empresa." },
+    { "type": "text", "id": "tagline", "label": "Frase final", "default": "A escolha é sua. A proteção é DMR." },
+    { "type": "text", "id": "button_label", "label": "Texto do botão", "default": "Ver produtos" },
+    { "type": "url", "id": "link", "label": "Link do botão" }
+  ],
+  "presets": [{ "name": "Big banner" }]
+}
+{% endschema %}
