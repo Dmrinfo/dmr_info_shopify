@@ -9,9 +9,9 @@
   2 no celular) e controles embaixo (setas redondas + bolinhas).
 
   OBSERVACOES:
-  Os botões do hover do card (dmr.css) descem abaixo do card; por isso
-  a faixa tem padding-bottom e margin-bottom negativo do mesmo tamanho
-  (--pc-hover-room) só onde existe hover. Tokens --dmr-*.
+  Os botões do hover ficam dentro do card (dmr.css); --pc-hover-room é
+  só um respiro embaixo para a sombra do card no hover não ser cortada
+  pela faixa (overflow). Tokens --dmr-*.
 */
 
 .product-carousel {
@@ -23,7 +23,7 @@
 }
 
 @media (any-hover: hover) {
-  .product-carousel { --pc-hover-room: 132px; }
+  .product-carousel { --pc-hover-room: 24px; }
 }
 
 .product-carousel__heading {

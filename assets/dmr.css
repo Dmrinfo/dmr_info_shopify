@@ -187,9 +187,9 @@ body .image-banner__heading {
 }
 
 /* ---------- Cards de produto ---------- */
-/* Estado normal sem moldura; no hover ganha borda e sombra, e os botões
-   (snippets/card-product.liquid) descem por cima da linha de baixo da
-   grade, sem empurrar o layout. */
+/* Estado normal sem moldura; no hover ganha borda e sombra e os botões
+   (snippets/card-product.liquid), que já ocupam seu espaço no card,
+   aparecem. */
 body .card-product {
   position: relative;
   display: flex;
@@ -380,6 +380,9 @@ body .card-product__button--secondary:hover {
 body .card-product__button:focus-visible { outline: 2px solid var(--dmr-primary); outline-offset: 2px; }
 
 /* any-hover: vale se houver mouse/touchpad, mesmo em notebook com tela touch */
+/* Como na loja Intelbras: o espaço dos botões fica reservado dentro do
+   card (a grade já considera essa altura); no hover a borda/sombra do
+   card abraça os botões e eles aparecem. Nada cobre a fileira de baixo. */
 @media (any-hover: hover) {
   body .card-product:hover,
   body .card-product:focus-within {
@@ -388,29 +391,13 @@ body .card-product__button:focus-visible { outline: 2px solid var(--dmr-primary)
     box-shadow: var(--dmr-shadow-hover);
   }
 
-  body .card-product--actions:hover,
-  body .card-product--actions:focus-within {
-    border-bottom-color: transparent;
-    border-bottom-right-radius: 0;
-    border-bottom-left-radius: 0;
-  }
-
   body .card-product__actions {
-    position: absolute;
-    top: 100%;
-    right: -1px;
-    left: -1px;
+    position: relative;
     z-index: 2;
     display: flex;
     flex-direction: column;
     gap: 8px;
-    padding: 4px 11px 12px;
-    background: #fff;
-    border: 1px solid var(--dmr-azureish-white);
-    border-top: 0;
-    border-radius: 0 0 var(--dmr-radius-md) var(--dmr-radius-md);
-    box-shadow: var(--dmr-shadow-hover);
-    clip-path: inset(0 -48px -48px -48px);
+    margin-top: 12px;
     opacity: 0;
     visibility: hidden;
     transform: translateY(-6px);
