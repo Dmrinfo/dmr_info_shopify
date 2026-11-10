@@ -213,6 +213,14 @@
         "products_to_show": 12
       }
     },
+    "carousel_fechaduras_digitais": {
+      "type": "product-carousel",
+      "blocks": {
+        "tab": { "type": "tab", "settings": { "label": "Fechaduras Digitais", "collection": "fechaduras-digitais" } }
+      },
+      "block_order": ["tab"],
+      "settings": { "heading": "Fechaduras Digitais", "products_to_show": 12, "fallback_all": false }
+    },
     "big_banner": {
       "type": "big-banner",
       "settings": {
@@ -337,6 +345,7 @@
     "categories",
     "product_carousel",
     "big_banner",
+    "carousel_fechaduras_digitais",
     "promo_grid",
     "carousel_cameras",
     "carousel_gravadores_digitais",
