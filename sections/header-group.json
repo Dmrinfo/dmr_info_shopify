@@ -61,6 +61,14 @@
             "link": "/collections/controle-de-acesso"
           }
         },
+        "panel_9": {
+          "type": "panel_item",
+          "settings": {
+            "icon": "lock",
+            "label": "Fechaduras Digitais",
+            "link": "/collections/fechaduras-digitais"
+          }
+        },
         "panel_8": {
           "type": "panel_item",
           "settings": {
@@ -122,6 +130,14 @@
           "settings": {
             "label": "Controle de Acesso",
             "link": "/collections/controle-de-acesso",
+            "bold": false
+          }
+        },
+        "cat_9": {
+          "type": "link",
+          "settings": {
+            "label": "Fechaduras Digitais",
+            "link": "/collections/fechaduras-digitais",
             "bold": false
           }
         },
@@ -193,6 +209,7 @@
         "panel_5",
         "panel_6",
         "panel_7",
+        "panel_9",
         "panel_8",
         "cat_1",
         "cameras_sub_1",
@@ -222,6 +239,7 @@
         "cat_5",
         "cat_6",
         "cat_7",
+        "cat_9",
         "cat_8"
       ],
       "settings": {

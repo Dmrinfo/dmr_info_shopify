@@ -265,6 +265,14 @@
   visibility: visible;
 }
 
+/* 9 categorias na barra: aperta espaço e fonte até 1440px para caber */
+@media screen and (min-width: 1001px) and (max-width: 1440px) {
+  .category-bar__inner { gap: 24px; }
+  .category-bar__list { gap: 14px; }
+  .category-bar__link,
+  .category-bar__all-toggle { font-size: 0.875rem; }
+}
+
 @media screen and (max-width: 1000px) {
   .category-bar__inner { gap: 20px; min-height: 52px; padding-right: 0; }
 
