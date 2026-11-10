@@ -200,19 +200,6 @@
         "columns_desktop": 4
       }
     },
-    "product_carousel": {
-      "type": "product-carousel",
-      "blocks": {
-        "tab_mais_vendidos": { "type": "tab", "settings": { "label": "Mais vendidos", "collection": "mais-vendidos" } },
-        "tab_ofertas": { "type": "tab", "settings": { "label": "Ofertas do dia", "collection": "ofertas-do-dia" } },
-        "tab_lancamentos": { "type": "tab", "settings": { "label": "Lançamentos", "collection": "lancamentos" } }
-      },
-      "block_order": ["tab_mais_vendidos", "tab_ofertas", "tab_lancamentos"],
-      "settings": {
-        "heading": "",
-        "products_to_show": 12
-      }
-    },
     "carousel_fechaduras_digitais": {
       "type": "product-carousel",
       "blocks": {
@@ -343,11 +330,10 @@
     "hero",
     "category_circles",
     "categories",
-    "product_carousel",
+    "carousel_cameras",
     "big_banner",
     "carousel_fechaduras_digitais",
     "promo_grid",
-    "carousel_cameras",
     "carousel_gravadores_digitais",
     "carousel_alarme",
     "carousel_cerca_eletrica",
