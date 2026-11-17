@@ -60,7 +60,7 @@
           "type": "slide",
           "settings": {
             "image": "shopify://shop_images/hero-02-cameras-desktop.jpg",
-            "mobile_image": "shopify://shop_images/hero-02-cameras-mobile.jpg",
+            "mobile_image": "shopify://shop_images/hero-02-cameras-mobile-v2.jpg",
             "link": "shopify://collections/all",
             "heading": "Câmeras de segurança",
             "text": "<p>Câmeras PTZ, dome e bullet para acompanhar tudo em tempo real.</p>",
