@@ -12,6 +12,17 @@
     "hero": {
       "type": "banner-carousel",
       "blocks": {
+        "slide_FENLjh": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/hero-06-camera-ptz-desktop.jpg",
+            "mobile_image": "shopify://shop_images/hero-06-camera-ptz-mobile.jpg",
+            "link": "",
+            "heading": "Câmera PTZ",
+            "text": "<p>Cobertura ampla do ambiente com imagens nítidas.</p>",
+            "text_alignment": "left"
+          }
+        },
         "slide_dGMtH9": {
           "type": "slide",
           "settings": {
@@ -69,6 +80,7 @@
         }
       },
       "block_order": [
+        "slide_FENLjh",
         "slide_dGMtH9",
         "slide_VNiYDA",
         "slide1",
