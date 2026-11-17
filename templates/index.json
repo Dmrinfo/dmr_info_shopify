@@ -12,6 +12,17 @@
     "hero": {
       "type": "banner-carousel",
       "blocks": {
+        "slide_VNiYDA": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/hero-04-redes-desktop.jpg",
+            "mobile_image": "shopify://shop_images/hero-04-redes-mobile.jpg",
+            "link": "",
+            "heading": "Redes e Wi-Fi de alto desempenho",
+            "text": "<p>Access points e switches para uma rede estável e sem quedas.</p>",
+            "text_alignment": "left"
+          }
+        },
         "slide1": {
           "type": "slide",
           "settings": {
@@ -47,6 +58,7 @@
         }
       },
       "block_order": [
+        "slide_VNiYDA",
         "slide1",
         "slide2",
         "slide3"
