@@ -12,6 +12,17 @@
     "hero": {
       "type": "banner-carousel",
       "blocks": {
+        "slide_dGMtH9": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/hero-05-videoporteiro-desktop.jpg",
+            "mobile_image": "shopify://shop_images/hero-05-videoporteiro-mobile.jpg",
+            "link": "",
+            "heading": "Videoporteiros Intelbras",
+            "text": "<p>Veja e fale com quem chega, sem abrir a porta.</p>",
+            "text_alignment": "left"
+          }
+        },
         "slide_VNiYDA": {
           "type": "slide",
           "settings": {
@@ -58,6 +69,7 @@
         }
       },
       "block_order": [
+        "slide_dGMtH9",
         "slide_VNiYDA",
         "slide1",
         "slide2",
