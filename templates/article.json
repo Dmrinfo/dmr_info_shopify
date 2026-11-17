@@ -1,7 +1,14 @@
 {
   "sections": {
     "main": {
-      "type": "main-article"
+      "type": "main-article",
+      "settings": {
+        "show_related": true,
+        "cta_heading": "Precisa de ajuda para escolher?",
+        "cta_text": "Nossa equipe monta a solução ideal de segurança e tecnologia para a sua casa ou empresa.",
+        "cta_label": "Falar com especialista",
+        "cta_link": "/pages/contato"
+      }
     }
   },
   "order": ["main"]

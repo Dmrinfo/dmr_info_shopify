@@ -32,6 +32,9 @@
 {%- if pages['faq'].id != blank -%}
 <li{% if item_class != blank %} class="{{ item_class }}"{% endif %}><a href="{{ routes.root_url }}pages/faq"{% if link_class != blank %} class="{{ link_class }}"{% endif %}>Perguntas frequentes</a></li>
 {%- endif -%}
+{%- if blogs['news'].id != blank -%}
+<li{% if item_class != blank %} class="{{ item_class }}"{% endif %}><a href="{{ blogs['news'].url }}"{% if link_class != blank %} class="{{ link_class }}"{% endif %}>Blog</a></li>
+{%- endif -%}
 {%- if pages['contato'].id != blank -%}
 <li{% if item_class != blank %} class="{{ item_class }}"{% endif %}><a href="{{ routes.root_url }}pages/contato"{% if link_class != blank %} class="{{ link_class }}"{% endif %}>Contato</a></li>
 {%- endif -%}

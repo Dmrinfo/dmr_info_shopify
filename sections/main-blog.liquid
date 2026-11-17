@@ -1,163 +1,90 @@
 {%- comment -%}
   ============================================================
-  MAIN BLOG — listagem de artigos do blog
+  MAIN BLOG — listagem de artigos do Blog DMR
   ============================================================
 
   O QUE FAZ:
-  Lista os artigos do blog atual em grid de 3 colunas, cada card com
-  imagem, data, título, resumo (30 palavras) e link "ler mais".
-  Usa paginação nativa configurável por setting.
+  Hero com eyebrow, título e texto; filtro de tags em pílulas
+  ("Todos" + cada tag do blog); na primeira página sem filtro, o
+  artigo mais recente aparece em destaque (largura total); os demais
+  em grade de 3 colunas. Paginação nativa.
 
   ONDE É USADA:
-  Template blog (página de listagem de um blog OS 2.0).
+  Template blog (ex.: /blogs/news). O link "Blog" fica na barra de
+  categorias (sections/header-group.json, bloco cat_blog).
 
   PRINCIPAIS PARTES:
-  - {%- paginate blog.articles by section.settings.posts_per_page -%}
-  - blog-card: card de cada artigo (imagem opcional + info)
-  - excerpt_or_content: usa o resumo, senão o conteúdo truncado
-  - render 'pagination': navegação entre páginas
-  - Setting: posts_per_page (3 a 24, passo 3)
+  - snippet 'card-article': card de cada artigo.
+  - blog.all_tags / current_tags: filtro por tag (/blogs/<blog>/tagged/<tag>).
+  - Settings: eyebrow, text, show_tags, posts_per_page.
 
   OBSERVAÇÕES:
-  No mobile (<=1000px) o grid vira 1 coluna.
+  CSS em assets/blog.css. Título vem do nome do blog no admin.
 {%- endcomment -%}
+{{ 'blog.css' | asset_url | stylesheet_tag }}
 
-<section class="blog page-width" data-section-id="{{ section.id }}">
-  <header class="blog__header">
-    <h1 class="blog__title">{{ blog.title | escape }}</h1>
-  </header>
+{%- assign active_tag = current_tags | first -%}
 
+<div class="blog-hero">
+  <div class="blog-hero__inner page-width">
+    {%- if section.settings.eyebrow != blank -%}
+      <span class="dmr-eyebrow">{{ section.settings.eyebrow | escape }}</span>
+    {%- endif -%}
+    <h1 class="blog-hero__title">
+      {%- if active_tag -%}{{ active_tag | escape }}{%- else -%}{{ blog.title | escape }}{%- endif -%}
+    </h1>
+    {%- if section.settings.text != blank -%}
+      <p class="blog-hero__text">{{ section.settings.text | escape }}</p>
+    {%- endif -%}
+
+    {%- if section.settings.show_tags and blog.all_tags.size > 0 -%}
+      <nav aria-label="Filtrar artigos por assunto">
+        <ul class="blog-tags" role="list">
+          <li>
+            <a class="blog-tags__link" href="{{ blog.url }}"{% unless active_tag %} aria-current="page"{% endunless %}>Todos</a>
+          </li>
+          {%- for tag in blog.all_tags -%}
+            <li>
+              <a
+                class="blog-tags__link"
+                href="{{ blog.url }}/tagged/{{ tag | handleize }}"
+                {% if current_tags contains tag %}aria-current="page"{% endif %}
+              >
+                {{- tag | escape -}}
+              </a>
+            </li>
+          {%- endfor -%}
+        </ul>
+      </nav>
+    {%- endif -%}
+  </div>
+</div>
+
+<section class="blog-list page-width" aria-label="Artigos">
   {%- paginate blog.articles by section.settings.posts_per_page -%}
     {%- if blog.articles.size > 0 -%}
-      <div class="blog__grid">
+      {%- liquid
+        assign show_featured = false
+        if paginate.current_page == 1 and active_tag == blank
+          assign show_featured = true
+        endif
+      -%}
+      <div class="blog-list__grid">
         {%- for article in blog.articles -%}
-          <article class="blog-card">
-            {%- if article.image -%}
-              <a href="{{ article.url }}" class="blog-card__media">
-                {%- assign img_alt = article.image.alt | default: article.title -%}
-                {{
-                  article.image
-                  | image_url: width: 900
-                  | image_tag:
-                    loading: 'lazy',
-                    widths: '300, 450, 600, 900',
-                    sizes: '(min-width: 1000px) 33vw, 100vw',
-                    class: 'blog-card__image',
-                    alt: img_alt }}
-              </a>
-            {%- endif -%}
-
-            <div class="blog-card__info">
-              {%- if article.published_at -%}
-                <time class="blog-card__date" datetime="{{ article.published_at | date: '%Y-%m-%d' }}">
-                  {{ article.published_at | date: format: 'date' }}
-                </time>
-              {%- endif -%}
-
-              <h2 class="blog-card__title">
-                <a href="{{ article.url }}">{{ article.title | escape }}</a>
-              </h2>
-
-              {%- if article.excerpt_or_content != blank -%}
-                <div class="blog-card__excerpt rte">
-                  {{ article.excerpt_or_content | strip_html | truncatewords: 30 }}
-                </div>
-              {%- endif -%}
-
-              <a href="{{ article.url }}" class="blog-card__link">
-                {{ 'blogs.article.read_more' | t }}
-              </a>
-            </div>
-          </article>
+          {%- if forloop.first and show_featured -%}
+            {% render 'card-article', article: article, featured: true, heading_tag: 'h2', loading: 'eager' %}
+          {%- else -%}
+            {% render 'card-article', article: article, heading_tag: 'h2' %}
+          {%- endif -%}
         {%- endfor -%}
       </div>
 
       {% render 'pagination', paginate: paginate %}
+    {%- else -%}
+      <p class="blog-list__empty">Em breve, novos conteúdos sobre segurança eletrônica, redes e tecnologia.</p>
     {%- endif -%}
   {%- endpaginate -%}
 </section>
-
-<style>
-  .blog {
-    padding-top: var(--spacing-sections, 40px);
-    padding-bottom: var(--spacing-sections, 40px);
-  }
-
-  .blog__header {
-    margin-bottom: 40px;
-    text-align: center;
-  }
-
-  .blog__title {
-    font-size: var(--f7);
-  }
-
-  .blog__grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 32px;
-  }
-
-  .blog-card__media {
-    display: block;
-    overflow: hidden;
-    border-radius: var(--media-radius, 8px);
-    background-color: var(--color-background-contrast, #f2f3f8);
-  }
-
-  .blog-card__image {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 3 / 2;
-    object-fit: cover;
-    display: block;
-  }
-
-  .blog-card__info {
-    padding: 16px 4px;
-  }
-
-  .blog-card__date {
-    display: block;
-    margin-bottom: 8px;
-    font-size: var(--f1);
-    opacity: 0.6;
-  }
-
-  .blog-card__title {
-    font-size: var(--f4);
-    line-height: 1.2;
-    margin-bottom: 10px;
-  }
-
-  .blog-card__title a {
-    color: inherit;
-    text-decoration: none;
-  }
-
-  .blog-card__excerpt {
-    font-size: var(--f2);
-    line-height: 1.6;
-    margin-bottom: 12px;
-  }
-
-  .blog-card__link {
-    font-size: var(--f2);
-    color: var(--color-accent);
-    text-decoration: underline;
-  }
-
-  @media screen and (max-width: 1000px) {
-    .blog__grid {
-      grid-template-columns: 1fr;
-      gap: 32px;
-    }
-
-    .blog__title {
-      font-size: var(--f6);
-    }
-  }
-</style>
 
 {% schema %}
 {
@@ -166,13 +93,32 @@
   "class": "section-main-blog",
   "settings": [
     {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Selo acima do título",
+      "default": "Blog DMR Info"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Texto abaixo do título",
+      "default": "Dicas, guias e novidades sobre câmeras, alarmes, controle de acesso, redes e informática para proteger e conectar sua casa ou empresa."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tags",
+      "label": "Mostrar filtro por tags",
+      "default": true
+    },
+    {
       "type": "range",
       "id": "posts_per_page",
-      "min": 3,
-      "max": 24,
+      "min": 4,
+      "max": 25,
       "step": 3,
-      "default": 12,
-      "label": "t:sections.main_blog.settings.posts_per_page.label"
+      "default": 10,
+      "label": "t:sections.main_blog.settings.posts_per_page.label",
+      "info": "10 = 1 destaque + 9 na grade."
     }
   ]
 }

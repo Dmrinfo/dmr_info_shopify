@@ -1,0 +1,75 @@
+{%- comment -%}
+  ============================================================
+  card-article — card de artigo do blog DMR
+  ============================================================
+
+  O QUE FAZ:
+  Card com imagem (ou logo DMR sobre o degradê quando o artigo não
+  tem imagem), primeira tag, data, tempo de leitura, título, resumo
+  e "Ler artigo". O card inteiro é clicável (pseudo-elemento do link
+  do título), sem aninhar links.
+
+  COMO USAR:
+  {% render 'card-article', article: article, featured: true, heading_tag: 'h2' %}
+
+  PARÂMETROS:
+  - article: objeto article (obrigatório).
+  - featured: true = card largo em destaque (opcional).
+  - heading_tag: 'h2' ou 'h3' (padrão 'h2').
+  - loading: 'lazy' (padrão) ou 'eager'.
+
+  OBSERVACOES:
+  CSS em assets/blog.css. Tempo de leitura: 200 palavras por minuto.
+{%- endcomment -%}
+{%- liquid
+  assign tag_name = heading_tag | default: 'h2'
+  assign img_loading = loading | default: 'lazy'
+  assign words = article.content | strip_html | split: ' ' | size
+  assign minutes = words | divided_by: 200 | at_least: 1
+  assign excerpt_words = 26
+  if featured
+    assign excerpt_words = 40
+  endif
+-%}
+<article class="blog-card{% if featured %} blog-card--featured{% endif %}">
+  <div class="blog-card__media">
+    {%- if article.image -%}
+      {%- assign img_alt = article.image.alt | default: article.title -%}
+      {%- if featured -%}
+        {{ article.image | image_url: width: 1400 | image_tag: loading: img_loading, widths: '600, 900, 1200, 1400', sizes: '(min-width: 1000px) 55vw, 100vw', class: 'blog-card__image', alt: img_alt }}
+      {%- else -%}
+        {{ article.image | image_url: width: 900 | image_tag: loading: img_loading, widths: '400, 600, 900', sizes: '(min-width: 1000px) 33vw, (min-width: 641px) 50vw, 100vw', class: 'blog-card__image', alt: img_alt }}
+      {%- endif -%}
+    {%- else -%}
+      <span class="blog-card__placeholder">
+        <img src="{{ 'logo-dmr-negativo.svg' | asset_url }}" alt="" width="160" height="51" loading="lazy">
+      </span>
+    {%- endif -%}
+  </div>
+
+  <div class="blog-card__body">
+    <p class="blog-meta">
+      {%- if article.tags.size > 0 -%}
+        <span class="blog-meta__tag">{{ article.tags.first | escape }}</span>
+      {%- endif -%}
+      {%- if article.published_at -%}
+        <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: format: 'date' }}</time>
+        <span class="blog-meta__sep" aria-hidden="true">•</span>
+      {%- endif -%}
+      <span>{{ minutes }} min de leitura</span>
+    </p>
+
+    <{{ tag_name }} class="blog-card__title">
+      <a href="{{ article.url }}">{{ article.title | escape }}</a>
+    </{{ tag_name }}>
+
+    {%- if article.excerpt_or_content != blank -%}
+      <p class="blog-card__excerpt">{{ article.excerpt_or_content | strip_html | truncatewords: excerpt_words }}</p>
+    {%- endif -%}
+
+    <span class="blog-card__more" aria-hidden="true">
+      Ler artigo
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+    </span>
+  </div>
+</article>

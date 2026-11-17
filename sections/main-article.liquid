@@ -1,105 +1,149 @@
 {%- comment -%}
   ============================================================
-  MAIN ARTICLE — post do blog com comentários nativos
+  MAIN ARTICLE — post do Blog DMR
   ============================================================
 
   O QUE FAZ:
-  Renderiza um artigo completo do blog: data, título, autor, imagem
-  destacada, conteúdo (rte) e link de volta ao blog. Exibe também a
-  lista de comentários (paginada de 5 em 5) e o formulário nativo
-  {% form 'new_comment' %} para novos comentários.
+  Artigo completo: breadcrumb (Início / Blog), tag, data, tempo de
+  leitura e autor; imagem destacada; conteúdo com tipografia de
+  leitura; tags; voltar + compartilhar; CTA azul para falar com a
+  equipe; até 3 artigos relacionados (mais recentes do mesmo blog);
+  comentários nativos (se ativados no blog).
 
   ONDE É USADA:
-  Template article (página de um post individual OS 2.0).
+  Template article (post individual OS 2.0).
 
   PRINCIPAIS PARTES:
-  - Cabeçalho + imagem eager (carrega imediato, é o conteúdo principal)
-  - blog.comments_enabled?: só mostra bloco de comentários se ativado
-  - {%- paginate article.comments by 5 -%}: paginação dos comentários
-  - form 'new_comment': trata sucesso, moderação e erros de validação
-  - Campos: nome, email, mensagem (todos required)
+  - snippet 'card-article': cards dos relacionados.
+  - snippet 'share-button': Web Share API.
+  - form 'new_comment': comentários (moderação e erros tratados).
+  - Settings: show_related, cta_heading, cta_text, cta_label, cta_link.
 
   OBSERVAÇÕES:
-  Se blog.moderated? for true, o comentário fica pendente de aprovação
-  e a mensagem de sucesso muda de acordo.
+  CSS em assets/blog.css. Tempo de leitura: 200 palavras por minuto.
 {%- endcomment -%}
+{{ 'blog.css' | asset_url | stylesheet_tag }}
 
-{%- assign comment_form_id = 'CommentForm-' | append: section.id -%}
+{%- liquid
+  assign comment_form_id = 'CommentForm-' | append: section.id
+  assign words = article.content | strip_html | split: ' ' | size
+  assign minutes = words | divided_by: 200 | at_least: 1
+-%}
 
-<article class="article page-width" data-section-id="{{ section.id }}">
-  <header class="article__header">
-    {%- if article.published_at -%}
-      <time class="article__date" datetime="{{ article.published_at | date: '%Y-%m-%d' }}">
-        {{ article.published_at | date: format: 'date' }}
-      </time>
+<div class="article-hero">
+  <div class="article-hero__inner page-width">
+    <nav aria-label="Você está em">
+      <ol class="article-breadcrumb">
+        <li><a href="{{ routes.root_url }}">Início</a></li>
+        <li><a href="{{ blog.url }}">{{ blog.title | escape }}</a></li>
+      </ol>
+    </nav>
+
+    {%- if article.tags.size > 0 -%}
+      <span class="dmr-eyebrow">{{ article.tags.first | escape }}</span>
     {%- endif -%}
-    <h1 class="article__title">{{ article.title | escape }}</h1>
-    {%- if article.author != blank -%}
-      <p class="article__author">{{ article.author | escape }}</p>
-    {%- endif -%}
-  </header>
 
+    <h1 class="article-hero__title">{{ article.title | escape }}</h1>
+
+    <p class="blog-meta">
+      {%- if article.published_at -%}
+        <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: format: 'date' }}</time>
+        <span class="blog-meta__sep" aria-hidden="true">•</span>
+      {%- endif -%}
+      <span>{{ minutes }} min de leitura</span>
+      {%- if article.author != blank -%}
+        <span class="blog-meta__sep" aria-hidden="true">•</span>
+        <span>Por {{ article.author | escape }}</span>
+      {%- endif -%}
+    </p>
+  </div>
+</div>
+
+<article class="article-body page-width">
   {%- if article.image -%}
-    <div class="article__media">
+    <div class="article-body__media">
       {%- assign img_alt = article.image.alt | default: article.title -%}
       {{
         article.image
-        | image_url: width: 1600
+        | image_url: width: 1720
         | image_tag:
           loading: 'eager',
-          widths: '540, 720, 900, 1200, 1600',
-          sizes: '(min-width: 1000px) 900px, 100vw',
-          class: 'article__image',
-          alt: img_alt }}
+          fetchpriority: 'high',
+          widths: '540, 720, 900, 1200, 1720',
+          sizes: '(min-width: 900px) 860px, 100vw',
+          class: 'article-body__image',
+          alt: img_alt
+      }}
     </div>
   {%- endif -%}
 
   {%- if article.content != blank -%}
-    <div class="article__content rte">
+    <div class="article-content rte">
       {{ article.content }}
     </div>
   {%- endif -%}
 
-  <footer class="article__footer">
-    <a href="{{ blog.url }}" class="article__back">{{ 'blogs.article.back_to_blog' | t }}</a>
-  </footer>
+  {%- if article.tags.size > 0 -%}
+    <ul class="article-tags" role="list" aria-label="Assuntos">
+      {%- for tag in article.tags -%}
+        <li><a class="blog-tags__link" href="{{ blog.url }}/tagged/{{ tag | handleize }}">{{ tag | escape }}</a></li>
+      {%- endfor -%}
+    </ul>
+  {%- endif -%}
+
+  <div class="article-actions">
+    <a href="{{ blog.url }}" class="article-actions__back">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="m11 18-6-6 6-6"/></svg>
+      {{ 'blogs.article.back_to_blog' | t }}
+    </a>
+    {% render 'share-button', share_link: article.url, share_title: article.title %}
+  </div>
+
+  {%- if section.settings.cta_heading != blank -%}
+    <aside class="article-cta" aria-labelledby="ArticleCta-{{ section.id }}">
+      <div>
+        <h2 class="article-cta__title" id="ArticleCta-{{ section.id }}">{{ section.settings.cta_heading | escape }}</h2>
+        {%- if section.settings.cta_text != blank -%}
+          <p class="article-cta__text">{{ section.settings.cta_text | escape }}</p>
+        {%- endif -%}
+      </div>
+      {%- if section.settings.cta_label != blank -%}
+        <a class="button" href="{{ section.settings.cta_link | default: routes.all_products_collection_url }}">
+          {{- section.settings.cta_label | escape -}}
+        </a>
+      {%- endif -%}
+    </aside>
+  {%- endif -%}
 
   {%- if blog.comments_enabled? -%}
-    <div class="article__comments" id="comments">
+    <div class="article-comments" id="comments">
       {%- if article.comments_count > 0 -%}
-        <h2 class="article__comments-title">
-          {{ 'blogs.article.comments' | t: count: article.comments_count }}
-        </h2>
+        <h2 class="article-comments__title">{{ 'blogs.article.comments' | t: count: article.comments_count }}</h2>
       {%- endif -%}
 
       {%- paginate article.comments by 5 -%}
         {%- if article.comments_count > 0 -%}
-          <ul class="article__comment-list" role="list">
+          <ul class="article-comments__list" role="list">
             {%- for comment in article.comments -%}
-              <li class="comment" id="comment-{{ comment.id }}">
-                <div class="comment__body rte">{{ comment.content }}</div>
-                <cite class="comment__meta">
+              <li class="article-comment" id="comment-{{ comment.id }}">
+                <div class="rte">{{ comment.content }}</div>
+                <cite class="article-comment__meta">
                   {%- assign comment_date = comment.created_at | date: format: 'date' -%}
                   {{ 'blogs.article.comment_meta_html' | t: author: comment.author, date: comment_date }}
                 </cite>
               </li>
             {%- endfor -%}
           </ul>
-
           {% render 'pagination', paginate: paginate %}
         {%- endif -%}
       {%- endpaginate -%}
 
-      <h2 class="article__comments-title">{{ 'blogs.article.comment_form_title' | t }}</h2>
+      <h2 class="article-comments__title">{{ 'blogs.article.comment_form_title' | t }}</h2>
 
       {%- form 'new_comment', article, id: comment_form_id, class: 'comment-form' -%}
         {%- if form.posted_successfully? -%}
           <div class="contact__notice contact__notice--success" role="status" tabindex="-1">
-            {%- if blog.moderated? -%}
-              {{ 'blogs.article.success_moderated' | t }}
-            {%- else -%}
-              {{ 'blogs.article.success' | t }}
-            {%- endif -%}
+            {%- if blog.moderated? -%}{{ 'blogs.article.success_moderated' | t }}{%- else -%}{{ 'blogs.article.success' | t }}{%- endif -%}
           </div>
         {%- elsif form.errors -%}
           <div class="contact__notice contact__notice--error" role="alert" tabindex="-1">
@@ -113,54 +157,22 @@
         {%- endif -%}
 
         {%- if blog.moderated? and form.posted_successfully? == false -%}
-          <p class="comment-form__note">{{ 'blogs.article.moderated' | t }}</p>
+          <p class="article-comments__note">{{ 'blogs.article.moderated' | t }}</p>
         {%- endif -%}
 
         <div class="contact__field">
-          <label class="field__label" for="CommentForm-author-{{ section.id }}">
-            {{ 'blogs.article.name' | t }}
-          </label>
-          <input
-            type="text"
-            class="field__input"
-            id="CommentForm-author-{{ section.id }}"
-            name="comment[author]"
-            value="{{ form.author }}"
-            autocomplete="name"
-            spellcheck="false"
-            required
-          >
+          <label class="field__label" for="CommentForm-author-{{ section.id }}">{{ 'blogs.article.name' | t }}</label>
+          <input type="text" class="field__input" id="CommentForm-author-{{ section.id }}" name="comment[author]" value="{{ form.author }}" autocomplete="name" required>
         </div>
 
         <div class="contact__field">
-          <label class="field__label" for="CommentForm-email-{{ section.id }}">
-            {{ 'blogs.article.email' | t }}
-          </label>
-          <input
-            type="email"
-            class="field__input"
-            id="CommentForm-email-{{ section.id }}"
-            name="comment[email]"
-            value="{{ form.email }}"
-            autocomplete="email"
-            autocapitalize="off"
-            spellcheck="false"
-            required
-          >
+          <label class="field__label" for="CommentForm-email-{{ section.id }}">{{ 'blogs.article.email' | t }}</label>
+          <input type="email" class="field__input" id="CommentForm-email-{{ section.id }}" name="comment[email]" value="{{ form.email }}" autocomplete="email" autocapitalize="off" spellcheck="false" required>
         </div>
 
         <div class="contact__field">
-          <label class="field__label" for="CommentForm-body-{{ section.id }}">
-            {{ 'blogs.article.message' | t }}
-          </label>
-          <textarea
-            rows="6"
-            class="field__input comment-form__textarea"
-            id="CommentForm-body-{{ section.id }}"
-            name="comment[body]"
-            spellcheck="false"
-            required
-          >{{ form.body }}</textarea>
+          <label class="field__label" for="CommentForm-body-{{ section.id }}">{{ 'blogs.article.message' | t }}</label>
+          <textarea rows="6" class="field__input" id="CommentForm-body-{{ section.id }}" name="comment[body]" required>{{ form.body }}</textarea>
         </div>
 
         <button type="submit" class="button">{{ 'blogs.article.post' | t }}</button>
@@ -169,113 +181,64 @@
   {%- endif -%}
 </article>
 
-<style>
-  .article {
-    padding-top: var(--spacing-sections, 40px);
-    padding-bottom: var(--spacing-sections, 40px);
-    max-width: 900px;
-  }
-
-  .article__header {
-    margin-bottom: 24px;
-    text-align: center;
-  }
-
-  .article__date {
-    display: block;
-    margin-bottom: 12px;
-    font-size: var(--f1);
-    opacity: 0.6;
-  }
-
-  .article__title {
-    font-size: var(--f7);
-    line-height: 1.1;
-  }
-
-  .article__author {
-    margin-top: 10px;
-    font-size: var(--f2);
-    opacity: 0.7;
-  }
-
-  .article__media {
-    margin-bottom: 32px;
-  }
-
-  .article__image {
-    width: 100%;
-    height: auto;
-    border-radius: var(--media-radius, 8px);
-    display: block;
-  }
-
-  .article__content {
-    font-size: var(--f2);
-    line-height: 1.8;
-  }
-
-  .article__footer {
-    margin: 40px 0;
-    padding-top: 24px;
-    border-top: 1px solid var(--color-border, #c2c2c2);
-  }
-
-  .article__back {
-    color: var(--color-accent);
-    text-decoration: underline;
-  }
-
-  .article__comments {
-    margin-top: 24px;
-  }
-
-  .article__comments-title {
-    font-size: var(--f4);
-    margin: 32px 0 20px;
-  }
-
-  .article__comment-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  .comment {
-    padding: 20px 0;
-    border-bottom: 1px solid var(--color-border, #c2c2c2);
-  }
-
-  .comment__meta {
-    display: block;
-    margin-top: 8px;
-    font-size: var(--f1);
-    font-style: normal;
-    opacity: 0.6;
-  }
-
-  .comment-form__note {
-    margin-bottom: 16px;
-    font-size: var(--f1);
-    opacity: 0.7;
-  }
-
-  .comment-form__textarea {
-    resize: none;
-  }
-
-  @media screen and (max-width: 1000px) {
-    .article__title {
-      font-size: var(--f6);
-    }
-  }
-</style>
+{%- if section.settings.show_related and blog.articles_count > 1 -%}
+  <section class="article-related" aria-labelledby="ArticleRelated-{{ section.id }}">
+    <div class="page-width">
+      <h2 class="article-related__title" id="ArticleRelated-{{ section.id }}">Continue lendo</h2>
+      <div class="blog-list__grid">
+        {%- assign related_count = 0 -%}
+        {%- for related in blog.articles -%}
+          {%- if related.id == article.id -%}{%- continue -%}{%- endif -%}
+          {% render 'card-article', article: related, heading_tag: 'h3' %}
+          {%- assign related_count = related_count | plus: 1 -%}
+          {%- if related_count >= 3 -%}{%- break -%}{%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+{%- endif -%}
 
 {% schema %}
 {
   "name": "t:sections.main_article.name",
   "tag": "section",
   "class": "section-main-article",
-  "settings": []
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_related",
+      "label": "Mostrar \"Continue lendo\" (3 artigos)",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Chamada no fim do artigo"
+    },
+    {
+      "type": "text",
+      "id": "cta_heading",
+      "label": "Título",
+      "default": "Precisa de ajuda para escolher?",
+      "info": "Vazio: a chamada não aparece."
+    },
+    {
+      "type": "textarea",
+      "id": "cta_text",
+      "label": "Texto",
+      "default": "Nossa equipe monta a solução ideal de segurança e tecnologia para a sua casa ou empresa."
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Texto do botão",
+      "default": "Falar com especialista"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Link do botão",
+      "info": "Página de contato ou link do WhatsApp."
+    }
+  ]
 }
 {% endschema %}

@@ -3,7 +3,10 @@
     "main": {
       "type": "main-blog",
       "settings": {
-        "posts_per_page": 12
+        "eyebrow": "Blog DMR Info",
+        "text": "Dicas, guias e novidades sobre câmeras, alarmes, controle de acesso, redes e informática para proteger e conectar sua casa ou empresa.",
+        "show_tags": true,
+        "posts_per_page": 10
       }
     }
   },

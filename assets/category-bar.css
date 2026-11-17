@@ -332,3 +332,7 @@
   .category-bar__sub-link,
   .category-bar__flyout-link { transition: none; }
 }
+
+/* Link do Blog no fim da barra (sections/nav.liquid, settings show_blog_link) */
+.category-bar__link--blog { gap: 6px; color: var(--dmr-primary); }
+.category-bar__blog-icon { flex: none; }

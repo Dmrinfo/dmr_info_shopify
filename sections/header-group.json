@@ -244,7 +244,10 @@
       ],
       "settings": {
         "show_category_bar": true,
-        "all_categories_label": "Todas categorias"
+        "all_categories_label": "Todas categorias",
+        "show_blog_link": true,
+        "blog_label": "Blog",
+        "blog_handle": "news"
       }
     }
   },
