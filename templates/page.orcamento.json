@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
@@ -5,12 +14,18 @@
       "settings": {
         "staff_tag": "equipe",
         "company_name": "DMR Info Tecnologia",
+        "company_doc": "",
+        "company_phone": "Tel.: +55 11 9.8316-1635 | +55 11 3164-7640 · WhatsApp: +55 11 9.6564-2554 | +55 11 9.9009-9688",
+        "company_email": "",
+        "company_address": "Rua Palmeira Lacca, 183 Sala 3 - Sobre Loja",
         "valid_days": 7,
         "default_payment": "PIX, cartão de crédito em até 12x ou boleto",
         "default_deadline": "Até 5 dias úteis após a aprovação",
-        "default_notes": "Equipamentos com garantia do fabricante. Mão de obra com garantia de 90 dias. Valores sujeitos à disponibilidade de estoque."
+        "default_notes": "Equipamentos com garantia do fabricante. Mão de obra com garantia de 90 dias. Valores sujeitos à disponibilidade de estoque.\n\nValidade da Proposta: 5 (cinco) dias úteis.\n\nNossos Serviços:\nConsultoria e Suporte Especializada em Tecnologia da Informação.\nAutomação Residencial e Empresarial.\nSistemas de Segurança e CFTV.\nManutenção e Upgrades de Computadores e Notebooks.\n\nFale Conosco:\nTelefones para contato: +55 11 9.8316-1635 | +55 11 3164-7640\nWhatsApp: +55 11 9.6564-2554 | +55 11 9.9009-9688\nNosso Site: www.dmrinfo.com.br\nEndereço: Rua Palmeira Lacca, 183 Sala 3 - Sobre Loja\n\nRedes Sociais:\nSiga-nos nas redes sociais para ficar por dentro das últimas novidades:\nInstagram: @dmrinfo_\nPágina do Facebook: DMR Info"
       }
     }
   },
-  "order": ["main"]
+  "order": [
+    "main"
+  ]
 }
