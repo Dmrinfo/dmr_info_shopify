@@ -12,101 +12,38 @@
     "hero": {
       "type": "banner-carousel",
       "blocks": {
-        "slide_EnmX73": {
-          "type": "slide",
-          "settings": {
-            "image": "shopify://shop_images/hero-07-camera-dome-desktop.jpg",
-            "mobile_image": "shopify://shop_images/hero-07-camera-dome-mobile-v2.jpg",
-            "link": "",
-            "heading": "Câmera dome",
-            "text": "<p>Discreta e com imagem em alta definição para o seu ambiente.</p>",
-            "text_alignment": "left"
-          }
-        },
-        "slide_kHMGxr": {
-          "type": "slide",
-          "settings": {
-            "image": "shopify://shop_images/hero-06-camera-ptz-desktop.jpg",
-            "mobile_image": "shopify://shop_images/hero-06-camera-ptz-mobile-v2.jpg",
-            "link": "",
-            "heading": "Câmera PTZ",
-            "text": "<p>Cobertura ampla do ambiente com imagens nítidas.</p>",
-            "text_alignment": "left"
-          }
-        },
-        "slide_FENLjh": {
-          "type": "slide",
-          "settings": {
-            "image": "shopify://shop_images/hero-08-seguranca-completa-desktop.jpg",
-            "mobile_image": "shopify://shop_images/hero-08-seguranca-completa-mobile-v2.jpg",
-            "link": "",
-            "heading": "Segurança completa",
-            "text": "<p>Alarme, câmeras e acesso em um só lugar.</p>",
-            "text_alignment": "left"
-          }
-        },
-        "slide_dGMtH9": {
-          "type": "slide",
-          "settings": {
-            "image": "shopify://shop_images/hero-05-videoporteiro-desktop.jpg",
-            "mobile_image": "shopify://shop_images/hero-05-videoporteiro-mobile-v2.jpg",
-            "link": "",
-            "heading": "Videoporteiros Intelbras",
-            "text": "<p>Veja e fale com quem chega, sem abrir a porta.</p>",
-            "text_alignment": "left"
-          }
-        },
-        "slide_VNiYDA": {
-          "type": "slide",
-          "settings": {
-            "image": "shopify://shop_images/hero-04-redes-desktop.jpg",
-            "mobile_image": "shopify://shop_images/hero-04-redes-mobile-v2.jpg",
-            "link": "",
-            "heading": "Redes e Wi-Fi de alto desempenho",
-            "text": "<p>Access points e switches para uma rede estável e sem quedas.</p>",
-            "text_alignment": "left"
-          }
-        },
         "slide1": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/hero-01-fechaduras-desktop.jpg",
-            "mobile_image": "shopify://shop_images/hero-01-fechaduras-mobile-v2.jpg",
+            "image": "shopify://shop_images/banner-seguranca-sem-margens.png",
             "link": "shopify://collections/all",
-            "heading": "Fechaduras digitais Intelbras",
-            "text": "<p>Biometria, senha e cartão para mais segurança e praticidade.</p>",
+            "heading": "Segurança eletrônica para o seu negócio",
+            "text": "<p>Câmeras, alarmes, cercas e controle de acesso para proteger o seu espaço.</p>",
             "text_alignment": "left"
           }
         },
         "slide2": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/hero-02-cameras-desktop.jpg",
-            "mobile_image": "shopify://shop_images/hero-02-cameras-mobile-v2.jpg",
+            "image": "shopify://shop_images/banner-redes-novo.png",
             "link": "shopify://collections/all",
-            "heading": "Câmeras de segurança",
-            "text": "<p>Câmeras PTZ, dome e bullet para acompanhar tudo em tempo real.</p>",
+            "heading": "Informática e redes de alto desempenho",
+            "text": "<p>Notebooks, switches, Wi-Fi, racks e nobreaks.</p>",
             "text_alignment": "left"
           }
         },
         "slide3": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/hero-03-alarmes-desktop.jpg",
-            "mobile_image": "shopify://shop_images/hero-03-alarmes-mobile-v2.jpg",
+            "image": "shopify://shop_images/banner-vendas-novo.png",
             "link": "shopify://collections/all",
-            "heading": "Alarmes e sensores",
-            "text": "<p>Central, sensores e sirene para proteger o seu espaço.</p>",
+            "heading": "Compre online com praticidade",
+            "text": "<p>Equipamentos de segurança eletrônica e informática, direto no site.</p>",
             "text_alignment": "left"
           }
         }
       },
       "block_order": [
-        "slide_EnmX73",
-        "slide_kHMGxr",
-        "slide_FENLjh",
-        "slide_dGMtH9",
-        "slide_VNiYDA",
         "slide1",
         "slide2",
         "slide3"
@@ -263,25 +200,26 @@
         "columns_desktop": 4
       }
     },
-    "carousel_cameras": {
+    "product_carousel": {
       "type": "product-carousel",
       "blocks": {
-        "tab": {
-          "type": "tab",
-          "settings": {
-            "label": "Câmeras",
-            "collection": "cameras"
-          }
-        }
+        "tab_mais_vendidos": { "type": "tab", "settings": { "label": "Mais vendidos", "collection": "mais-vendidos" } },
+        "tab_ofertas": { "type": "tab", "settings": { "label": "Ofertas do dia", "collection": "ofertas-do-dia" } },
+        "tab_lancamentos": { "type": "tab", "settings": { "label": "Lançamentos", "collection": "lancamentos" } }
       },
-      "block_order": [
-        "tab"
-      ],
+      "block_order": ["tab_mais_vendidos", "tab_ofertas", "tab_lancamentos"],
       "settings": {
-        "heading": "Câmeras",
-        "products_to_show": 12,
-        "fallback_all": false
+        "heading": "",
+        "products_to_show": 12
       }
+    },
+    "carousel_fechaduras_digitais": {
+      "type": "product-carousel",
+      "blocks": {
+        "tab": { "type": "tab", "settings": { "label": "Fechaduras Digitais", "collection": "fechaduras-digitais" } }
+      },
+      "block_order": ["tab"],
+      "settings": { "heading": "Fechaduras Digitais", "products_to_show": 12, "fallback_all": false }
     },
     "big_banner": {
       "type": "big-banner",
@@ -295,215 +233,80 @@
         "link": "shopify://collections/all"
       }
     },
-    "carousel_fechaduras_digitais": {
-      "type": "product-carousel",
-      "blocks": {
-        "tab": {
-          "type": "tab",
-          "settings": {
-            "label": "Fechaduras Digitais",
-            "collection": "fechaduras-digitais"
-          }
-        }
-      },
-      "block_order": [
-        "tab"
-      ],
-      "settings": {
-        "heading": "Fechaduras Digitais",
-        "products_to_show": 12,
-        "fallback_all": false
-      }
-    },
     "promo_grid": {
       "type": "promo-grid",
       "blocks": {
-        "banner_1": {
-          "type": "banner",
-          "settings": {
-            "heading": "Câmeras de segurança",
-            "text": "Monitore casa e empresa com imagens em alta definição.",
-            "button_label": "Comprar",
-            "link": "shopify://collections/cameras"
-          }
-        },
-        "banner_2": {
-          "type": "banner",
-          "settings": {
-            "heading": "Alarmes",
-            "text": "Centrais, sensores e sirenes para proteger o seu espaço.",
-            "button_label": "Comprar",
-            "link": "shopify://collections/alarme"
-          }
-        },
-        "banner_3": {
-          "type": "banner",
-          "settings": {
-            "heading": "Redes e Wi-Fi",
-            "text": "Roteadores e equipamentos de rede.",
-            "button_label": "Comprar",
-            "link": "shopify://collections/redes"
-          }
-        },
-        "banner_4": {
-          "type": "banner",
-          "settings": {
-            "heading": "Controle de acesso",
-            "text": "Catracas, leitores e fechaduras.",
-            "button_label": "Comprar",
-            "link": "shopify://collections/controle-de-acesso"
-          }
-        }
+        "banner_1": { "type": "banner", "settings": { "heading": "Câmeras de segurança", "text": "Monitore casa e empresa com imagens em alta definição.", "button_label": "Comprar", "link": "shopify://collections/cameras" } },
+        "banner_2": { "type": "banner", "settings": { "heading": "Alarmes", "text": "Centrais, sensores e sirenes para proteger o seu espaço.", "button_label": "Comprar", "link": "shopify://collections/alarme" } },
+        "banner_3": { "type": "banner", "settings": { "heading": "Redes e Wi-Fi", "text": "Roteadores e equipamentos de rede.", "button_label": "Comprar", "link": "shopify://collections/redes" } },
+        "banner_4": { "type": "banner", "settings": { "heading": "Controle de acesso", "text": "Catracas, leitores e fechaduras.", "button_label": "Comprar", "link": "shopify://collections/controle-de-acesso" } }
       },
-      "block_order": [
-        "banner_1",
-        "banner_2",
-        "banner_3",
-        "banner_4"
-      ],
-      "settings": {
-        "heading": ""
-      }
+      "block_order": ["banner_1", "banner_2", "banner_3", "banner_4"],
+      "settings": { "heading": "" }
+    },
+    "carousel_cameras": {
+      "type": "product-carousel",
+      "blocks": {
+        "tab": { "type": "tab", "settings": { "label": "Câmeras", "collection": "cameras" } }
+      },
+      "block_order": ["tab"],
+      "settings": { "heading": "Câmeras", "products_to_show": 12, "fallback_all": false }
     },
     "carousel_gravadores_digitais": {
       "type": "product-carousel",
       "blocks": {
-        "tab": {
-          "type": "tab",
-          "settings": {
-            "label": "Gravadores Digitais",
-            "collection": "gravadores-digitais"
-          }
-        }
+        "tab": { "type": "tab", "settings": { "label": "Gravadores Digitais", "collection": "gravadores-digitais" } }
       },
-      "block_order": [
-        "tab"
-      ],
-      "settings": {
-        "heading": "Gravadores Digitais",
-        "products_to_show": 12,
-        "fallback_all": false
-      }
+      "block_order": ["tab"],
+      "settings": { "heading": "Gravadores Digitais", "products_to_show": 12, "fallback_all": false }
     },
     "carousel_alarme": {
       "type": "product-carousel",
       "blocks": {
-        "tab": {
-          "type": "tab",
-          "settings": {
-            "label": "Alarme",
-            "collection": "alarme"
-          }
-        }
+        "tab": { "type": "tab", "settings": { "label": "Alarme", "collection": "alarme" } }
       },
-      "block_order": [
-        "tab"
-      ],
-      "settings": {
-        "heading": "Alarme",
-        "products_to_show": 12,
-        "fallback_all": false
-      }
+      "block_order": ["tab"],
+      "settings": { "heading": "Alarme", "products_to_show": 12, "fallback_all": false }
     },
     "carousel_cerca_eletrica": {
       "type": "product-carousel",
       "blocks": {
-        "tab": {
-          "type": "tab",
-          "settings": {
-            "label": "Cerca Elétrica",
-            "collection": "cerca-eletrica"
-          }
-        }
+        "tab": { "type": "tab", "settings": { "label": "Cerca Elétrica", "collection": "cerca-eletrica" } }
       },
-      "block_order": [
-        "tab"
-      ],
-      "settings": {
-        "heading": "Cerca Elétrica",
-        "products_to_show": 12,
-        "fallback_all": false
-      }
+      "block_order": ["tab"],
+      "settings": { "heading": "Cerca Elétrica", "products_to_show": 12, "fallback_all": false }
     },
     "carousel_interfonia": {
       "type": "product-carousel",
       "blocks": {
-        "tab": {
-          "type": "tab",
-          "settings": {
-            "label": "Interfonia",
-            "collection": "interfonia"
-          }
-        }
+        "tab": { "type": "tab", "settings": { "label": "Interfonia", "collection": "interfonia" } }
       },
-      "block_order": [
-        "tab"
-      ],
-      "settings": {
-        "heading": "Interfonia",
-        "products_to_show": 12,
-        "fallback_all": false
-      }
+      "block_order": ["tab"],
+      "settings": { "heading": "Interfonia", "products_to_show": 12, "fallback_all": false }
     },
     "carousel_redes": {
       "type": "product-carousel",
       "blocks": {
-        "tab": {
-          "type": "tab",
-          "settings": {
-            "label": "Redes",
-            "collection": "redes"
-          }
-        }
+        "tab": { "type": "tab", "settings": { "label": "Redes", "collection": "redes" } }
       },
-      "block_order": [
-        "tab"
-      ],
-      "settings": {
-        "heading": "Redes",
-        "products_to_show": 12,
-        "fallback_all": false
-      }
+      "block_order": ["tab"],
+      "settings": { "heading": "Redes", "products_to_show": 12, "fallback_all": false }
     },
     "carousel_controle_de_acesso": {
       "type": "product-carousel",
       "blocks": {
-        "tab": {
-          "type": "tab",
-          "settings": {
-            "label": "Controle de Acesso",
-            "collection": "controle-de-acesso"
-          }
-        }
+        "tab": { "type": "tab", "settings": { "label": "Controle de Acesso", "collection": "controle-de-acesso" } }
       },
-      "block_order": [
-        "tab"
-      ],
-      "settings": {
-        "heading": "Controle de Acesso",
-        "products_to_show": 12,
-        "fallback_all": false
-      }
+      "block_order": ["tab"],
+      "settings": { "heading": "Controle de Acesso", "products_to_show": 12, "fallback_all": false }
     },
     "carousel_informatica": {
       "type": "product-carousel",
       "blocks": {
-        "tab": {
-          "type": "tab",
-          "settings": {
-            "label": "Informática",
-            "collection": "informatica"
-          }
-        }
+        "tab": { "type": "tab", "settings": { "label": "Informática", "collection": "informatica" } }
       },
-      "block_order": [
-        "tab"
-      ],
-      "settings": {
-        "heading": "Informática",
-        "products_to_show": 12,
-        "fallback_all": false
-      }
+      "block_order": ["tab"],
+      "settings": { "heading": "Informática", "products_to_show": 12, "fallback_all": false }
     },
     "cta": {
       "type": "rich-text",
@@ -540,10 +343,11 @@
     "hero",
     "category_circles",
     "categories",
-    "carousel_cameras",
+    "product_carousel",
     "big_banner",
     "carousel_fechaduras_digitais",
     "promo_grid",
+    "carousel_cameras",
     "carousel_gravadores_digitais",
     "carousel_alarme",
     "carousel_cerca_eletrica",
