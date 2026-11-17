@@ -19,17 +19,18 @@
             "mobile_image": "shopify://shop_images/hero-01-fechaduras-mobile.jpg",
             "link": "shopify://collections/all",
             "heading": "Fechaduras digitais Intelbras",
-            "text": "<p>Câmeras, alarmes, cercas e controle de acesso para proteger o seu espaço.</p>",
+            "text": "<p>Biometria, senha e cartão para mais segurança e praticidade.</p>",
             "text_alignment": "left"
           }
         },
         "slide2": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/banner-redes-novo.png",
+            "image": "shopify://shop_images/hero-02-cameras-desktop.jpg",
+            "mobile_image": "shopify://shop_images/hero-02-cameras-mobile.jpg",
             "link": "shopify://collections/all",
-            "heading": "Informática e redes de alto desempenho",
-            "text": "<p>Notebooks, switches, Wi-Fi, racks e nobreaks.</p>",
+            "heading": "Câmeras de segurança",
+            "text": "<p>Câmeras PTZ, dome e bullet para acompanhar tudo em tempo real.</p>",
             "text_alignment": "left"
           }
         },
