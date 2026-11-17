@@ -12,6 +12,17 @@
     "hero": {
       "type": "banner-carousel",
       "blocks": {
+        "slide_kHMGxr": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/hero-06-camera-ptz-desktop.jpg",
+            "mobile_image": "shopify://shop_images/hero-06-camera-ptz-mobile-v2.jpg",
+            "link": "",
+            "heading": "",
+            "text": "",
+            "text_alignment": "left"
+          }
+        },
         "slide_FENLjh": {
           "type": "slide",
           "settings": {
@@ -80,6 +91,7 @@
         }
       },
       "block_order": [
+        "slide_kHMGxr",
         "slide_FENLjh",
         "slide_dGMtH9",
         "slide_VNiYDA",
