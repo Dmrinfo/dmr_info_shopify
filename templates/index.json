@@ -12,14 +12,25 @@
     "hero": {
       "type": "banner-carousel",
       "blocks": {
+        "slide_EnmX73": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/hero-07-camera-dome-desktop.jpg",
+            "mobile_image": "shopify://shop_images/hero-07-camera-dome-mobile-v2.jpg",
+            "link": "",
+            "heading": "Câmera dome",
+            "text": "<p>Discreta e com imagem em alta definição para o seu ambiente.</p>",
+            "text_alignment": "left"
+          }
+        },
         "slide_kHMGxr": {
           "type": "slide",
           "settings": {
             "image": "shopify://shop_images/hero-06-camera-ptz-desktop.jpg",
             "mobile_image": "shopify://shop_images/hero-06-camera-ptz-mobile-v2.jpg",
             "link": "",
-            "heading": "",
-            "text": "",
+            "heading": "Câmera PTZ",
+            "text": "<p>Cobertura ampla do ambiente com imagens nítidas.</p>",
             "text_alignment": "left"
           }
         },
@@ -91,6 +102,7 @@
         }
       },
       "block_order": [
+        "slide_EnmX73",
         "slide_kHMGxr",
         "slide_FENLjh",
         "slide_dGMtH9",
