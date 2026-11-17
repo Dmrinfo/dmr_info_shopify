@@ -1,0 +1,16 @@
+{
+  "sections": {
+    "main": {
+      "type": "quote-builder",
+      "settings": {
+        "staff_tag": "equipe",
+        "company_name": "DMR Info Tecnologia",
+        "valid_days": 7,
+        "default_payment": "PIX, cartão de crédito em até 12x ou boleto",
+        "default_deadline": "Até 5 dias úteis após a aprovação",
+        "default_notes": "Equipamentos com garantia do fabricante. Mão de obra com garantia de 90 dias. Valores sujeitos à disponibilidade de estoque."
+      }
+    }
+  },
+  "order": ["main"]
+}

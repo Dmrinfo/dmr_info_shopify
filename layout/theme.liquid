@@ -54,6 +54,11 @@
       <meta name="description" content="{{ page_description | escape }}">
     {%- endif -%}
 
+    {%- comment -%} Ferramenta interna de orçamentos: fora do Google {%- endcomment -%}
+    {%- if template.suffix == 'orcamento' -%}
+      <meta name="robots" content="noindex, nofollow">
+    {%- endif -%}
+
     {% render 'meta-tags' %}
 
     <link rel="preconnect" href="https://fonts.googleapis.com">

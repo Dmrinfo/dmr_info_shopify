@@ -1,0 +1,311 @@
+{%- comment -%}
+  ============================================================
+  QUOTE BUILDER — gerador de orçamentos da equipe DMR
+  ============================================================
+
+  O QUE FAZ:
+  Ferramenta interna para a equipe montar orçamentos para clientes:
+  busca produtos da loja (preço atual puxado do Shopify), adiciona
+  serviços/mão de obra livres, aplica desconto (% ou R$) e frete,
+  define pagamento, prazo, validade e observações. Gera:
+  - PDF/impressão com a identidade DMR (botão "Imprimir / PDF");
+  - mensagem pronta no WhatsApp do cliente;
+  - link de compra (carrinho do Shopify já preenchido com os produtos).
+  Orçamentos ficam salvos no navegador de quem montou (localStorage).
+
+  ONDE É USADA:
+  templates/page.orcamento.json. No admin, criar a página
+  "Orçamentos" (handle orcamento) com o modelo "page.orcamento".
+
+  ACESSO:
+  Só aparece para cliente logado com a tag definida em staff_tag
+  (padrão "equipe") ou no editor de tema. Demais visitantes veem um
+  aviso de área restrita. Os preços vêm das APIs públicas da loja;
+  a restrição evita uso por clientes, não protege dados sigilosos.
+
+  PRINCIPAIS PARTES:
+  - script#QuoteConfig-{id}: dados da empresa e padrões (JSON).
+  - assets/quote-builder-core.js: cálculos puros (centavos).
+  - assets/quote-builder.js: interface, busca, salvamento, PDF.
+  - assets/quote-builder.css: tela e layout de impressão.
+{%- endcomment -%}
+{%- liquid
+  assign staff_tag = section.settings.staff_tag | strip | downcase
+  assign is_staff = false
+  if request.design_mode
+    assign is_staff = true
+  elsif customer and staff_tag != blank
+    for tag in customer.tags
+      assign tag_lower = tag | strip | downcase
+      if tag_lower == staff_tag
+        assign is_staff = true
+      endif
+    endfor
+  endif
+
+  if settings.logo != blank
+    assign logo_src = settings.logo | image_url: width: 480
+  else
+    assign logo_src = 'logo-dmr.svg' | asset_url
+  endif
+-%}
+{{ 'quote-builder.css' | asset_url | stylesheet_tag }}
+
+{%- unless is_staff -%}
+  <section class="qb-locked page-width">
+    <div class="qb-locked__card">
+      <span class="dmr-eyebrow">Área da equipe</span>
+      <h1 class="qb-locked__title">Orçamentos DMR</h1>
+      <p class="qb-locked__text">Esta área é exclusiva da equipe DMR Info. Entre com uma conta autorizada para montar orçamentos.</p>
+      {%- if customer -%}
+        <p class="qb-locked__text">Sua conta não tem permissão. Peça ao administrador para liberar o acesso.</p>
+      {%- elsif shop.customer_accounts_enabled -%}
+        <a class="button" href="{{ routes.account_login_url }}?return_url={{ request.path | url_encode }}">Entrar</a>
+      {%- endif -%}
+    </div>
+  </section>
+{%- else -%}
+  <script type="application/json" id="QuoteConfig-{{ section.id }}">
+    {
+      "company": {
+        "name": {{ section.settings.company_name | json }},
+        "doc": {{ section.settings.company_doc | json }},
+        "phone": {{ section.settings.company_phone | json }},
+        "email": {{ section.settings.company_email | json }},
+        "address": {{ section.settings.company_address | json }},
+        "site": {{ shop.url | json }},
+        "logo": {{ logo_src | prepend: 'https:' | replace: 'https:https:', 'https:' | json }}
+      },
+      "seller": {{ customer.name | default: '' | json }},
+      "defaults": {
+        "validDays": {{ section.settings.valid_days | json }},
+        "payment": {{ section.settings.default_payment | json }},
+        "deadline": {{ section.settings.default_deadline | json }},
+        "notes": {{ section.settings.default_notes | json }}
+      }
+    }
+  </script>
+
+  <section class="qb page-width" data-quote-builder data-config="QuoteConfig-{{ section.id }}" data-root="{{ routes.root_url }}" aria-labelledby="QuoteTitle-{{ section.id }}">
+    <header class="qb-top">
+      <div class="qb-top__title">
+        <span class="dmr-eyebrow">Área da equipe</span>
+        <h1 id="QuoteTitle-{{ section.id }}">Orçamentos</h1>
+        <p class="qb-top__number">Orçamento <strong data-qb-number>—</strong> <span class="qb-top__status" data-qb-status role="status" aria-live="polite"></span></p>
+      </div>
+      <div class="qb-top__actions">
+        <button type="button" class="qb-btn" data-qb-action="new">Novo</button>
+        <button type="button" class="qb-btn" data-qb-action="duplicate">Duplicar</button>
+        <details class="qb-saved" data-qb-saved>
+          <summary class="qb-btn">Salvos <span class="qb-saved__count" data-qb-saved-count>0</span></summary>
+          <div class="qb-saved__panel">
+            <label class="visually-hidden" for="QuoteSavedSearch-{{ section.id }}">Buscar orçamento salvo</label>
+            <input id="QuoteSavedSearch-{{ section.id }}" class="field__input qb-saved__search" type="search" placeholder="Buscar por cliente ou número" data-qb-saved-search autocomplete="off">
+            <ul class="qb-saved__list" role="list" data-qb-saved-list></ul>
+          </div>
+        </details>
+      </div>
+    </header>
+
+    <div class="qb-layout">
+      <div class="qb-main">
+        <fieldset class="qb-card">
+          <legend class="qb-card__title"><span class="qb-card__step">1</span> Cliente</legend>
+          <div class="qb-grid">
+            <div class="qb-field qb-field--wide">
+              <label class="field__label" for="QbName-{{ section.id }}">Nome ou razão social *</label>
+              <input class="field__input" id="QbName-{{ section.id }}" data-qb-client="name" autocomplete="off" maxlength="120" required>
+            </div>
+            <div class="qb-field">
+              <label class="field__label" for="QbDoc-{{ section.id }}">CPF / CNPJ</label>
+              <input class="field__input" id="QbDoc-{{ section.id }}" data-qb-client="doc" inputmode="numeric" autocomplete="off" maxlength="20">
+            </div>
+            <div class="qb-field">
+              <label class="field__label" for="QbPhone-{{ section.id }}">WhatsApp</label>
+              <input class="field__input" id="QbPhone-{{ section.id }}" data-qb-client="phone" type="tel" inputmode="tel" placeholder="(00) 00000-0000" autocomplete="off" maxlength="20">
+            </div>
+            <div class="qb-field">
+              <label class="field__label" for="QbEmail-{{ section.id }}">E-mail</label>
+              <input class="field__input" id="QbEmail-{{ section.id }}" data-qb-client="email" type="email" autocomplete="off" maxlength="120">
+            </div>
+            <div class="qb-field qb-field--wide">
+              <label class="field__label" for="QbAddress-{{ section.id }}">Endereço / local da instalação</label>
+              <input class="field__input" id="QbAddress-{{ section.id }}" data-qb-client="address" autocomplete="off" maxlength="200">
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="qb-card">
+          <legend class="qb-card__title"><span class="qb-card__step">2</span> Itens</legend>
+
+          <div class="qb-search" data-qb-search>
+            <label class="field__label" for="QbSearch-{{ section.id }}">Adicionar produto da loja</label>
+            <div class="qb-search__box">
+              <input
+                class="field__input qb-search__input"
+                id="QbSearch-{{ section.id }}"
+                type="search"
+                placeholder="Digite nome, modelo ou SKU (ex.: câmera bullet)"
+                autocomplete="off"
+                role="combobox"
+                aria-expanded="false"
+                aria-controls="QbResults-{{ section.id }}"
+                aria-autocomplete="list"
+                data-qb-search-input
+              >
+              <ul class="qb-search__results" id="QbResults-{{ section.id }}" role="listbox" hidden data-qb-results></ul>
+            </div>
+          </div>
+
+          <div class="qb-table-wrap">
+            <table class="qb-table">
+              <thead>
+                <tr>
+                  <th scope="col">Item</th>
+                  <th scope="col" class="qb-table__num">Qtd.</th>
+                  <th scope="col" class="qb-table__num">Unitário (R$)</th>
+                  <th scope="col" class="qb-table__num">Total</th>
+                  <th scope="col"><span class="visually-hidden">Remover</span></th>
+                </tr>
+              </thead>
+              <tbody data-qb-items></tbody>
+            </table>
+            <p class="qb-empty" data-qb-empty>Nenhum item ainda. Busque um produto acima ou adicione um serviço.</p>
+          </div>
+
+          <div class="qb-add-service">
+            <button type="button" class="qb-btn qb-btn--ghost" data-qb-action="add-service">+ Serviço / mão de obra</button>
+            <button type="button" class="qb-btn qb-btn--ghost" data-qb-action="add-custom">+ Item avulso</button>
+          </div>
+        </fieldset>
+
+        <fieldset class="qb-card">
+          <legend class="qb-card__title"><span class="qb-card__step">3</span> Condições</legend>
+          <div class="qb-grid">
+            <div class="qb-field qb-field--wide">
+              <label class="field__label" for="QbPayment-{{ section.id }}">Forma de pagamento</label>
+              <input class="field__input" id="QbPayment-{{ section.id }}" data-qb-field="payment" maxlength="200">
+            </div>
+            <div class="qb-field">
+              <label class="field__label" for="QbDeadline-{{ section.id }}">Prazo de entrega / instalação</label>
+              <input class="field__input" id="QbDeadline-{{ section.id }}" data-qb-field="deadline" maxlength="160">
+            </div>
+            <div class="qb-field">
+              <label class="field__label" for="QbValid-{{ section.id }}">Validade (dias)</label>
+              <input class="field__input" id="QbValid-{{ section.id }}" data-qb-field="validDays" type="number" min="1" max="365" inputmode="numeric">
+            </div>
+            <div class="qb-field qb-field--wide">
+              <label class="field__label" for="QbNotes-{{ section.id }}">Observações (garantia, o que está incluso…)</label>
+              <textarea class="field__input qb-textarea" id="QbNotes-{{ section.id }}" data-qb-field="notes" rows="4" maxlength="2000"></textarea>
+            </div>
+            <div class="qb-field">
+              <label class="field__label" for="QbSeller-{{ section.id }}">Responsável</label>
+              <input class="field__input" id="QbSeller-{{ section.id }}" data-qb-field="seller" maxlength="80">
+            </div>
+          </div>
+        </fieldset>
+      </div>
+
+      <aside class="qb-summary" aria-label="Resumo do orçamento">
+        <div class="qb-summary__card">
+          <h2 class="qb-summary__title">Resumo</h2>
+          <dl class="qb-totals">
+            <div><dt>Produtos</dt><dd data-qb-total="products">R$ 0,00</dd></div>
+            <div><dt>Serviços</dt><dd data-qb-total="services">R$ 0,00</dd></div>
+            <div class="qb-totals__sub"><dt>Subtotal</dt><dd data-qb-total="subtotal">R$ 0,00</dd></div>
+          </dl>
+
+          <div class="qb-adjust">
+            <label class="field__label" for="QbDiscount-{{ section.id }}">Desconto</label>
+            <div class="qb-adjust__row">
+              <input class="field__input" id="QbDiscount-{{ section.id }}" data-qb-discount-value inputmode="decimal" placeholder="0">
+              <select class="field__input qb-adjust__mode" data-qb-discount-mode aria-label="Tipo de desconto">
+                <option value="percent">%</option>
+                <option value="amount">R$</option>
+              </select>
+            </div>
+            <label class="field__label" for="QbShipping-{{ section.id }}">Frete / deslocamento (R$)</label>
+            <input class="field__input" id="QbShipping-{{ section.id }}" data-qb-shipping inputmode="decimal" placeholder="0,00">
+          </div>
+
+          <dl class="qb-totals">
+            <div class="qb-totals__discount"><dt>Desconto</dt><dd data-qb-total="discount">- R$ 0,00</dd></div>
+            <div><dt>Frete</dt><dd data-qb-total="shipping">R$ 0,00</dd></div>
+            <div class="qb-totals__grand"><dt>Total</dt><dd data-qb-total="total">R$ 0,00</dd></div>
+          </dl>
+
+          <div class="qb-summary__actions">
+            <button type="button" class="button" data-qb-action="save">Salvar orçamento</button>
+            <button type="button" class="button button--secondary" data-qb-action="print">Imprimir / PDF</button>
+            <button type="button" class="qb-btn qb-btn--wa" data-qb-action="whatsapp">Enviar no WhatsApp</button>
+            <button type="button" class="qb-btn" data-qb-action="cart-link">Copiar link de compra</button>
+          </div>
+          <p class="qb-summary__hint">O link de compra leva só os produtos da loja, com o preço da loja. Desconto, serviços e frete do orçamento não entram no carrinho.</p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <div class="qb-doc" data-qb-doc aria-hidden="true"></div>
+
+  <script src="{{ 'quote-builder-core.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'quote-builder-doc.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'quote-builder.js' | asset_url }}" defer="defer"></script>
+{%- endunless -%}
+
+{% schema %}
+{
+  "name": "Orçamentos (equipe)",
+  "tag": "div",
+  "class": "section-quote-builder",
+  "settings": [
+    {
+      "type": "text",
+      "id": "staff_tag",
+      "label": "Tag de acesso da equipe",
+      "default": "equipe",
+      "info": "Admin > Clientes: adicione esta tag na conta de quem pode montar orçamentos."
+    },
+    {
+      "type": "header",
+      "content": "Dados da empresa (cabeçalho do PDF)"
+    },
+    { "type": "text", "id": "company_name", "label": "Nome", "default": "DMR Info Tecnologia" },
+    { "type": "text", "id": "company_doc", "label": "CNPJ" },
+    { "type": "text", "id": "company_phone", "label": "Telefone / WhatsApp" },
+    { "type": "text", "id": "company_email", "label": "E-mail" },
+    { "type": "text", "id": "company_address", "label": "Endereço" },
+    {
+      "type": "header",
+      "content": "Padrões de um novo orçamento"
+    },
+    {
+      "type": "range",
+      "id": "valid_days",
+      "label": "Validade (dias)",
+      "min": 1,
+      "max": 60,
+      "step": 1,
+      "default": 7
+    },
+    {
+      "type": "text",
+      "id": "default_payment",
+      "label": "Forma de pagamento",
+      "default": "PIX, cartão de crédito em até 12x ou boleto"
+    },
+    {
+      "type": "text",
+      "id": "default_deadline",
+      "label": "Prazo",
+      "default": "Até 5 dias úteis após a aprovação"
+    },
+    {
+      "type": "textarea",
+      "id": "default_notes",
+      "label": "Observações",
+      "default": "Equipamentos com garantia do fabricante. Mão de obra com garantia de 90 dias. Valores sujeitos à disponibilidade de estoque."
+    }
+  ]
+}
+{% endschema %}
