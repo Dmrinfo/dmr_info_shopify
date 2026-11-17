@@ -37,10 +37,11 @@
         "slide3": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/banner-vendas-novo.png",
+            "image": "shopify://shop_images/hero-03-alarmes-desktop.jpg",
+            "mobile_image": "shopify://shop_images/hero-03-alarmes-mobile.jpg",
             "link": "shopify://collections/all",
-            "heading": "Compre online com praticidade",
-            "text": "<p>Equipamentos de segurança eletrônica e informática, direto no site.</p>",
+            "heading": "Alarmes e sensores",
+            "text": "<p>Central, sensores e sirene para proteger o seu espaço.</p>",
             "text_alignment": "left"
           }
         }
