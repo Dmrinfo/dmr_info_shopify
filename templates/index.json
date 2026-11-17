@@ -16,10 +16,10 @@
           "type": "slide",
           "settings": {
             "image": "shopify://shop_images/hero-08-seguranca-completa-desktop.jpg",
-            "mobile_image": "shopify://shop_images/hero-08-seguranca-completa-mobile.jpg",
+            "mobile_image": "shopify://shop_images/hero-08-seguranca-completa-mobile-v2.jpg",
             "link": "",
-            "heading": "Segurança eletrônica completa",
-            "text": "<p>Alarme, câmeras e controle de acesso para proteger o seu espaço.</p>",
+            "heading": "Segurança completa",
+            "text": "<p>Alarme, câmeras e acesso em um só lugar.</p>",
             "text_alignment": "left"
           }
         },
