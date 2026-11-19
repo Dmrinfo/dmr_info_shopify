@@ -238,6 +238,7 @@
     "big_banner": {
       "type": "big-banner",
       "settings": {
+        "image": "shopify://shop_images/banner-seguranca-tecnologia-nov19.png",
         "image_side": "left",
         "style": "blue",
         "heading": "Segurança e tecnologia que resolvem para você.",
@@ -245,6 +246,43 @@
         "tagline": "A escolha é sua. A proteção é DMR.",
         "button_label": "Ver produtos",
         "link": "shopify://collections/all"
+      }
+    },
+    "image_banner_XkrAkd": {
+      "type": "image-banner",
+      "blocks": {
+        "heading_jpkgb4": {
+          "type": "heading",
+          "settings": {
+            "heading": "Segurança e tecnologia que resolvem para você."
+          }
+        },
+        "text_U7Kngx": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Câmeras, alarmes e controle de acesso para proteger sua casa ou empresa.</p>"
+          }
+        },
+        "button_MFUFfT": {
+          "type": "button",
+          "settings": {
+            "button_label": "Ver produtos",
+            "button_link": "shopify://collections/all",
+            "button_label_2": "",
+            "button_link_2": ""
+          }
+        }
+      },
+      "block_order": [
+        "heading_jpkgb4",
+        "text_U7Kngx",
+        "button_MFUFfT"
+      ],
+      "name": "t:sections.image_banner.name",
+      "settings": {
+        "image": "shopify://shop_images/banner-intelbras-completo-nov19.png",
+        "height": "large",
+        "text_alignment": "center"
       }
     },
     "carousel_fechaduras_digitais": {
@@ -514,6 +552,7 @@
     "categories",
     "product_carousel",
     "big_banner",
+    "image_banner_XkrAkd",
     "carousel_fechaduras_digitais",
     "promo_grid",
     "carousel_cameras",
