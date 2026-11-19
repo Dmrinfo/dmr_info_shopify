@@ -343,26 +343,6 @@
         "heading": ""
       }
     },
-    "carousel_cameras": {
-      "type": "product-carousel",
-      "blocks": {
-        "tab": {
-          "type": "tab",
-          "settings": {
-            "label": "Câmeras",
-            "collection": "cameras"
-          }
-        }
-      },
-      "block_order": [
-        "tab"
-      ],
-      "settings": {
-        "heading": "Câmeras",
-        "products_to_show": 12,
-        "fallback_all": false
-      }
-    },
     "carousel_gravadores_digitais": {
       "type": "product-carousel",
       "blocks": {
@@ -401,6 +381,43 @@
         "heading": "SISTEMA DE ALARMES",
         "products_to_show": 12,
         "fallback_all": false
+      }
+    },
+    "image_banner_DpkgJ6": {
+      "type": "image-banner",
+      "blocks": {
+        "heading_air9tE": {
+          "type": "heading",
+          "settings": {
+            "heading": "Mais tranquilidade para sua casa ou empresa"
+          }
+        },
+        "text_tjMTWV": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Conheça nossas soluções de alarme e escolha a proteção para o seu espaço.</p>"
+          }
+        },
+        "button_8CbBth": {
+          "type": "button",
+          "settings": {
+            "button_label": "Ver alarmes",
+            "button_link": "shopify://collections/alarmes",
+            "button_label_2": "",
+            "button_link_2": ""
+          }
+        }
+      },
+      "block_order": [
+        "heading_air9tE",
+        "text_tjMTWV",
+        "button_8CbBth"
+      ],
+      "name": "t:sections.image_banner.name",
+      "settings": {
+        "image": "shopify://shop_images/banner-alarmes-intelbras-reais-nov19.png",
+        "height": "medium",
+        "text_alignment": "center"
       }
     },
     "carousel_cerca_eletrica": {
@@ -542,9 +559,9 @@
     "image_banner_XkrAkd",
     "carousel_fechaduras_digitais",
     "promo_grid",
-    "carousel_cameras",
     "carousel_gravadores_digitais",
     "carousel_alarme",
+    "image_banner_DpkgJ6",
     "carousel_cerca_eletrica",
     "carousel_interfonia",
     "carousel_redes",
