@@ -235,19 +235,6 @@
         "fallback_all": true
       }
     },
-    "big_banner": {
-      "type": "big-banner",
-      "settings": {
-        "image": "shopify://shop_images/banner-seguranca-tecnologia-nov19.png",
-        "image_side": "left",
-        "style": "blue",
-        "heading": "Segurança e tecnologia que resolvem para você.",
-        "text": "Câmeras, alarmes, controle de acesso e redes para proteger e conectar a sua casa ou empresa.",
-        "tagline": "A escolha é sua. A proteção é DMR.",
-        "button_label": "Ver produtos",
-        "link": "shopify://collections/all"
-      }
-    },
     "image_banner_XkrAkd": {
       "type": "image-banner",
       "blocks": {
@@ -551,7 +538,6 @@
     "category_circles",
     "categories",
     "product_carousel",
-    "big_banner",
     "image_banner_XkrAkd",
     "carousel_fechaduras_digitais",
     "promo_grid",
