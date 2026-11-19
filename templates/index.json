@@ -389,8 +389,8 @@
         "tab": {
           "type": "tab",
           "settings": {
-            "label": "Alarme",
-            "collection": "alarme"
+            "label": "Alarmes",
+            "collection": "alarmes"
           }
         }
       },
