@@ -221,32 +221,16 @@
         "tab_mais_vendidos": {
           "type": "tab",
           "settings": {
-            "label": "Mais vendidos",
-            "collection": "mais-vendidos"
-          }
-        },
-        "tab_ofertas": {
-          "type": "tab",
-          "settings": {
-            "label": "Ofertas do dia",
-            "collection": "ofertas-do-dia"
-          }
-        },
-        "tab_lancamentos": {
-          "type": "tab",
-          "settings": {
-            "label": "Lançamentos",
-            "collection": "lancamentos"
+            "label": "Câmeras",
+            "collection": "cameras"
           }
         }
       },
       "block_order": [
-        "tab_mais_vendidos",
-        "tab_ofertas",
-        "tab_lancamentos"
+        "tab_mais_vendidos"
       ],
       "settings": {
-        "heading": "",
+        "heading": "Câmeras",
         "products_to_show": 12,
         "fallback_all": true
       }
@@ -278,7 +262,7 @@
         "tab"
       ],
       "settings": {
-        "heading": "Fechaduras Digitais",
+        "heading": "FECHADURAS DIGITAIS",
         "products_to_show": 12,
         "fallback_all": false
       }
