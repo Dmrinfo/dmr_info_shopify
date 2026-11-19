@@ -15,9 +15,10 @@
         "slide_gG4tbG": {
           "type": "slide",
           "settings": {
-            "link": "",
-            "heading": "",
-            "text": "",
+            "image": "shopify://shop_images/banner-fechaduras-quatro-nov19.png",
+            "link": "shopify://collections/fechaduras-digitais",
+            "heading": "Fechaduras digitais",
+            "text": "<p>Mais praticidade para entrar. Mais controle para proteger.</p>",
             "text_alignment": "left"
           }
         },
@@ -194,9 +195,10 @@
         "c4": {
           "type": "category",
           "settings": {
+            "image": "shopify://shop_images/categoria-informatica-pecas-nov19.png",
             "icon": "computer",
-            "title": "Informática",
-            "text": "Notebooks, PCs e periféricos.",
+            "title": "INFORMÁTICA",
+            "text": "Peças e periféricos para seu computador: HDs, SSDs, memórias, fontes e muito mais.",
             "link": "shopify://collections/all"
           }
         }
