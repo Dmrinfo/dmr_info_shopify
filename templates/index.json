@@ -398,7 +398,7 @@
         "tab"
       ],
       "settings": {
-        "heading": "Alarme",
+        "heading": "SISTEMA DE ALARMES",
         "products_to_show": 12,
         "fallback_all": false
       }
@@ -418,7 +418,7 @@
         "tab"
       ],
       "settings": {
-        "heading": "Cerca Elétrica",
+        "heading": "CERCA ELÉTRICA",
         "products_to_show": 12,
         "fallback_all": false
       }
@@ -438,7 +438,7 @@
         "tab"
       ],
       "settings": {
-        "heading": "Interfonia",
+        "heading": "INTERFONIA",
         "products_to_show": 12,
         "fallback_all": false
       }
@@ -458,7 +458,7 @@
         "tab"
       ],
       "settings": {
-        "heading": "Redes",
+        "heading": "REDES",
         "products_to_show": 12,
         "fallback_all": false
       }
@@ -478,7 +478,7 @@
         "tab"
       ],
       "settings": {
-        "heading": "Controle de Acesso",
+        "heading": "CONTROLE DE ACESSO",
         "products_to_show": 12,
         "fallback_all": false
       }
