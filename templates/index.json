@@ -298,6 +298,7 @@
         "banner_1": {
           "type": "banner",
           "settings": {
+            "image": "shopify://shop_images/intelbras-import-9972036-4.png",
             "heading": "CÂMERAS DE SEGURANÇA",
             "text": "Monitore casa e empresa com imagens em alta definição.",
             "button_label": "Comprar",
